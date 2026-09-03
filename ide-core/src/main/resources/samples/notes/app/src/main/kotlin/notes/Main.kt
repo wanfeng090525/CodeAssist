@@ -1,16 +1,16 @@
 package notes
 
 /**
- * An interactive command loop over the [Notebook]. At the `>` prompt, type one of:
+ * 在 [Notebook] 之上的交互式命令循环。在 `>` 提示符下，可输入以下命令之一：
  *
- *   add <text>     add a note
- *   list           show every note
- *   done <id>      mark a note complete
- *   rm <id>        remove a note
- *   find <text>    search note text
- *   quit           exit (end-of-input / Ctrl-D also quits)
+ *   add <text>     新增一条笔记
+ *   list           显示所有笔记
+ *   done <id>      将笔记标记为已完成
+ *   rm <id>        删除一条笔记
+ *   find <text>    搜索笔记文本
+ *   quit           退出（输入结束 / Ctrl-D 也会退出）
  *
- * This is the app's "view": it reads commands and prints, while [Notebook] holds the data and logic.
+ * 这是应用的"视图"：它读取命令并打印输出，而 [Notebook] 负责保存数据和逻辑。
  */
 fun main() {
     val notebook = Notebook()
@@ -18,8 +18,8 @@ fun main() {
 
     while (true) {
         print("> ")
-        System.out.flush() // show the prompt before we block on input
-        val line = readLine()?.trim() ?: break // end of input
+        System.out.flush() // 在阻塞等待输入之前先显示提示符
+        val line = readLine()?.trim() ?: break // 输入结束
 
         if (line.isEmpty()) continue
         val space = line.indexOf(' ')

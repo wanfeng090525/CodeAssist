@@ -8,29 +8,28 @@ import dev.ide.model.template.TemplateId
 import dev.ide.model.template.TemplateParameter
 
 /**
- * Built-in **sample projects** — complete, documented, runnable example apps (not bare starters). Each one
- * scaffolds a real multi-file project whose sources are bundled as classpath resources under
- * `resources/samples/<id>/…` (so the example code stays clean, idiomatic, and easy to maintain), then copies
- * them into the new project verbatim. They're plain Java/Kotlin console apps, so they build and run with no
- * SDK or network — guaranteed to work out of the box.
+ * 内置的**示例项目** —— 完整、有文档、可运行的示例应用（不是空的入门骨架）。每一个都会
+ * 搭建一个真实的多文件项目，其源码以类路径资源的形式打包在 `resources/samples/<id>/…`
+ * 目录下（这样示例代码保持整洁、地道且易于维护），然后原样复制到新项目中。它们是普通的
+ * Java/Kotlin 控制台应用，无需 SDK 或网络即可构建和运行 —— 保证开箱即用。
  *
- * Sample template ids are prefixed `sample-` so the store lists them under "Sample projects" (not "Starter
- * templates"); they otherwise flow through the exact same create path as any other template.
+ * 示例模板 id 以 `sample-` 为前缀，因此商店会把它们列在"示例项目"（而不是"入门模板"）下；
+ * 除此之外，它们与其它任何模板走的是完全相同的新建流程。
  */
 internal object SampleSupport {
-    /** Read a bundled sample resource's raw bytes, or fail loudly (a missing sample is a build/packaging bug). */
+    /** 读取打包示例资源的原始字节；若失败则明确报错（缺少示例属于构建/打包缺陷）。 */
     private fun readResourceBytes(path: String): ByteArray =
         SampleSupport::class.java.classLoader.getResourceAsStream(path)?.use { it.readBytes() }
             ?: error("Missing bundled sample resource: $path")
 
-    /** True if [bytes] has a NUL in its first block — the same "not text" sniff the editor uses. */
+    /** 如果 [bytes] 的第一个块中存在 NUL，则返回 true —— 与编辑器使用的"非文本"嗅探相同。 */
     private fun looksBinary(bytes: ByteArray): Boolean =
         (0 until minOf(bytes.size, 8000)).any { bytes[it].toInt() == 0 }
 
     /**
-     * Copy each of [files] (paths relative to both the sample resource root and the project root). A binary
-     * asset (PNG/font/…) is written byte-exact via [ProjectScaffold.writeBytes]; text goes through
-     * [ProjectScaffold.writeText] as before, so existing sample output is unchanged.
+     * 复制 [files] 中的每个文件（路径同时相对于示例资源根目录和项目根目录）。二进制资源
+     * （PNG/字体等）通过 [ProjectScaffold.writeBytes] 按字节原样写入；文本则照旧走
+     * [ProjectScaffold.writeText]，因此原有的示例输出保持不变。
      */
     fun copyFiles(scaffold: ProjectScaffold, sampleId: String, files: List<String>) {
         for (rel in files) {
@@ -41,11 +40,11 @@ internal object SampleSupport {
     }
 }
 
-/** Calculator — a Java console app that parses and evaluates arithmetic expressions. */
+/** 计算器 —— 一个解析并计算算术表达式的 Java 控制台应用。 */
 object CalculatorSampleTemplate : ProjectTemplate {
     override val id = TemplateId("sample-calculator")
-    override val displayName = "Calculator"
-    override val description = "An interactive command-line calculator: type expressions and it evaluates them."
+    override val displayName = "计算器"
+    override val description = "一个交互式命令行计算器：输入表达式即可求值。"
     override val category = TemplateCategory.JAVA
     override val iconId = "java"
 
@@ -64,11 +63,11 @@ object CalculatorSampleTemplate : ProjectTemplate {
     }
 }
 
-/** Notes — a Kotlin console note-taking app (add/list/search/complete), model split from view. */
+/** 记事本 —— 一个 Kotlin 控制台笔记应用（新增/列出/搜索/完成），模型与视图分离。 */
 object NotesSampleTemplate : ProjectTemplate {
     override val id = TemplateId("sample-notes")
-    override val displayName = "Notes"
-    override val description = "An interactive note-taking CLI: type commands to add, list, search, and complete notes."
+    override val displayName = "记事本"
+    override val description = "一个交互式笔记命令行工具：输入命令即可新增、列出、搜索和完成笔记。"
     override val category = TemplateCategory.KOTLIN
     override val iconId = "kotlin"
 
@@ -87,11 +86,11 @@ object NotesSampleTemplate : ProjectTemplate {
     }
 }
 
-/** Weather — a Kotlin console app that formats a multi-day forecast from bundled sample data. */
+/** 天气 —— 一个将打包的示例数据格式化成为多日天气预报的 Kotlin 控制台应用。 */
 object WeatherSampleTemplate : ProjectTemplate {
     override val id = TemplateId("sample-weather")
-    override val displayName = "Weather"
-    override val description = "An interactive weather report: type a city to see its forecast."
+    override val displayName = "天气"
+    override val description = "一个交互式天气报告：输入城市名称即可查看其天气预报。"
     override val category = TemplateCategory.KOTLIN
     override val iconId = "kotlin"
 

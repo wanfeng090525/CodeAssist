@@ -5,26 +5,26 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import kotlin.random.Random
 
-/** A swipe direction. Every move is expressed as a leftward collapse of a re-oriented board (see [plan]). */
+/** 一个滑动方向。每次移动都被表达为对重新定向后的棋盘做一次向左折叠（参见 [plan]）。 */
 enum class Direction { LEFT, RIGHT, UP, DOWN }
 
 /**
- * A single tile with a **stable [id]** that survives across moves, so the UI can animate the same tile sliding
- * from its old cell to its new one. Two tiles that merge slide to the same cell; one keeps its id (its value
- * doubles) and the other is dropped once the slide finishes.
+ * 一个带有**稳定的 [id]**、在多次移动之间保持不变的方块，这样 UI 就可以让同一个方块从旧格
+ * 动画滑到新格。两个合并的方块会滑到同一格；一个保留其 id（其值翻倍），另一个在滑动
+ * 结束后被移除。
  */
 data class Tile(val id: Int, val value: Int, val row: Int, val col: Int)
 
 /**
- * State and rules for 2048, modelled as a list of [Tile]s (rather than a flat grid) so movement can be
- * animated. A move happens in two phases the UI drives:
+ * 2048 的状态与规则，以 [Tile] 列表（而非扁平的网格）建模，以便可以动画化移动过程。
+ * 一次移动分两个由 UI 驱动的阶段：
  *
- *  1. [beginMove] computes the result and publishes the **slide** tiles - every current tile moved to its
- *     destination cell (merging pairs land on the same cell), values unchanged. The UI animates the offsets.
- *  2. After the slide, [endMove] publishes the **settled** board - merged cells show their doubled value, the
- *     absorbed tiles are gone, a new tile has spawned - and updates the score / game-over state.
+ *  1. [beginMove] 计算结果并发布**滑动中**的方块 —— 每个当前方块移动到其目标格
+ *     （合并的一对落到同一格），值保持不变。UI 对这些偏移做动画。
+ *  2. 滑动结束后，[endMove] 发布**已落定**的棋盘 —— 合并的格子显示翻倍后的值、被吸收的
+ *     方块消失、生成了一个新的方块 —— 并更新分数 / 游戏结束状态。
  *
- * [animating] is true between the two, so input is ignored until the slide finishes.
+ * 在两者之间 [animating] 为 true，因此滑动结束前会忽略输入。
  */
 class Game2048State {
     var tiles by mutableStateOf(emptyList<Tile>())
@@ -38,7 +38,7 @@ class Game2048State {
     var hasWon by mutableStateOf(false)
         private set
 
-    /** Bumped on every accepted move so the UI's settle effect re-runs. */
+    /** 每次接受的移动都会递增，以便 UI 的落定效果重新执行。 */
     var moveToken by mutableStateOf(0)
         private set
 
@@ -60,7 +60,7 @@ class Game2048State {
         moveToken++
     }
 
-    /** Phase 1: publish the sliding tiles. Returns false (no-op) if the board can't move that way. */
+    /** 阶段 1：发布滑动中的方块。如果棋盘无法朝该方向移动则返回 false（无操作）。 */
     fun beginMove(direction: Direction): Boolean {
         if (pending != null || isGameOver) return false
         val plan = plan(direction) ?: return false
@@ -70,7 +70,7 @@ class Game2048State {
         return true
     }
 
-    /** Phase 2: settle the board (merged values, spawned tile), update score + end state. */
+    /** 阶段 2：让棋盘落定（合并值、生成方块）、更新分数与结束状态。 */
     fun endMove() {
         val plan = pending ?: return
         pending = null
@@ -95,11 +95,11 @@ class Game2048State {
         for (line in lineCoords(direction)) {
             val lineTiles = line.mapNotNull { (r, c) -> grid[r * SIZE + c] }
             var outIndex = 0
-            var canMerge = false // whether the tile at the last-filled slot can still absorb one more
+            var canMerge = false // 最后一个已填充槽位上的方块是否还能再吸收一个
             for (t in lineTiles) {
                 if (canMerge && settled.last().value == t.value) {
                     val (dr, dc) = line[outIndex - 1]
-                    slide.add(t.copy(row = dr, col = dc)) // absorbed tile slides onto the survivor
+                    slide.add(t.copy(row = dr, col = dc)) // 被吸收的方块滑到幸存方块上
                     settled[settled.lastIndex] = settled.last().copy(value = settled.last().value * 2)
                     gained += settled.last().value
                     canMerge = false
@@ -118,7 +118,7 @@ class Game2048State {
         return Plan(slide, spawn(settled), gained)
     }
 
-    /** The board cells of each line, ordered from the leading edge (toward which tiles slide) inward. */
+    /** 每条线的棋盘格子，从前沿（方块滑动朝向的边）向内排序。 */
     private fun lineCoords(direction: Direction): List<List<Pair<Int, Int>>> {
         val idx = 0 until SIZE
         return when (direction) {
@@ -152,7 +152,7 @@ class Game2048State {
     }
 
     companion object {
-        /** The board is SIZE x SIZE tiles. */
+        /** 棋盘为 SIZE x SIZE 个方块。 */
         const val SIZE = 4
     }
 }

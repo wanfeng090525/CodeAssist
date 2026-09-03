@@ -12,20 +12,20 @@ import dev.ide.model.template.TemplateId
 import dev.ide.model.template.TemplateParameter
 
 /**
- * Built-in Kotlin project templates. These scaffold a Kotlin source tree (`src/main/kotlin`) that
- * the editor analyzes with the `lang-kotlin` backend (completion, resolution, go-to-definition, and the
- * inference subset), so a Kotlin project is editable out of the box.
+ * 内置的 Kotlin 项目模板。它们会搭建一个 Kotlin 源码树（`src/main/kotlin`），编辑器通过
+ * `lang-kotlin` 后端（补全、解析、跳转到定义以及一部分类型推断）来对其进行分析，因此 Kotlin
+ * 项目开箱即可编辑。
  *
- * The native build compiles the Kotlin sources to bytecode (the `compileKotlin` task that jvm-build's
- * `JavaPlugin` registers for any module with `.kt`), so these `java-lib` modules build, and a console
- * template's top-level `fun main()` runs.
+ * 原生构建会把 Kotlin 源码编译成字节码（jvm-build 的 `JavaPlugin` 会为任何包含 `.kt` 的模块注册
+ * `compileKotlin` 任务），所以这些 `java-lib` 模块可以被构建，控制台模板中的顶层 `fun main()`
+ * 也可以运行。
  */
 internal object KotlinTemplateSupport {
-    /** A `main` source set rooted at `src/main/kotlin` (the Kotlin source-dir convention). */
+    /** 一个以 `src/main/kotlin` 为根的 `main` 源集（Kotlin 源码目录的惯例）。 */
     private fun mainSources() =
         SourceSetTemplate("main", DependencyScope.IMPLEMENTATION, mapOf("src/main/kotlin" to setOf(ContentRole.SOURCE)))
 
-    /** Add a single-module Kotlin project ([moduleName] of [typeId]) and commit the model. */
+    /** 添加一个单模块 Kotlin 项目（[typeId] 类型的 [moduleName]）并提交模型。 */
     fun singleModule(scaffold: ProjectScaffold, projectName: String, moduleName: String, typeId: String) {
         scaffold.workspace.beginModification().apply {
             addProject(projectName, BuildSystemId.NATIVE, scaffold.rootDir)
@@ -42,13 +42,13 @@ internal object KotlinTemplateSupport {
 }
 
 /**
- * A Kotlin console app: one `app` module with a `Main.kt` that has a top-level `fun main()`. Editable,
- * buildable, and runnable — Run launches it in the interactive console.
+ * 一个 Kotlin 控制台应用：包含一个带顶层 `fun main()` 的 `Main.kt` 的 `app` 模块。可编辑、可构建、
+ * 可运行 —— 点击"运行"会在交互式控制台中启动它。
  */
 object KotlinConsoleAppTemplate : ProjectTemplate {
     override val id = TemplateId("kotlin-console")
-    override val displayName = "Kotlin Console App"
-    override val description = "A Kotlin app with a top-level main(). Full editor intelligence; builds and runs in the interactive console."
+    override val displayName = "Kotlin 控制台应用"
+    override val description = "带有顶层 main() 的 Kotlin 应用。具备完整的编辑器智能；可构建并在交互式控制台中运行。"
     override val category = TemplateCategory.KOTLIN
     override val iconId = "kotlin"
 
@@ -70,11 +70,11 @@ object KotlinConsoleAppTemplate : ProjectTemplate {
     }
 }
 
-/** A plain Kotlin library: one `lib` module with a sample class, no entry point (nothing to run). */
+/** 一个普通 Kotlin 库：包含一个带示例类的 `lib` 模块，没有入口点（无可运行内容）。 */
 object KotlinLibraryTemplate : ProjectTemplate {
     override val id = TemplateId("kotlin-library")
-    override val displayName = "Kotlin Library"
-    override val description = "A reusable Kotlin library module. Full editor intelligence; compiles in the native build."
+    override val displayName = "Kotlin 库"
+    override val description = "一个可复用的 Kotlin 库模块。具备完整的编辑器智能；可在原生构建中编译。"
     override val category = TemplateCategory.KOTLIN
     override val iconId = "kotlin"
 
@@ -89,7 +89,7 @@ object KotlinLibraryTemplate : ProjectTemplate {
             """
             package $pkg
 
-            /** Entry point of the ${args.name} library. */
+            /** ${args.name} 库的入口。 */
             class $type {
                 fun greet(name: String): String = "Hello, " + name + "!"
             }

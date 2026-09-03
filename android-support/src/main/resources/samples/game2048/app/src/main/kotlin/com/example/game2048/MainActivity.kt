@@ -82,7 +82,7 @@ class MainActivity : ComponentActivity() {
 fun Game2048Screen() {
     val game = remember { Game2048State() }
 
-    // Settle the board once each move's slide animation has finished.
+    // 每次移动的滑动动画结束后，让棋盘状态落定。
     LaunchedEffect(game.moveToken) {
         if (game.animating) {
             kotlinx.coroutines.delay(SLIDE_MS.toLong())
@@ -165,7 +165,7 @@ private fun Board(game: Game2048State, modifier: Modifier = Modifier) {
     ) {
         BoxWithConstraints(Modifier.fillMaxSize().padding(6.dp)) {
             val cell = maxWidth / Game2048State.SIZE
-            // The static background grid.
+            // 静态的背景网格。
             for (r in 0 until Game2048State.SIZE) {
                 for (c in 0 until Game2048State.SIZE) {
                     Box(
@@ -174,7 +174,7 @@ private fun Board(game: Game2048State, modifier: Modifier = Modifier) {
                     )
                 }
             }
-            // The live tiles, keyed by id so each one animates from its old cell to its new one.
+            // 活跃的方块，以 id 作为 key，以便每个方块都能从旧格动画到新格。
             for (tile in game.tiles) {
                 key(tile.id) { TileView(tile, cell) }
             }
@@ -198,7 +198,7 @@ private fun Board(game: Game2048State, modifier: Modifier = Modifier) {
 private fun TileView(tile: Tile, cell: Dp) {
     val x by animateDpAsState(cell * tile.col, tween(SLIDE_MS), label = "x")
     val y by animateDpAsState(cell * tile.row, tween(SLIDE_MS), label = "y")
-    // Pop the tile whenever its value appears or changes (spawn / merge); a plain slide leaves it unchanged.
+    // 当方块的值出现或改变时（生成 / 合并）弹出缩放；普通的滑动保持其不变。
     val scale = remember { Animatable(0.6f) }
     LaunchedEffect(tile.value) {
         scale.snapTo(0.6f)

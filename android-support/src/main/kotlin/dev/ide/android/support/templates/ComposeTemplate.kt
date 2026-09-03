@@ -13,25 +13,25 @@ import dev.ide.model.template.TemplateParameter
 import dev.ide.platform.log.Log
 
 /**
- * A Jetpack Compose application: one `app` module (android-app) whose UI is built in Compose, with
- * `@Composable` functions and `@Preview`s that the editor can render through the on-device Compose
- * interpreter (see `docs/compose-interpreter.md`). Kotlin-only; Compose requires minSdk 21.
+ * 一个 Jetpack Compose 应用：包含一个 UI 用 Compose 构建的 `app` 模块（android-app），其中含有
+ * `@Composable` 函数和 `@Preview`，编辑器可以借助设备端 Compose 解释器进行渲染
+ * （参见 `docs/compose-interpreter.md`）。仅支持 Kotlin；Compose 要求 minSdk 21。
  *
- * The starter screen is a `Greeting` composable shown via `setContent`, plus two `@Preview` composables — a
- * single `Text` and a `Column` of `Text`s — to showcase the editor Preview button on both a leaf and a
- * nested (content-lambda) composable.
+ * 起始界面是一个通过 `setContent` 展示的 `Greeting` composable 组件，外加两个 `@Preview`
+ * composable 组件 —— 一个独立的 `Text` 和一个由 `Text` 组成的 `Column` —— 用于在叶节点
+ * 和嵌套（content-lambda）composable 上展示编辑器的预览按钮。
  */
 object JetpackComposeAppTemplate : ProjectTemplate {
     override val id = TemplateId("compose-app")
-    override val displayName = "Jetpack Compose App"
-    override val description = "An Android app with a Jetpack Compose UI and @Preview composables you can render in the editor."
+    override val displayName = "Jetpack Compose 应用"
+    override val description = "一个使用 Jetpack Compose 构建 UI、并可在编辑器中渲染 @Preview composable 组件的 Android 应用。"
     override val category = TemplateCategory.ANDROID
     override val iconId = "module.android"
 
     private val log = Log.logger("Jetpack Compose Template Generator")
 
     override fun parameters(): List<TemplateParameter> = listOf(
-        // Compose requires minSdk 21+; drop the lower options.
+        // Compose 要求 minSdk 21 及以上；去掉更低的选项。
         AndroidTemplateSupport.minSdkParam.copy(
             options = AndroidTemplateSupport.minSdkParam.options.filter { it.value.toInt() >= 21 },
             defaultIndex = 0,
@@ -108,7 +108,7 @@ object JetpackComposeAppTemplate : ProjectTemplate {
             </resources>
             """,
         )
-        // A NoActionBar framework theme — Compose handles its own theming, so no Material XML theme is needed.
+        // 使用无 ActionBar 的框架主题 —— Compose 自行处理主题，因此无需 Material XML 主题。
         scaffold.writeText(
             "app/src/main/res/values/themes.xml",
             """
@@ -146,7 +146,7 @@ object JetpackComposeAppTemplate : ProjectTemplate {
                 Text(text = "Hello, " + name + "!")
             }
 
-            // Press the Preview button in the editor toolbar to render these through the Compose interpreter.
+            // 点击编辑器工具栏中的预览按钮，即可通过 Compose 解释器渲染下面的内容。
             @Preview
             @Composable
             fun GreetingPreview() {

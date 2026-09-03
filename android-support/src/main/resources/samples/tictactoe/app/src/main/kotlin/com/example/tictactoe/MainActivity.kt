@@ -185,7 +185,7 @@ private fun CellView(
     ) {
         Box(contentAlignment = Alignment.Center) {
             if (player != null) {
-                // Pop the mark in with a quick scale-up when the cell is first filled.
+                // 当格子第一次被填上时，用一次快速的放大动画把符号弹出来。
                 val scale = remember { Animatable(0.4f) }
                 LaunchedEffect(player) { scale.animateTo(1f, animationSpec = tween(180)) }
                 Text(

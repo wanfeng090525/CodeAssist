@@ -135,119 +135,119 @@ object BuiltInSettingsPages {
         appearance, editor, completion, analysis, preview, build, buildRuntime, privacy(analyticsAvailable),
     )
 
-    private val appearance = page(APPEARANCE, "Appearance", "eye", 0) {
+    private val appearance = page(APPEARANCE, "外观", "eye", 0) {
         listOf(
             SettingControl.Choice(
-                "themeMode", "Theme", "Use a fixed theme or follow the operating system",
+                "themeMode", "主题", "使用固定主题或跟随操作系统",
                 default = d.themeMode,
                 options = listOf(
-                    SettingControl.Choice.Option(IdeSettings.THEME_LIGHT, "Light"),
-                    SettingControl.Choice.Option(IdeSettings.THEME_DARK, "Dark"),
-                    SettingControl.Choice.Option(IdeSettings.THEME_SYSTEM, "System"),
+                    SettingControl.Choice.Option(IdeSettings.THEME_LIGHT, "浅色"),
+                    SettingControl.Choice.Option(IdeSettings.THEME_DARK, "深色"),
+                    SettingControl.Choice.Option(IdeSettings.THEME_SYSTEM, "跟随系统"),
                 ),
             ),
             SettingControl.Choice(
-                "accent", "Accent", "The interface highlight color the whole expressive theme is generated from",
+                "accent", "强调色", "整个自适应主题所生成的界面强调色",
                 default = d.accent,
                 options = listOf(
-                    SettingControl.Choice.Option(IdeSettings.ACCENT_DYNAMIC, "Dynamic"),
-                    SettingControl.Choice.Option(IdeSettings.ACCENT_LIME, "Lime"),
-                    SettingControl.Choice.Option(IdeSettings.ACCENT_VIOLET, "Violet"),
-                    SettingControl.Choice.Option(IdeSettings.ACCENT_TEAL, "Teal"),
-                    SettingControl.Choice.Option(IdeSettings.ACCENT_ORANGE, "Orange (Legacy)"),
-                    SettingControl.Choice.Option(IdeSettings.ACCENT_CUSTOM, "Custom"),
+                    SettingControl.Choice.Option(IdeSettings.ACCENT_DYNAMIC, "动态"),
+                    SettingControl.Choice.Option(IdeSettings.ACCENT_LIME, "青柠"),
+                    SettingControl.Choice.Option(IdeSettings.ACCENT_VIOLET, "紫罗兰"),
+                    SettingControl.Choice.Option(IdeSettings.ACCENT_TEAL, "蓝绿色"),
+                    SettingControl.Choice.Option(IdeSettings.ACCENT_ORANGE, "橙色（旧版）"),
+                    SettingControl.Choice.Option(IdeSettings.ACCENT_CUSTOM, "自定义"),
                 ),
             ),
             SettingControl.Color(
-                "accentColor", "Custom color", "Pick any color; the full Material You theme regenerates from it",
+                "accentColor", "自定义颜色", "选择任意颜色，整个 Material You 主题将据此重新生成",
                 default = d.accentColor,
             ),
         )
     }
 
-    private val editor = page(EDITOR, "Editor", "code", 10) {
+    private val editor = page(EDITOR, "编辑器", "code", 10) {
         listOf(
-            SettingControl.IntSlider("fontScale", "Font size", default = (d.editorFontScale * 100).toInt(), min = 70, max = 200, step = 5, unit = "%"),
+            SettingControl.IntSlider("fontScale", "字号", default = (d.editorFontScale * 100).toInt(), min = 70, max = 200, step = 5, unit = "%"),
             SettingControl.Choice(
-                "codeFont", "Code font",
+                "codeFont", "代码字体",
                 default = d.codeFont,
                 options = listOf(
                     SettingControl.Choice.Option(IdeSettings.CODE_FONT_JETBRAINS, "JetBrains Mono"),
-                    SettingControl.Choice.Option(IdeSettings.CODE_FONT_MONOSPACE, "System monospace"),
+                    SettingControl.Choice.Option(IdeSettings.CODE_FONT_MONOSPACE, "系统等宽字体"),
                 ),
             ),
-            SettingControl.Toggle("fontLigatures", "Font ligatures", "Render programming ligatures (-> != >= …) when the code font has them", default = d.fontLigatures),
-            SettingControl.Toggle("inlayHints", "Inlay hints", "Inferred types and parameter-name hints, shown inline", default = d.inlayHints),
-            SettingControl.Toggle("semanticHighlighting", "Semantic highlighting", "Type-aware coloring layered over the lexer", default = d.semanticHighlighting),
-            SettingControl.Toggle("codeFolding", "Code folding", "Fold imports, bodies, and block comments", default = d.codeFolding),
-            SettingControl.Toggle("wordWrap", "Word wrap", "Soft-wrap long lines at the viewport edge instead of scrolling horizontally", default = d.wordWrap),
-            SettingControl.Toggle("wrapIndent", "Indent wrapped lines", "Align a wrapped line's continuation rows to its indentation (when word wrap is on)", default = d.wrapIndent),
-            SettingControl.Toggle("horizontalScrollbar", "Horizontal scrollbar", "Show a draggable bar along the bottom edge while a line runs past the view (word wrap leaves nothing to scroll)", default = d.horizontalScrollbar),
-            SettingControl.Toggle("twoAxisScroll", "Two-axis scrolling", "Drag in any direction to scroll both axes at once (touch)", default = d.twoAxisScroll, group = "Gestures"),
-            SettingControl.Toggle("pinchZoom", "Pinch to zoom", "Pinch with two fingers to change the code font size", default = d.pinchZoom, group = "Gestures"),
-            SettingControl.Toggle("softKeyboardSuggestions", "Keyboard suggestions", "Let the soft keyboard autocorrect, suggest, and auto-space (a normal keyboard). Turn off for raw code input, so a typed '.' doesn't get an auto-inserted space, at the cost of the suggestion strip.", default = d.softKeyboardSuggestions, group = "Keyboard"),
+            SettingControl.Toggle("fontLigatures", "字体连字", "在代码字体支持时渲染编程连字（-> != >= …）", default = d.fontLigatures),
+            SettingControl.Toggle("inlayHints", "内联提示", "在行内显示推断类型和参数名提示", default = d.inlayHints),
+            SettingControl.Toggle("semanticHighlighting", "语义高亮", "在词法分析之上叠加基于类型的着色", default = d.semanticHighlighting),
+            SettingControl.Toggle("codeFolding", "代码折叠", "折叠导入、函数体和块注释", default = d.codeFolding),
+            SettingControl.Toggle("wordWrap", "自动换行", "在视口边缘软换行长行，而不是水平滚动", default = d.wordWrap),
+            SettingControl.Toggle("wrapIndent", "缩进换行行", "将换行行的续行与其缩进对齐（开启自动换行时生效）", default = d.wrapIndent),
+            SettingControl.Toggle("horizontalScrollbar", "水平滚动条", "当行超出视图时在底部显示可拖动的滚动条（开启自动换行后无内容可滚动）", default = d.horizontalScrollbar),
+            SettingControl.Toggle("twoAxisScroll", "双轴滚动", "向任意方向拖动即可同时滚动两个轴（触摸）", default = d.twoAxisScroll, group = "手势"),
+            SettingControl.Toggle("pinchZoom", "双指缩放", "用两根手指张合以调整代码字号", default = d.pinchZoom, group = "手势"),
+            SettingControl.Toggle("softKeyboardSuggestions", "键盘建议", "让软键盘进行自动更正、给出建议并自动补空格（正常键盘）。如需原始代码输入可关闭它，这样键入“.”时不会自动插入空格，代价是失去建议条。", default = d.softKeyboardSuggestions, group = "键盘"),
         )
     }
 
-    private val completion = page(COMPLETION, "Code Completion", "sparkle", 20) {
+    private val completion = page(COMPLETION, "代码补全", "sparkle", 20) {
         listOf(
-            SettingControl.Toggle("autoPopup", "Auto-show suggestions", "Pop the list up while typing (off = Ctrl-Space only)", default = d.completionAutoPopup),
-            SettingControl.Toggle("postfixTemplates", "Postfix templates", "Offer .val / .if / .notnull / … completions", default = d.postfixTemplates),
-            SettingControl.Toggle("wordCompletion", "Word completion", "Offer words already in the file as a fallback", default = d.wordCompletion),
-            SettingControl.IntSlider("delayMs", "Auto-popup delay", "How long after a keystroke the list appears", default = d.completionDelayMs, min = IdeSettings.MIN_COMPLETION_DELAY_MS, max = IdeSettings.MAX_COMPLETION_DELAY_MS, step = 10, unit = "ms", advanced = true),
-            SettingControl.IntSlider("maxItems", "Maximum suggestions", default = d.completionMaxItems, min = IdeSettings.MIN_COMPLETION_MAX_ITEMS, max = IdeSettings.MAX_COMPLETION_MAX_ITEMS, step = 10, advanced = true),
+            SettingControl.Toggle("autoPopup", "自动显示建议", "输入时弹出建议列表（关闭 = 仅按 Ctrl-Space）", default = d.completionAutoPopup),
+            SettingControl.Toggle("postfixTemplates", "后缀模板", "提供 .val / .if / .notnull / … 补全", default = d.postfixTemplates),
+            SettingControl.Toggle("wordCompletion", "单词补全", "将文件中已出现的单词作为后备建议", default = d.wordCompletion),
+            SettingControl.IntSlider("delayMs", "自动弹出延迟", "击键后多久弹出补全列表", default = d.completionDelayMs, min = IdeSettings.MIN_COMPLETION_DELAY_MS, max = IdeSettings.MAX_COMPLETION_DELAY_MS, step = 10, unit = "ms", advanced = true),
+            SettingControl.IntSlider("maxItems", "最大建议数", default = d.completionMaxItems, min = IdeSettings.MIN_COMPLETION_MAX_ITEMS, max = IdeSettings.MAX_COMPLETION_MAX_ITEMS, step = 10, advanced = true),
         )
     }
 
-    private val analysis = page(ANALYSIS, "Analysis & Inspections", "lightbulb", 30) {
+    private val analysis = page(ANALYSIS, "分析与检查", "lightbulb", 30) {
         listOf(
-            SettingControl.Toggle("onTheFly", "Analyze on the fly", "Show diagnostics as you type (off = on build only)", default = d.analyzeOnTheFly),
-            SettingControl.IntSlider("reparseDelayMs", "Reparse delay", "Quiet period after a keystroke before re-analysis", default = d.reparseDelayMs, min = IdeSettings.MIN_REPARSE_DELAY_MS, max = IdeSettings.MAX_REPARSE_DELAY_MS, step = 50, unit = "ms", advanced = true),
-            SettingControl.Toggle(PERF_LOGGING, "Log analysis timings", "Diagnostic: write per-pass (semantic / diagnostics / folds / inlay / previews) and per-stage timings to the log so you can find what makes a file slow. Read them in Privacy → View logs. Off by default.", default = d.analysisPerfLogging, advanced = true),
+            SettingControl.Toggle("onTheFly", "实时分析", "输入时显示诊断信息（关闭 = 仅构建时）", default = d.analyzeOnTheFly),
+            SettingControl.IntSlider("reparseDelayMs", "重新解析延迟", "击键后到重新分析前的静默期", default = d.reparseDelayMs, min = IdeSettings.MIN_REPARSE_DELAY_MS, max = IdeSettings.MAX_REPARSE_DELAY_MS, step = 50, unit = "ms", advanced = true),
+            SettingControl.Toggle(PERF_LOGGING, "记录分析耗时", "诊断：将每个遍历（语义 / 诊断 / 折叠 / 内联 / 预览）和每个阶段的耗时写入日志，以便找出文件变慢的原因。可在“隐私与数据 → 查看日志”中查看。默认关闭。", default = d.analysisPerfLogging, advanced = true),
         )
     }
 
     // Per-project: whether preview code may escape the sandbox is a property of the project you're editing
     // (your own app vs. an untrusted sample), not of the device. Applies to previews opened after a change.
-    private val preview = page(PREVIEW, "Preview", "image", 35, scope = SettingsScope.PROJECT) {
+    private val preview = page(PREVIEW, "预览", "image", 35, scope = SettingsScope.PROJECT) {
         listOf(
             SettingControl.Toggle(
-                SANDBOX_FILE_IO, "Block file access",
-                "Stop previewed code from reading or writing files (java.io / java.nio / kotlin.io). Blocked calls return null and are listed on the preview's problem chip. Applies to newly opened previews.",
-                default = true, group = "Preview sandbox",
+                SANDBOX_FILE_IO, "阻止文件访问",
+                "阻止预览代码读写文件（java.io / java.nio / kotlin.io）。被阻止的调用返回 null，并会列在预览的问题提示上。仅对新建的预览生效。",
+                default = true, group = "预览沙盒",
             ),
             SettingControl.Toggle(
-                SANDBOX_NETWORK, "Block network access",
-                "Stop previewed code from opening sockets or HTTP connections (java.net, OkHttp, Ktor).",
-                default = true, group = "Preview sandbox",
+                SANDBOX_NETWORK, "阻止网络访问",
+                "阻止预览代码打开套接字或 HTTP 连接（java.net、OkHttp、Ktor）。",
+                default = true, group = "预览沙盒",
             ),
             SettingControl.Toggle(
-                SANDBOX_ANDROID, "Block Android system calls",
-                "Stop previewed code from launching activities/services, sending broadcasts, using system services, ContentResolver, or SharedPreferences. Resource and density reads stay available.",
-                default = true, group = "Preview sandbox",
+                SANDBOX_ANDROID, "阻止 Android 系统调用",
+                "阻止预览代码启动 Activity/服务、发送广播、使用系统服务、ContentResolver 或 SharedPreferences。资源和密度读取仍可使用。",
+                default = true, group = "预览沙盒",
             ),
             SettingControl.Toggle(
-                SANDBOX_PROCESS, "Block process & reflection",
-                "Stop previewed code from exec'ing processes, calling System.exit, loading native libraries, or invoking members reflectively.",
-                default = true, group = "Preview sandbox",
+                SANDBOX_PROCESS, "阻止进程与反射",
+                "阻止预览代码执行进程、调用 System.exit、加载原生库或通过反射调用成员。",
+                default = true, group = "预览沙盒",
             ),
             SettingControl.Toggle(
-                PREVIEW_ISOLATE, "Render in a separate process",
-                "Render the @Preview in the :preview OS process instead of the IDE, so a runaway recomposition or crash can't take down the IDE. Falls back to the in-process renderer for @PreviewParameter / locale previews and on any remote failure. Turn off to always render in-process (more interactive, but a preview crash can affect the IDE).",
-                default = true, group = "Preview process",
+                PREVIEW_ISOLATE, "在独立进程中渲染",
+                "在 :preview 系统进程中而非 IDE 中渲染 @Preview，这样失控的重组或崩溃不会拖垮 IDE。对于 @PreviewParameter / 区域设置预览以及任何远程失败，将回退到进程内渲染。关闭后始终在进程内渲染（更具交互性，但预览崩溃可能影响 IDE）。",
+                default = true, group = "预览进程",
             ),
         )
     }
 
-    private val build = page(BUILD, "Build & Dependencies", "hammer", 40, scope = SettingsScope.PROJECT) {
+    private val build = page(BUILD, "构建与依赖", "hammer", 40, scope = SettingsScope.PROJECT) {
         listOf(
             SettingControl.Choice(
-                CONFLICT_POLICY, "Dependency conflicts", "Which version wins when two are requested in the graph",
+                CONFLICT_POLICY, "依赖冲突", "当图中同时请求两个版本时以哪个为准",
                 default = CONFLICT_NEWEST,
                 options = listOf(
-                    SettingControl.Choice.Option(CONFLICT_NEWEST, "Newest"),
-                    SettingControl.Choice.Option(CONFLICT_PINNED, "Direct wins"),
-                    SettingControl.Choice.Option(CONFLICT_FAIL, "Fail on conflict"),
+                    SettingControl.Choice.Option(CONFLICT_NEWEST, "最新版本"),
+                    SettingControl.Choice.Option(CONFLICT_PINNED, "直接依赖优先"),
+                    SettingControl.Choice.Option(CONFLICT_FAIL, "冲突时报错"),
                 ),
             ),
         )
@@ -256,77 +256,77 @@ object BuiltInSettingsPages {
     // App-global (not per-project): running the build in its own process is about this device's memory
     // headroom + your robustness preference, the same for every project. Default ON. The effect is applied
     // by the backend (it reads `settings.buildRuntime.separateProcess`); see docs/build-process-isolation.md.
-    private val buildRuntime = page(BUILD_RUNTIME, "Build Runtime", "hammer", 45) {
+    private val buildRuntime = page(BUILD_RUNTIME, "构建运行时", "hammer", 45) {
         listOf(
             SettingControl.Toggle(
-                SEPARATE_PROCESS, "Build in a separate process",
-                "Run builds and your program in an isolated process so an out-of-memory crash can't take down the IDE. Off = build in-process (uses less memory, no isolation). Takes effect the next time you open a project.",
+                SEPARATE_PROCESS, "在独立进程中构建",
+                "在隔离进程中运行构建和你的程序，这样内存溢出崩溃不会拖垮 IDE。关闭 = 在进程内构建（占用更少内存，但无隔离）。下次打开项目时生效。",
                 default = true,
             ),
             SettingControl.Toggle(
-                INJECT_APP_LOG, "Forward app logs",
-                "On a debug build, inject a small log bridge into your app so its logs (logcat, println, crashes) stream to the Logcat tab. Debug builds only — release builds are never modified. Applies on the next build.",
+                INJECT_APP_LOG, "转发应用日志",
+                "在调试构建中，向应用注入一个小的日志桥接器，使其日志（logcat、println、崩溃）流入 Logcat 标签页。仅调试构建——发布构建绝不会被修改。下次构建时生效。",
                 default = true,
             ),
             // The Build Runtime page's R8 controls are rendered dynamically by SettingsBackend (the slider's
             // max is this device's measured forked-VM limit, and it's hidden in In-process mode), so these
             // static descriptors only supply keys / scope / defaults — their descriptions aren't shown.
             SettingControl.Choice(
-                R8_MODE, "R8 execution", null,
+                R8_MODE, "R8 执行", null,
                 default = R8_MODE_DEFAULT,
                 options = listOf(
-                    SettingControl.Choice.Option(R8_MODE_FORKED, "Forked VM"),
-                    SettingControl.Choice.Option(R8_MODE_INPROCESS, "In-process"),
+                    SettingControl.Choice.Option(R8_MODE_FORKED, "独立虚拟机"),
+                    SettingControl.Choice.Option(R8_MODE_INPROCESS, "进程内"),
                 ),
             ),
             SettingControl.IntSlider(
-                R8_MAX_HEAP, "R8 forked-VM heap", null,
+                R8_MAX_HEAP, "R8 独立虚拟机堆", null,
                 default = R8_MAX_HEAP_DEFAULT, min = 768, max = 4096, step = 128, unit = "MB",
             ),
             // Rendered dynamically by SettingsBackend (rich descriptions); these descriptors only carry the
             // key / default / scope for the write path. Debug-build dexing memory knobs (R8 above = release).
             SettingControl.IntSlider(
-                DEX_OFFHEAP_MB, "Off-heap dexing threshold", null,
+                DEX_OFFHEAP_MB, "堆外 DEX 阈值", null,
                 default = DEX_OFFHEAP_MB_DEFAULT, min = 2, max = 64, step = 2, unit = "MB", advanced = true,
             ),
             SettingControl.IntSlider(
-                DEX_MERGE_BATCH, "Dex merge batch size", null,
+                DEX_MERGE_BATCH, "DEX 合并批大小", null,
                 default = DEX_MERGE_BATCH_DEFAULT, min = 1000, max = 20000, step = 1000, advanced = true,
             ),
             SettingControl.IntSlider(
-                DEX_FORK_CONCURRENCY, "Max concurrent dex forks", null,
+                DEX_FORK_CONCURRENCY, "最大并发 DEX 分叉数", null,
                 default = DEX_FORK_CONCURRENCY_DEFAULT, min = 0, max = 4, step = 1, advanced = true,
             ),
             SettingControl.Choice(
-                KOTLINC_MODE, "Kotlin compiler execution",
-                "Keep a Kotlin compiler VM running alongside the IDE so compiles get more memory than the app is allowed and don't compete with the editor. Off = compile inside the IDE process. Applies on the next build.",
+                KOTLINC_MODE, "Kotlin 编译器执行",
+                "让一个 Kotlin 编译器虚拟机与 IDE 一起运行，使编译能获得比应用允许的更多内存，且不与编辑器争抢资源。关闭 = 在 IDE 进程内编译。下次构建时生效。",
                 default = KOTLINC_MODE_DEFAULT,
                 options = listOf(
-                    SettingControl.Choice.Option(KOTLINC_MODE_FORKED, "Compiler VM"),
-                    SettingControl.Choice.Option(KOTLINC_MODE_INPROCESS, "In-process"),
+                    SettingControl.Choice.Option(KOTLINC_MODE_FORKED, "编译器虚拟机"),
+                    SettingControl.Choice.Option(KOTLINC_MODE_INPROCESS, "进程内"),
                 ),
             ),
             SettingControl.IntSlider(
-                KOTLINC_MAX_HEAP, "Kotlin compiler VM heap",
-                "Memory the Kotlin compiler VM may use. The device may grant less, in which case the largest heap it can back is used.",
+                KOTLINC_MAX_HEAP, "Kotlin 编译器虚拟机堆",
+                "Kotlin 编译器虚拟机可使用的内存。设备可能分配更少，此时将使用它能提供的最大堆。",
                 default = KOTLINC_MAX_HEAP_DEFAULT, min = 768, max = 4096, step = 128, unit = "MB",
             ),
             SettingControl.IntSlider(
-                KOTLINC_WORKERS, "Kotlin compiler VMs",
-                "How many Kotlin compiler VMs run at once. Each stays resident for the session, so raise this only for a project whose modules compile in parallel.",
+                KOTLINC_WORKERS, "Kotlin 编译器虚拟机数量",
+                "同时运行多少个 Kotlin 编译器虚拟机。每个虚拟机会在会话期间常驻，因此仅在模块并行编译的项目中才提高此值。",
                 default = KOTLINC_WORKERS_DEFAULT, min = 1, max = 3, step = 1, advanced = true,
             ),
         )
     }
 
-    private fun privacy(analyticsAvailable: Boolean) = page(PRIVACY, "Privacy & Data", "info", 50) {
+    private fun privacy(analyticsAvailable: Boolean) = page(PRIVACY, "隐私与数据", "info", 50) {
         buildList {
             if (analyticsAvailable) {
-                add(SettingControl.Toggle(ANALYTICS, "Share performance analytics", "Anonymous performance metrics only — never your code or file names", default = false, group = "Privacy"))
+                add(SettingControl.Toggle(ANALYTICS, "共享性能分析数据", "仅匿名性能指标——绝不会涉及你的代码或文件名", default = false, group = "隐私"))
             }
-            add(SettingControl.Action(CLEAR_CACHES, "Clear caches", "Free regenerable dependency / language / preview caches (never source)", buttonLabel = "Clear", group = "Storage"))
-            add(SettingControl.Action(VIEW_LOGS, "View logs", "Recent editor, analysis, and build activity", buttonLabel = "Open", group = "Storage"))
-            add(SettingControl.Action(BACKUP, "Back up projects", "Export every project to a single zip", buttonLabel = "Back up", group = "Storage"))
+            add(SettingControl.Action(CLEAR_CACHES, "清除缓存", "释放可重新生成的依赖 / 语言 / 预览缓存（绝不涉及源代码）", buttonLabel = "清除", group = "存储"))
+            add(SettingControl.Action(VIEW_LOGS, "查看日志", "最近的编辑器、分析和构建活动", buttonLabel = "打开", group = "存储"))
+            add(SettingControl.Action(BACKUP, "备份项目", "将所有项目导出为单个 zip 文件", buttonLabel = "备份", group = "存储"))
         }
     }
 

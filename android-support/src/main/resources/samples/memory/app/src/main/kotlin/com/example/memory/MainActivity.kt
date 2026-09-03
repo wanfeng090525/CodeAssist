@@ -73,10 +73,10 @@ class MainActivity : ComponentActivity() {
 fun MemoryScreen() {
     val game = remember { MemoryGameState() }
     var seconds by remember { mutableIntStateOf(0) }
-    // Bumped on every new game so the timer effect restarts from zero.
+    // 每开始一局新游戏都会递增，以便计时器效果从零重新开始。
     var generation by remember { mutableIntStateOf(0) }
 
-    // Reveal a mismatched pair briefly, then flip it back down.
+    // 短暂亮出一对不匹配的卡片，然后再翻回去。
     LaunchedEffect(game.pendingMismatch) {
         if (game.pendingMismatch != null) {
             delay(750)
@@ -84,7 +84,7 @@ fun MemoryScreen() {
         }
     }
 
-    // Tick the elapsed-time counter once per second until the board is solved.
+    // 每秒递增已用时间计数，直到棋盘全部解开。
     LaunchedEffect(generation) {
         seconds = 0
         while (!game.isWon) {
@@ -171,9 +171,8 @@ private fun CardGrid(game: MemoryGameState) {
 
 @Composable
 private fun CardView(card: MemoryCard, onClick: () -> Unit, modifier: Modifier = Modifier) {
-    // Rotate the card around its Y axis: 0 = face showing, 180 = back showing. The face content is drawn
-    // while the rotation is under 90 degrees; past that the back "?" is shown, counter-rotated so it reads
-    // the right way round.
+    // 让卡片绕其 Y 轴旋转：0 = 正面朝上，180 = 背面朝上。旋转小于 90 度时绘制正面内容；
+    // 超过后显示背面的 "?"，并进行反向旋转，使其读起来方向正确。
     val rotation by animateFloatAsState(
         targetValue = if (card.faceUp || card.matched) 0f else 180f,
         animationSpec = tween(durationMillis = 400),

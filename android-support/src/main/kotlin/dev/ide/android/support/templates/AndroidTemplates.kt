@@ -11,82 +11,82 @@ import dev.ide.model.template.TemplateDependency
 import dev.ide.model.template.TemplateId
 import dev.ide.model.template.TemplateParameter
 
-/** Shared helpers for the built-in Android templates. */
+/** 内置 Android 模板的共享辅助方法。 */
 internal object AndroidTemplateSupport {
     fun pkgPath(pkg: String): String = pkg.replace('.', '/')
 
     private fun options(levels: List<AndroidApiLevels.Level>) =
         levels.map { TemplateParameter.Choice.Option(it.api.toString(), it.label) }
 
-    /** The minSdk picker offered by both Android templates, defaulting to the level new modules use. */
+    /** 两个 Android 模板都提供的 minSdk 选择器，默认使用新模块所用的级别。 */
     val minSdkParam = TemplateParameter.Choice(
         key = "minSdk",
-        label = "Minimum SDK",
+        label = "最低 SDK",
         options = options(AndroidApiLevels.MIN_SDK_LEVELS),
         defaultIndex = AndroidApiLevels.MIN_SDK_LEVELS.indexOfFirst { it.api == AndroidApiLevels.DEFAULT_MIN_SDK },
-        help = "Lowest Android version the app supports.",
+        help = "应用支持的最低 Android 版本。",
     )
 
-    /** The targetSdk picker: the API level the app is tested/optimised against, newest by default (Play
-     *  requires a current target, and an old one opts the app into compatibility behaviour). */
+    /** targetSdk 选择器：应用针对其测试/优化的 API 级别，默认取最新（Play
+     *  要求使用当前目标，而旧目标会让应用进入兼容行为）。 */
     val targetSdkParam = TemplateParameter.Choice(
         key = "targetSdk",
-        label = "Target SDK",
+        label = "目标 SDK",
         options = options(AndroidApiLevels.TARGET_SDK_LEVELS),
         defaultIndex = AndroidApiLevels.TARGET_SDK_LEVELS.lastIndex,
-        help = "The API level the app is built and optimised against.",
+        help = "应用针对其构建和优化的 API 级别。",
     )
 
-    /** Source language for the generated starter code. */
+    /** 生成的入门代码所使用的源语言。 */
     val languageParam = TemplateParameter.Choice(
         key = "language",
-        label = "Language",
+        label = "语言",
         options = listOf(
             TemplateParameter.Choice.Option("java", "Java"),
             TemplateParameter.Choice.Option("kotlin", "Kotlin"),
         ),
         defaultIndex = 0,
-        help = "Language of the starter source files.",
+        help = "入门源文件所使用的语言。",
     )
 
-    /** What every built-in template compiles against: the newest level the IDE ships support for. */
+    /** 每个内置模板的编译目标：IDE 自带支持的最新级别。 */
     const val COMPILE_SDK = AndroidApiLevels.LATEST
 
-    /** Google's Material Components for Android — the library behind Material You theming + the FAB/Snackbar. */
+    /** Google 的 Android Material Components —— Material You 主题以及 FAB/Snackbar 背后的库。 */
     const val MATERIAL_COORDINATE = "com.google.android.material:material:1.12.0"
 
     fun isKotlin(args: TemplateArgs): Boolean = args.string("language", "java").equals("kotlin", ignoreCase = true)
 
     /**
-     * The module-relative ProGuard/R8 keep-rules file the `release` build type references by default
-     * ([AndroidFacet.DEFAULT_BUILD_TYPES]). Written for new modules so that, when minification is enabled,
-     * the entry resolves to a real file instead of being silently skipped. Comments only by default
-     * (the bundled `proguard-android-optimize.txt` carries the framework keep rules); add app-specific rules here.
+     * `release` 构建类型默认引用的、相对于模块的 ProGuard/R8 keep 规则文件
+     * （[AndroidFacet.DEFAULT_BUILD_TYPES]）。会写入到新模块中，这样当启用混淆时，
+     * 该条目能解析到真实文件而不是被静默跳过。默认只包含注释
+     * （框架的 keep 规则由打包的 `proguard-android-optimize.txt` 承载）；在这里添加应用特定的规则。
      */
     val PROGUARD_RULES_PRO: String = """
-        # Add project-specific ProGuard/R8 keep rules here.
-        # These are applied on top of the bundled defaults (proguard-android-optimize.txt) when the
-        # build type has minifyEnabled = true.
+        # 在这里添加项目特定的 ProGuard/R8 keep 规则。
+        # 当构建类型设置了 minifyEnabled = true 时，这些规则会叠加在打包的默认规则
+        # (proguard-android-optimize.txt) 之上。
         #
-        # Keep a class that is referenced only by reflection / from XML, e.g.:
+        # 保留仅通过反射 / 从 XML 引用的类，例如：
         # -keep class com.example.SomeClass { *; }
         #
-        # Preserve line numbers for readable crash stack traces, then hide the original file name:
+        # 保留行号以获得可读的崩溃堆栈，然后隐藏原始文件名：
         # -keepattributes SourceFile,LineNumberTable
         # -renamesourcefileattribute SourceFile
     """.trimIndent() + "\n"
 }
 
 /**
- * A native Android application: one `app` module (android-app) with an `AndroidFacet`, an editable
- * `AndroidManifest.xml`, `res/` (strings, colors, theme, and an `activity_main` layout), and a
- * `MainActivity` that inflates that layout to show a "Hello, World!" page. A complete, dependency-free
- * starter app that assembles to a signed APK through the existing `AndroidBuildSystem` pipeline.
+ * 一个原生 Android 应用：包含一个带 `AndroidFacet` 的 `app` 模块（android-app）、可编辑的
+ * `AndroidManifest.xml`、`res/`（字符串、颜色、主题以及一个 `activity_main` 布局），以及一个
+ * 通过 inflate 该布局来展示 "Hello, World!" 页面的 `MainActivity`。这是一个完整、无外部依赖的
+ * 入门应用，可通过现有的 `AndroidBuildSystem` 流水线组装成已签名的 APK。
  */
 object AndroidAppTemplate : ProjectTemplate {
     override val id = TemplateId("android-app")
-    override val displayName = "Android App"
-    override val description = "A native Android application that builds to an installable APK."
+    override val displayName = "Android 应用"
+    override val description = "一个可构建为可安装 APK 的原生 Android 应用。"
     override val category = TemplateCategory.ANDROID
     override val iconId = "module.android"
 
@@ -106,7 +106,7 @@ object AndroidAppTemplate : ProjectTemplate {
             commit()
         }
         scaffold.workspace.projects.first { it.name == args.name }.beginModification().apply {
-            // Android module types supply their own (main/debug/release) source sets, so no addSourceSet here.
+            // Android 模块类型自带（main/debug/release）源集，因此这里无需 addSourceSet。
             addModule("app", scaffold.moduleType("android-app")).apply {
                 languageLevel = scaffold.languageLevel
                 putFacet(
@@ -228,25 +228,25 @@ object AndroidAppTemplate : ProjectTemplate {
 }
 
 /**
- * A Material You (Material 3) Android application: one `app` module wired to **Google's Material Components
- * library** ([AndroidTemplateSupport.MATERIAL_COORDINATE], resolved by the host after generation). The app
- * theme extends `Theme.Material3.DynamicColors.DayNight` so it adopts the system **dynamic colour** palette
- * on Android 12+ and a light/dark Material 3 baseline below it, and the starter screen is the canonical
- * **FAB example**: a `CoordinatorLayout` with a `FloatingActionButton` whose tap shows a `Snackbar`. The
- * `MainActivity` extends `AppCompatActivity` (pulled in transitively by Material) so the Material 3 theme
- * resolves. Assembles to a signed APK through the existing `AndroidBuildSystem` pipeline (AAR resources +
- * D8 dexing of the Material/AndroidX closure).
+ * 一个 Material You（Material 3）Android 应用：包含一个接入 **Google 的 Material Components
+ * 库**（[AndroidTemplateSupport.MATERIAL_COORDINATE]，生成后由宿主解析）的 `app` 模块。
+ * 应用主题继承自 `Theme.Material3.DynamicColors.DayNight`，因此在 Android 12 及以上会采用系统
+ * **动态颜色** 调色板，在更低的版本则回退为浅色/深色 Material 3 基准主题；其起始界面是经典的
+ * **FAB 示例**：一个带 `FloatingActionButton` 的 `CoordinatorLayout`，点击按钮会弹出 `Snackbar`。
+ * `MainActivity` 继承自 `AppCompatActivity`（由 Material 传递引入），以便 Material 3 主题
+ * 能够正确解析。可通过现有的 `AndroidBuildSystem` 流水线（AAR 资源 + Material/AndroidX 闭包的
+ * D8 dexing）组装成已签名的 APK。
  */
 object MaterialYouAppTemplate : ProjectTemplate {
     override val id = TemplateId("android-material-you")
-    override val displayName = "Material You App"
-    override val description = "A Material 3 app with dynamic colour theming and a Floating Action Button."
+    override val displayName = "Material You 应用"
+    override val description = "一个使用动态颜色主题并带有悬浮操作按钮（Floating Action Button）的 Material 3 应用。"
     override val category = TemplateCategory.ANDROID
     override val iconId = "module.android"
 
     override fun parameters(): List<TemplateParameter> = listOf(
         AndroidTemplateSupport.languageParam,
-        // Material Components requires minSdk 21; drop the lower options the plain app template offers.
+        // Material Components 要求 minSdk 21；去掉普通应用模板提供的更低选项。
         AndroidTemplateSupport.minSdkParam.copy(
             options = AndroidTemplateSupport.minSdkParam.options.filter { it.value.toInt() >= 21 },
             defaultIndex = 0,
@@ -328,8 +328,8 @@ object MaterialYouAppTemplate : ProjectTemplate {
             </resources>
             """,
         )
-        // Theme.Material3.DynamicColors.DayNight: dynamic (wallpaper-derived) colour on Android 12+, a
-        // Material 3 light/dark baseline below it. No values-night override needed — DayNight handles it.
+        // Theme.Material3.DynamicColors.DayNight：在 Android 12 及以上使用动态（源自壁纸的）颜色，更低版本
+        // 回退为 Material 3 浅色/深色基准。无需 values-night 覆盖 —— DayNight 已自动处理。
         scaffold.writeText(
             "app/src/main/res/values/themes.xml",
             """
@@ -428,13 +428,13 @@ object MaterialYouAppTemplate : ProjectTemplate {
 }
 
 /**
- * A native Android library: one `lib` module (android-lib) with an `AndroidFacet(isApplication=false)`,
- * its own `res/` (merged into a consuming app's R), and a sample class referencing its own `R`.
+ * 一个原生 Android 库：包含一个设置了 `AndroidFacet(isApplication=false)` 的 `lib` 模块
+ * （android-lib）、其自身的 `res/`（会合并到消费方应用的 R 中），以及一个引用其自身 `R` 的示例类。
  */
 object AndroidLibraryTemplate : ProjectTemplate {
     override val id = TemplateId("android-library")
-    override val displayName = "Android Library"
-    override val description = "A reusable Android library module (AAR) with its own resources."
+    override val displayName = "Android 库"
+    override val description = "一个带有自身资源、可复用的 Android 库模块（AAR）。"
     override val category = TemplateCategory.ANDROID
     override val iconId = "module.android"
 
@@ -490,7 +490,7 @@ object AndroidLibraryTemplate : ProjectTemplate {
                 """
                 package $pkg
 
-                /** Library code resolving its OWN R (merged into a consuming app's R). */
+                /** 解析自身 R（会合并到消费方应用的 R 中）的库代码。 */
                 object LibraryText {
                     fun titleRes(): Int = R.string.lib_title
                 }
@@ -502,7 +502,7 @@ object AndroidLibraryTemplate : ProjectTemplate {
                 """
                 package $pkg;
 
-                /** Library code resolving its OWN R (merged into a consuming app's R). */
+                /** 解析自身 R（会合并到消费方应用的 R 中）的库代码。 */
                 public final class LibraryText {
                     public static int titleRes() { return R.string.lib_title; }
                 }

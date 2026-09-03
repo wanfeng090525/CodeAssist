@@ -130,21 +130,21 @@ private val ACCENT_COMPOSE2 = 0xFF4285F4L
 
 private fun kotlinBasics() = LearnTrackDef(
     id = "kotlin-basics",
-    title = "Kotlin Basics",
-    subtitle = "Write your first Kotlin, one small step at a time",
+    title = "Kotlin 基础知识",
+    subtitle = "一步一步写出你的第一个 Kotlin 程序",
     iconId = "kotlin",
     accentColor = ACCENT_KOTLIN,
     language = "kotlin",
     category = "Kotlin",
     lessons = listOf(
         LearnLessonDef(
-            id = "kt-hello", title = "Hello, Kotlin", summary = "Print your very first line of output.",
+            id = "kt-hello", title = "你好，Kotlin", summary = "打印你的第一行输出。",
             iconId = "kotlin", estMinutes = 4,
             steps = listOf(
                 LearnStepDef.Concept(
-                    "kt-hello-c", "The main function",
+                    "kt-hello-c", "main 函数",
                     listOf(
-                        text("Every Kotlin program starts running from a special function called **main**."),
+                        text("每个 Kotlin 程序都是从名为 **main** 的特殊函数开始运行的。"),
                         code(
                             """
                             fun main() {
@@ -152,22 +152,22 @@ private fun kotlinBasics() = LearnTrackDef(
                             }
                             """
                         ),
-                        text("`fun` starts a function, `main` is its name, and the `{ ... }` holds the code that runs. `println(...)` **prints a line** of text to the console."),
-                        tip("The text inside the double quotes is called a *string*. You can print any string you like."),
+                        text("`fun` 用来定义函数，`main` 是它的名字，`{ ... }` 内包含要运行的代码。`println(...)` 会向控制台**打印一行**文本。"),
+                        tip("双引号内包含的文本叫做 *字符串（string）*。你可以打印任何你喜欢的字符串。"),
                     ),
                 ),
                 LearnStepDef.Interactive(
-                    "kt-hello-i", "Print a greeting",
-                    listOf(text("Your turn. Make the program print exactly:\n\n`Hello, Kotlin!`\n\nEdit the code, then tap **Run & Check**.")),
+                    "kt-hello-i", "打印一句问候",
+                    listOf(text("轮到你了。让程序精确地打印以下内容：\n\n`Hello, Kotlin!`\n\n编辑代码，然后点击 **运行并检查**。")),
                     starterCode = """
                         fun main() {
-                            // Print Hello, Kotlin! below
+                            // 在下面打印 Hello, Kotlin!
                         }
                     """,
                     language = "kotlin",
                     hints = listOf(
-                        "Use println(...) inside main.",
-                        "Put the exact text in double quotes: println(\"Hello, Kotlin!\")",
+                        "在 main 内部使用 println(...)。",
+                        "把精确的文本放进双引号：println(\"Hello, Kotlin!\")",
                     ),
                     solution = """
                         fun main() {
@@ -177,47 +177,47 @@ private fun kotlinBasics() = LearnTrackDef(
                     check = ExerciseCheck(expectedOutput = "Hello, Kotlin!", requireSource = listOf("println(")),
                 ),
                 LearnStepDef.Quiz(
-                    "kt-hello-q", "Quick check",
-                    prompt = "Which function prints a line of text to the console?",
+                    "kt-hello-q", "快速检查",
+                    prompt = "哪个函数会向控制台打印一行文本？",
                     options = listOf("read()", "println()", "printline()", "console()"),
                     correctIndex = 1,
-                    explanation = "println() prints its argument followed by a new line.",
+                    explanation = "println() 会打印它的参数，并在末尾追加一个换行。",
                 ),
             ),
         ),
         LearnLessonDef(
-            id = "kt-vars", title = "Values and variables", summary = "Store data with val and var.",
+            id = "kt-vars", title = "值与变量", summary = "用 val 和 var 存储数据。",
             iconId = "kotlin", estMinutes = 6,
             steps = listOf(
                 LearnStepDef.Concept(
-                    "kt-vars-c", "val vs var",
+                    "kt-vars-c", "val 与 var",
                     listOf(
-                        text("A **value** gives a name to some data. Kotlin has two kinds:"),
+                        text("**值（value）** 为某些数据起一个名字。Kotlin 有两种："),
                         code(
                             """
-                            val name = "Sam"   // read-only: can't be reassigned
-                            var count = 0      // mutable: can change later
+                            val name = "Sam"   // 只读：不能再被重新赋值
+                            var count = 0      // 可变：之后可以改变
                             count = count + 1
                             """
                         ),
-                        text("Prefer `val` — it makes code easier to reason about. Reach for `var` only when a value truly needs to change."),
-                        text("You can join strings together with `+`:"),
+                        text("优先使用 `val` —— 它能让代码更容易理解。只有当某个值确实需要改变时，才使用 `var`。"),
+                        text("你可以用 `+` 连接字符串："),
                         code("""println("Hi, " + name + "!")"""),
                     ),
                 ),
                 LearnStepDef.Interactive(
-                    "kt-vars-i", "Greet by name",
-                    listOf(text("Create a read-only value `name` set to `Sam`, then print:\n\n`Hi, Sam!`")),
+                    "kt-vars-i", "按名字问候",
+                    listOf(text("创建一个只读值 `name`，把它设为 `Sam`，然后打印：\n\n`Hi, Sam!`")),
                     starterCode = """
                         fun main() {
-                            // 1. Declare a val called name set to "Sam"
-                            // 2. Print "Hi, Sam!" using that value
+                            // 1. 声明一个名为 name 的 val，并设为 "Sam"
+                            // 2. 使用这个值打印 "Hi, Sam!"
                         }
                     """,
                     language = "kotlin",
                     hints = listOf(
-                        "Declare it: val name = \"Sam\"",
-                        "Build the greeting: println(\"Hi, \" + name + \"!\")",
+                        "这样声明：val name = \"Sam\"",
+                        "构建问候语：println(\"Hi, \" + name + \"!\")",
                     ),
                     solution = """
                         fun main() {
@@ -228,22 +228,22 @@ private fun kotlinBasics() = LearnTrackDef(
                     check = ExerciseCheck(expectedOutput = "Hi, Sam!", requireSource = listOf("val name", "println(")),
                 ),
                 LearnStepDef.Quiz(
-                    "kt-vars-q", "Quick check",
-                    prompt = "Which keyword declares a value that cannot be reassigned?",
+                    "kt-vars-q", "快速检查",
+                    prompt = "哪个关键字用于声明不能被重新赋值的值？",
                     options = listOf("var", "val", "let", "const"),
                     correctIndex = 1,
-                    explanation = "val is read-only. var can be reassigned.",
+                    explanation = "val 是只读的。var 可以被重新赋值。",
                 ),
             ),
         ),
         LearnLessonDef(
-            id = "kt-funcs", title = "Functions", summary = "Package logic you can reuse.",
+            id = "kt-funcs", title = "函数", summary = "把可复用的逻辑打包。",
             iconId = "kotlin", estMinutes = 7,
             steps = listOf(
                 LearnStepDef.Concept(
-                    "kt-funcs-c", "Declaring a function",
+                    "kt-funcs-c", "声明函数",
                     listOf(
-                        text("A function takes inputs (**parameters**) and can **return** a result:"),
+                        text("函数接收输入（**参数**）并且可以**返回**结果："),
                         code(
                             """
                             fun add(a: Int, b: Int): Int {
@@ -251,24 +251,24 @@ private fun kotlinBasics() = LearnTrackDef(
                             }
                             """
                         ),
-                        text("`a: Int` is a parameter of type `Int`. The `: Int` after the parentheses is the **return type** — what the function gives back."),
-                        tip("Call a function by its name: add(2, 3) evaluates to 5."),
+                        text("`a: Int` 是类型为 `Int` 的参数。括号后面的 `: Int` 是**返回类型** —— 也就是函数要返回的东西。"),
+                        tip("通过函数名来调用它：add(2, 3) 的结果是 5。"),
                     ),
                 ),
                 LearnStepDef.Interactive(
-                    "kt-funcs-i", "Write add()",
-                    listOf(text("Write a function `add` that returns the sum of two `Int`s, then print `add(2, 3)` (which should be `5`).")),
+                    "kt-funcs-i", "编写 add()",
+                    listOf(text("编写一个返回两个 `Int` 之和的函数 `add`，然后打印 `add(2, 3)`（结果应该是 `5`）。")),
                     starterCode = """
-                        // Define your add function here
+                        // 在这里定义你的 add 函数
 
                         fun main() {
-                            // Print the result of add(2, 3)
+                            // 打印 add(2, 3) 的结果
                         }
                     """,
                     language = "kotlin",
                     hints = listOf(
                         "fun add(a: Int, b: Int): Int { return a + b }",
-                        "Then: println(add(2, 3))",
+                        "然后：println(add(2, 3))",
                     ),
                     solution = """
                         fun add(a: Int, b: Int): Int {
@@ -284,13 +284,13 @@ private fun kotlinBasics() = LearnTrackDef(
             ),
         ),
         LearnLessonDef(
-            id = "kt-if", title = "Making decisions", summary = "Branch with if / else.",
+            id = "kt-if", title = "做出判断", summary = "用 if / else 分支。",
             iconId = "kotlin", estMinutes = 6,
             steps = listOf(
                 LearnStepDef.Concept(
                     "kt-if-c", "if / else",
                     listOf(
-                        text("`if` runs code only when a condition is true; `else` covers the other case:"),
+                        text("`if` 只在条件为真时运行代码；`else` 用来处理另一种情况："),
                         code(
                             """
                             val n = 42
@@ -301,22 +301,22 @@ private fun kotlinBasics() = LearnTrackDef(
                             }
                             """
                         ),
-                        text("Conditions use comparisons like `>` (greater than), `<` (less than), and `==` (equal to)."),
+                        text("条件使用比较运算符，比如 `>`（大于）、`<`（小于）和 `==`（等于）。"),
                     ),
                 ),
                 LearnStepDef.Interactive(
-                    "kt-if-i", "Big or small?",
-                    listOf(text("`n` is `42`. Print `big` when `n` is greater than `10`, otherwise print `small`.")),
+                    "kt-if-i", "是大还是小？",
+                    listOf(text("`n` 是 `42`。当 `n` 大于 `10` 时打印 `big`，否则打印 `small`。")),
                     starterCode = """
                         fun main() {
                             val n = 42
-                            // Print "big" if n > 10, else "small"
+                            // 如果 n > 10 就打印 "big"，否则打印 "small"
                         }
                     """,
                     language = "kotlin",
                     hints = listOf(
-                        "Start with: if (n > 10) { ... } else { ... }",
-                        "Print inside each branch with println(\"big\") / println(\"small\").",
+                        "先这样写：if (n > 10) { ... } else { ... }",
+                        "在每个分支中用 println(\"big\") / println(\"small\") 打印内容。",
                     ),
                     solution = """
                         fun main() {
@@ -331,22 +331,22 @@ private fun kotlinBasics() = LearnTrackDef(
                     check = ExerciseCheck(expectedOutput = "big", requireSource = listOf("if (")),
                 ),
                 LearnStepDef.Quiz(
-                    "kt-if-q", "Quick check",
-                    prompt = "Which operator tests whether two values are equal?",
+                    "kt-if-q", "快速检查",
+                    prompt = "哪个运算符用于判断两个值是否相等？",
                     options = listOf("=", "==", "=>", "equals"),
                     correctIndex = 1,
-                    explanation = "A single = assigns; == compares for equality.",
+                    explanation = "单个 = 用于赋值；== 用于比较是否相等。",
                 ),
             ),
         ),
         LearnLessonDef(
-            id = "kt-loops", title = "Repeating with loops", summary = "Do something many times.",
+            id = "kt-loops", title = "用循环重复", summary = "多次执行某件事。",
             iconId = "kotlin", estMinutes = 6,
             steps = listOf(
                 LearnStepDef.Concept(
-                    "kt-loops-c", "for and ranges",
+                    "kt-loops-c", "for 与区间",
                     listOf(
-                        text("A `for` loop repeats once for each item. A **range** like `1..5` is the numbers 1, 2, 3, 4, 5:"),
+                        text("`for` 循环会对每个元素执行一次。**区间（range）** 像 `1..5` 表示数字 1、2、3、4、5："),
                         code(
                             """
                             for (i in 1..5) {
@@ -354,21 +354,21 @@ private fun kotlinBasics() = LearnTrackDef(
                             }
                             """
                         ),
-                        text("Each time around, `i` takes the next value in the range."),
+                        text("每执行一次，`i` 都会取区间中的下一个值。"),
                     ),
                 ),
                 LearnStepDef.Interactive(
-                    "kt-loops-i", "Count to five",
-                    listOf(text("Print the numbers `1` to `5`, each on its own line.")),
+                    "kt-loops-i", "数到五",
+                    listOf(text("分别打印数字 `1` 到 `5`，每个数字占一行。")),
                     starterCode = """
                         fun main() {
-                            // Loop from 1 to 5 and print each number
+                            // 从 1 循环到 5，打印每个数字
                         }
                     """,
                     language = "kotlin",
                     hints = listOf(
-                        "Use a range: for (i in 1..5) { ... }",
-                        "Print the loop variable: println(i)",
+                        "使用区间：for (i in 1..5) { ... }",
+                        "打印循环变量：println(i)",
                     ),
                     solution = """
                         fun main() {
@@ -380,11 +380,11 @@ private fun kotlinBasics() = LearnTrackDef(
                     check = ExerciseCheck(expectedOutput = "1\n2\n3\n4\n5", requireSource = listOf("for (")),
                 ),
                 LearnStepDef.Quiz(
-                    "kt-loops-q", "Quick check",
-                    prompt = "What does the range 1..5 include?",
-                    options = listOf("1, 2, 3, 4", "1, 2, 3, 4, 5", "0, 1, 2, 3, 4, 5", "only 1 and 5"),
+                    "kt-loops-q", "快速检查",
+                    prompt = "区间 1..5 包含哪些数字？",
+                    options = listOf("1, 2, 3, 4", "1, 2, 3, 4, 5", "0, 1, 2, 3, 4, 5", "只有 1 和 5"),
                     correctIndex = 1,
-                    explanation = "1..5 is inclusive on both ends: 1, 2, 3, 4, 5.",
+                    explanation = "1..5 在两端都是包含的：1, 2, 3, 4, 5。",
                 ),
             ),
         ),
@@ -392,26 +392,26 @@ private fun kotlinBasics() = LearnTrackDef(
 )
 
 // ===========================================================================
-// Java Basics
+// Java 基础知识
 // ===========================================================================
 
 private fun javaBasics() = LearnTrackDef(
     id = "java-basics",
-    title = "Java Basics",
-    subtitle = "The fundamentals of Java, hands-on",
+    title = "Java 基础知识",
+    subtitle = "动手实践 Java 的基础知识",
     iconId = "java",
     accentColor = ACCENT_JAVA,
     language = "java",
     category = "Java",
     lessons = listOf(
         LearnLessonDef(
-            id = "java-hello", title = "Hello, Java", summary = "Your first Java program.",
+            id = "java-hello", title = "你好，Java", summary = "你的第一个 Java 程序。",
             iconId = "java", estMinutes = 4,
             steps = listOf(
                 LearnStepDef.Concept(
-                    "java-hello-c", "The main method",
+                    "java-hello-c", "main 方法",
                     listOf(
-                        text("A Java program runs from a **main method** inside a class:"),
+                        text("Java 程序是从类内名为 **main 方法** 的地方开始运行的："),
                         code(
                             """
                             public class Main {
@@ -422,23 +422,23 @@ private fun javaBasics() = LearnTrackDef(
                             """,
                             "java",
                         ),
-                        text("`System.out.println(...)` prints a line of text. Notice each statement ends with a semicolon `;`."),
+                        text("`System.out.println(...)` 会打印一行文本。请注意每条语句都以分号 `;` 结尾。"),
                     ),
                 ),
                 LearnStepDef.Interactive(
-                    "java-hello-i", "Print a greeting",
-                    listOf(text("Make the program print exactly:\n\n`Hello, Java!`")),
+                    "java-hello-i", "打印一句问候",
+                    listOf(text("让程序精确地打印以下内容：\n\n`Hello, Java!`")),
                     starterCode = """
                         public class Main {
                             public static void main(String[] args) {
-                                // Print Hello, Java! below
+                                // 在下面打印 Hello, Java!
                             }
                         }
                     """,
                     language = "java",
                     hints = listOf(
-                        "Use System.out.println(...);",
-                        "Match the text exactly: System.out.println(\"Hello, Java!\");",
+                        "使用 System.out.println(...);",
+                        "精确匹配文本：System.out.println(\"Hello, Java!\");",
                     ),
                     solution = """
                         public class Main {
@@ -450,22 +450,22 @@ private fun javaBasics() = LearnTrackDef(
                     check = ExerciseCheck(expectedOutput = "Hello, Java!", requireSource = listOf("System.out.println(")),
                 ),
                 LearnStepDef.Quiz(
-                    "java-hello-q", "Quick check",
-                    prompt = "What must every Java statement end with?",
-                    options = listOf("a period .", "a semicolon ;", "a comma ,", "nothing"),
+                    "java-hello-q", "快速检查",
+                    prompt = "每条 Java 语句必须以什么结尾？",
+                    options = listOf("一个句点 .", "一个分号 ;", "一个逗号 ,", "什么都不需要"),
                     correctIndex = 1,
-                    explanation = "Java statements end with a semicolon.",
+                    explanation = "Java 语句以分号结尾。",
                 ),
             ),
         ),
         LearnLessonDef(
-            id = "java-vars", title = "Variables and types", summary = "Store numbers and text.",
+            id = "java-vars", title = "变量与类型", summary = "存储数字和文本。",
             iconId = "java", estMinutes = 6,
             steps = listOf(
                 LearnStepDef.Concept(
-                    "java-vars-c", "Declaring variables",
+                    "java-vars-c", "声明变量",
                     listOf(
-                        text("In Java you state a variable's **type** when you declare it:"),
+                        text("在 Java 中，声明变量时需要写明它的**类型**："),
                         code(
                             """
                             int count = 7;
@@ -474,24 +474,24 @@ private fun javaBasics() = LearnTrackDef(
                             """,
                             "java",
                         ),
-                        text("`int` holds whole numbers; `String` holds text. You can join text and numbers with `+`."),
+                        text("`int` 用来存储整数；`String` 用来存储文本。你可以用 `+` 把文本和数字连接起来。"),
                     ),
                 ),
                 LearnStepDef.Interactive(
-                    "java-vars-i", "Print a count",
-                    listOf(text("Store `7` in an `int` called `count`, then print:\n\n`Count: 7`")),
+                    "java-vars-i", "打印一个数量",
+                    listOf(text("把 `7` 存储到一个名为 `count` 的 `int` 中，然后打印：\n\n`Count: 7`")),
                     starterCode = """
                         public class Main {
                             public static void main(String[] args) {
-                                // 1. Declare an int count = 7
-                                // 2. Print "Count: 7"
+                                // 1. 声明一个 int count = 7
+                                // 2. 打印 "Count: 7"
                             }
                         }
                     """,
                     language = "java",
                     hints = listOf(
-                        "Declare it: int count = 7;",
-                        "Print it: System.out.println(\"Count: \" + count);",
+                        "这样声明：int count = 7;",
+                        "这样打印：System.out.println(\"Count: \" + count);",
                     ),
                     solution = """
                         public class Main {
@@ -506,13 +506,13 @@ private fun javaBasics() = LearnTrackDef(
             ),
         ),
         LearnLessonDef(
-            id = "java-methods", title = "Methods", summary = "Reusable blocks of logic.",
+            id = "java-methods", title = "方法", summary = "可复用的逻辑代码块。",
             iconId = "java", estMinutes = 7,
             steps = listOf(
                 LearnStepDef.Concept(
-                    "java-methods-c", "Writing a method",
+                    "java-methods-c", "编写方法",
                     listOf(
-                        text("A **method** takes parameters and can return a value:"),
+                        text("**方法（method）** 接收参数并可以返回一个值："),
                         code(
                             """
                             static int add(int a, int b) {
@@ -521,25 +521,25 @@ private fun javaBasics() = LearnTrackDef(
                             """,
                             "java",
                         ),
-                        text("The `int` before the name is the **return type**. `static` lets `main` call it without creating an object."),
+                        text("名字前面的 `int` 是**返回类型**。`static` 让 `main` 无需创建对象就能调用它。"),
                     ),
                 ),
                 LearnStepDef.Interactive(
-                    "java-methods-i", "Write add()",
-                    listOf(text("Add a `static int add(int a, int b)` method, then print `add(2, 3)` (which is `5`).")),
+                    "java-methods-i", "编写 add()",
+                    listOf(text("添加一个 `static int add(int a, int b)` 方法，然后打印 `add(2, 3)`（结果是 `5`）。")),
                     starterCode = """
                         public class Main {
-                            // Add your add method here
+                            // 在这里添加你的 add 方法
 
                             public static void main(String[] args) {
-                                // Print the result of add(2, 3)
+                                // 打印 add(2, 3) 的结果
                             }
                         }
                     """,
                     language = "java",
                     hints = listOf(
                         "static int add(int a, int b) { return a + b; }",
-                        "Then: System.out.println(add(2, 3));",
+                        "然后：System.out.println(add(2, 3));",
                     ),
                     solution = """
                         public class Main {
@@ -557,13 +557,13 @@ private fun javaBasics() = LearnTrackDef(
             ),
         ),
         LearnLessonDef(
-            id = "java-if", title = "Making decisions", summary = "Branch with if / else.",
+            id = "java-if", title = "做出判断", summary = "用 if / else 分支。",
             iconId = "java", estMinutes = 6,
             steps = listOf(
                 LearnStepDef.Concept(
                     "java-if-c", "if / else",
                     listOf(
-                        text("`if` runs code when a condition is true; `else` handles the rest:"),
+                        text("`if` 在条件为真时运行代码；`else` 处理其余情况："),
                         code(
                             """
                             int n = 42;
@@ -578,20 +578,20 @@ private fun javaBasics() = LearnTrackDef(
                     ),
                 ),
                 LearnStepDef.Interactive(
-                    "java-if-i", "Big or small?",
-                    listOf(text("`n` is `42`. Print `big` when `n` is greater than `10`, otherwise `small`.")),
+                    "java-if-i", "是大还是小？",
+                    listOf(text("`n` 是 `42`。当 `n` 大于 `10` 时打印 `big`，否则打印 `small`。")),
                     starterCode = """
                         public class Main {
                             public static void main(String[] args) {
                                 int n = 42;
-                                // Print "big" if n > 10, else "small"
+                                // 如果 n > 10 就打印 "big"，否则打印 "small"
                             }
                         }
                     """,
                     language = "java",
                     hints = listOf(
                         "if (n > 10) { ... } else { ... }",
-                        "System.out.println(\"big\"); inside the first branch.",
+                        "在第一个分支里写 System.out.println(\"big\");。",
                     ),
                     solution = """
                         public class Main {
@@ -610,13 +610,13 @@ private fun javaBasics() = LearnTrackDef(
             ),
         ),
         LearnLessonDef(
-            id = "java-loops", title = "Repeating with loops", summary = "The classic for loop.",
+            id = "java-loops", title = "用循环重复", summary = "经典的 for 循环。",
             iconId = "java", estMinutes = 6,
             steps = listOf(
                 LearnStepDef.Concept(
-                    "java-loops-c", "The for loop",
+                    "java-loops-c", "for 循环",
                     listOf(
-                        text("A `for` loop has three parts: start, condition, and step:"),
+                        text("`for` 循环由三部分组成：起始、条件和步进："),
                         code(
                             """
                             for (int i = 1; i <= 5; i++) {
@@ -625,23 +625,23 @@ private fun javaBasics() = LearnTrackDef(
                             """,
                             "java",
                         ),
-                        text("This starts at `1`, keeps going while `i <= 5`, and adds `1` each time (`i++`)."),
+                        text("从这里从 `1` 开始，只要 `i <= 5` 就继续执行，每次加 `1`（`i++`）。"),
                     ),
                 ),
                 LearnStepDef.Interactive(
-                    "java-loops-i", "Count to five",
-                    listOf(text("Print the numbers `1` to `5`, each on its own line.")),
+                    "java-loops-i", "数到五",
+                    listOf(text("分别打印数字 `1` 到 `5`，每个数字占一行。")),
                     starterCode = """
                         public class Main {
                             public static void main(String[] args) {
-                                // Loop from 1 to 5 and print each number
+                                // 从 1 循环到 5，打印每个数字
                             }
                         }
                     """,
                     language = "java",
                     hints = listOf(
                         "for (int i = 1; i <= 5; i++) { ... }",
-                        "System.out.println(i); inside the loop.",
+                        "在循环内部写 System.out.println(i);。",
                     ),
                     solution = """
                         public class Main {
@@ -655,11 +655,11 @@ private fun javaBasics() = LearnTrackDef(
                     check = ExerciseCheck(expectedOutput = "1\n2\n3\n4\n5", requireSource = listOf("for (")),
                 ),
                 LearnStepDef.Quiz(
-                    "java-loops-q", "Quick check",
-                    prompt = "What does i++ do each time the loop runs?",
-                    options = listOf("resets i to 0", "adds 1 to i", "prints i", "ends the loop"),
+                    "java-loops-q", "快速检查",
+                    prompt = "每次循环运行时，i++ 做了什么？",
+                    options = listOf("把 i 重置为 0", "给 i 加 1", "打印 i", "结束循环"),
                     correctIndex = 1,
-                    explanation = "i++ increases i by one after each pass.",
+                    explanation = "每完成一次循环后，i++ 都会让 i 增加 1。",
                 ),
             ),
         ),
@@ -667,48 +667,48 @@ private fun javaBasics() = LearnTrackDef(
 )
 
 // ===========================================================================
-// Kotlin: Next Steps (intermediate — all stdlib, fully interactive)
+// Kotlin：进阶（intermediate —— 全部使用 stdlib，全程可交互）
 // ===========================================================================
 
 private fun kotlinNextSteps() = LearnTrackDef(
     id = "kotlin-next",
-    title = "Kotlin: Next Steps",
-    subtitle = "Null safety, collections, data classes, and lambdas",
+    title = "Kotlin 进阶",
+    subtitle = "空安全、集合、数据类与 Lambda",
     iconId = "kotlin",
     accentColor = ACCENT_KOTLIN2,
     language = "kotlin",
     category = "Kotlin",
     lessons = listOf(
         LearnLessonDef(
-            id = "kt-null", title = "Null safety", summary = "Handle absent values without crashes.",
+            id = "kt-null", title = "空安全", summary = "处理缺失值而不崩溃。",
             iconId = "kotlin", estMinutes = 6,
             steps = listOf(
                 LearnStepDef.Concept(
-                    "kt-null-c", "Nullable types",
+                    "kt-null-c", "可空类型",
                     listOf(
-                        text("Kotlin separates values that can be `null` from those that can't. A `?` makes a type nullable:"),
+                        text("Kotlin 把可以为 `null` 的值与不能为 null 的值区分开。用 `?` 可以让一个类型变为可空："),
                         code(
                             """
-                            val sure: String = "hi"     // never null
-                            val maybe: String? = null   // might be null
+                            val sure: String = "hi"     // 绝不会是 null
+                            val maybe: String? = null   // 可能是 null
 
-                            val len = maybe?.length ?: 0 // safe-call, then a default
+                            val len = maybe?.length ?: 0 // 安全调用，然后给一个默认值
                             """
                         ),
-                        text("`?.` calls a member only if the value isn't null; the **Elvis** operator `?:` supplies a fallback when the left side is null."),
+                        text("`?.` 只在值不为 null 时才调用其成员；当左侧为 null 时，**Elvis** 运算符 `?:` 会提供一个备用值。"),
                     ),
                 ),
                 LearnStepDef.Interactive(
-                    "kt-null-i", "Default when null",
-                    listOf(text("`name` is null. Print its length, or `0` when it's null — use `?.` and `?:`.")),
+                    "kt-null-i", "为 null 时给默认值",
+                    listOf(text("`name` 是 null。打印它的长度，如果为 null 则打印 `0` —— 使用 `?.` 和 `?:`。")),
                     starterCode = """
                         fun main() {
                             val name: String? = null
-                            // Print name's length, or 0 if name is null
+                            // 打印 name 的长度，如果 name 为 null 则打印 0
                         }
                     """,
                     language = "kotlin",
-                    hints = listOf("Safe-call the length: name?.length", "Add a fallback with Elvis: name?.length ?: 0"),
+                    hints = listOf("对长度做安全调用：name?.length", "用 Elvis 运算符添加备用值：name?.length ?: 0"),
                     solution = """
                         fun main() {
                             val name: String? = null
@@ -718,27 +718,27 @@ private fun kotlinNextSteps() = LearnTrackDef(
                     check = ExerciseCheck(expectedOutput = "0", requireSource = listOf("?:")),
                 ),
                 LearnStepDef.Quiz(
-                    "kt-null-q", "Quick check",
-                    prompt = "What does the Elvis operator ?: do?",
+                    "kt-null-q", "快速检查",
+                    prompt = "Elvis 运算符 ?: 做了什么？",
                     options = listOf(
-                        "Throws if the value is null",
-                        "Provides a fallback when the left side is null",
-                        "Converts a value to a String",
-                        "Repeats a loop",
+                        "如果值为 null 就抛出异常",
+                        "当左侧为 null 时提供一个备用值",
+                        "把值转换成 String",
+                        "重复一个循环",
                     ),
                     correctIndex = 1,
-                    explanation = "a ?: b evaluates to a when it isn't null, otherwise b.",
+                    explanation = "a ?: b 在 a 不为 null 时求值为 a，否则为 b。",
                 ),
             ),
         ),
         LearnLessonDef(
-            id = "kt-collections", title = "Collections", summary = "Transform lists with filter and map.",
+            id = "kt-collections", title = "集合", summary = "用 filter 和 map 转换列表。",
             iconId = "kotlin", estMinutes = 7,
             steps = listOf(
                 LearnStepDef.Concept(
-                    "kt-collections-c", "Lists and pipelines",
+                    "kt-collections-c", "列表与数据流水线",
                     listOf(
-                        text("`listOf(...)` builds a read-only list. You transform lists with functions like `filter`, `map`, and `sum`:"),
+                        text("`listOf(...)` 会构建一个只读列表。你可以用 `filter`、`map`、`sum` 等函数来转换列表："),
                         code(
                             """
                             val nums = listOf(1, 2, 3, 4)
@@ -746,20 +746,20 @@ private fun kotlinNextSteps() = LearnTrackDef(
                             val doubled = nums.map { it * 2 }        // [2, 4, 6, 8]
                             """
                         ),
-                        text("Inside `{ ... }`, `it` is the current element. These chain, so you can filter then sum in one line."),
+                        text("在 `{ ... }` 内部，`it` 表示当前元素。这些操作可以链式调用，所以你可以在同一行里先过滤再求和。"),
                     ),
                 ),
                 LearnStepDef.Interactive(
-                    "kt-collections-i", "Sum the even numbers",
-                    listOf(text("Given `1..6`, print the sum of the **even** numbers (should be `12`). Use `filter` and `sum`.")),
+                    "kt-collections-i", "求所有偶数的和",
+                    listOf(text("给定 `1..6`，打印其中**偶数**的和（应该是 `12`）。使用 `filter` 和 `sum`。")),
                     starterCode = """
                         fun main() {
                             val nums = listOf(1, 2, 3, 4, 5, 6)
-                            // Print the sum of the even numbers
+                            // 打印所有偶数的和
                         }
                     """,
                     language = "kotlin",
-                    hints = listOf("Keep the evens: nums.filter { it % 2 == 0 }", "Then add them up: .sum()"),
+                    hints = listOf("保留偶数：nums.filter { it % 2 == 0 }", "然后把它们加起来：.sum()"),
                     solution = """
                         fun main() {
                             val nums = listOf(1, 2, 3, 4, 5, 6)
@@ -769,27 +769,27 @@ private fun kotlinNextSteps() = LearnTrackDef(
                     check = ExerciseCheck(expectedOutput = "12", requireSource = listOf(".filter", ".sum")),
                 ),
                 LearnStepDef.Quiz(
-                    "kt-collections-q", "Quick check",
-                    prompt = "What does list.filter { it > 0 } return?",
+                    "kt-collections-q", "快速检查",
+                    prompt = "list.filter { it > 0 } 返回什么？",
                     options = listOf(
-                        "The first element greater than 0",
-                        "A new list of only the elements greater than 0",
-                        "The number of elements greater than 0",
-                        "true or false",
+                        "第一个大于 0 的元素",
+                        "一个只包含大于 0 的元素的新列表",
+                        "大于 0 的元素的数量",
+                        "true 或 false",
                     ),
                     correctIndex = 1,
-                    explanation = "filter returns a new list containing only the elements the predicate keeps.",
+                    explanation = "filter 返回一个新列表，只包含谓词所保留的元素。",
                 ),
             ),
         ),
         LearnLessonDef(
-            id = "kt-data", title = "Data classes", summary = "Model data with almost no boilerplate.",
+            id = "kt-data", title = "数据类", summary = "几乎不写样板代码就能建模数据。",
             iconId = "kotlin", estMinutes = 6,
             steps = listOf(
                 LearnStepDef.Concept(
                     "kt-data-c", "data class",
                     listOf(
-                        text("A **data class** models a bundle of values. Kotlin generates `toString`, `equals`, `hashCode`, and `copy` for you:"),
+                        text("**数据类（data class）** 用来建模一组值。Kotlin 会为你自动生成 `toString`、`equals`、`hashCode` 和 `copy`："),
                         code(
                             """
                             data class User(val name: String, val age: Int)
@@ -801,13 +801,13 @@ private fun kotlinNextSteps() = LearnTrackDef(
                     ),
                 ),
                 LearnStepDef.Interactive(
-                    "kt-data-i", "Make a User",
-                    listOf(text("Define `data class User(val name: String, val age: Int)`, then create and print `User(\"Sam\", 3)`.\n\nIt should print exactly `User(name=Sam, age=3)`.")),
+                    "kt-data-i", "创建一个 User",
+                    listOf(text("定义 `data class User(val name: String, val age: Int)`，然后创建并打印 `User(\"Sam\", 3)`。\n\n它应该精确打印出 `User(name=Sam, age=3)`。")),
                     starterCode = """
-                        // Define a data class User with name: String and age: Int
+                        // 定义一个 data class User，包含 name: String 和 age: Int
 
                         fun main() {
-                            // Create a User named "Sam" aged 3 and print it
+                            // 创建一个名为 "Sam" 且年龄为 3 的 User 并打印它
                         }
                     """,
                     language = "kotlin",
@@ -822,22 +822,22 @@ private fun kotlinNextSteps() = LearnTrackDef(
                     check = ExerciseCheck(expectedOutput = "User(name=Sam, age=3)", requireSource = listOf("data class User", "println(User")),
                 ),
                 LearnStepDef.Quiz(
-                    "kt-data-q", "Quick check",
-                    prompt = "Which does a data class generate automatically?",
-                    options = listOf("Only a constructor", "toString, equals, hashCode, and copy", "A main function", "Nothing"),
+                    "kt-data-q", "快速检查",
+                    prompt = "数据类会自动生成下列哪一项？",
+                    options = listOf("只有一个构造函数", "toString、equals、hashCode 和 copy", "一个 main 函数", "什么都没有"),
                     correctIndex = 1,
-                    explanation = "data classes generate toString/equals/hashCode/copy from the properties in the primary constructor.",
+                    explanation = "数据类会根据主构造函数中的属性自动生成 toString/equals/hashCode/copy。",
                 ),
             ),
         ),
         LearnLessonDef(
-            id = "kt-lambdas", title = "Lambdas & higher-order functions", summary = "Pass behavior as a value.",
+            id = "kt-lambdas", title = "Lambda 与高阶函数", summary = "把行为作为值传递。",
             iconId = "kotlin", estMinutes = 7,
             steps = listOf(
                 LearnStepDef.Concept(
-                    "kt-lambdas-c", "Functions that take functions",
+                    "kt-lambdas-c", "接收函数的函数",
                     listOf(
-                        text("A **lambda** is a block of code you can pass around: `{ x -> x * 2 }`. A **higher-order function** takes one as a parameter:"),
+                        text("**Lambda** 是可以到处传递的一段代码块：`{ x -> x * 2 }`。**高阶函数** 则把 lambda 作为参数接收："),
                         code(
                             """
                             fun applyOp(x: Int, op: (Int) -> Int): Int = op(x)
@@ -845,21 +845,21 @@ private fun kotlinNextSteps() = LearnTrackDef(
                             println(applyOp(5) { it * 2 })  // 10
                             """
                         ),
-                        text("When the lambda is the last argument you can put it outside the parentheses; `it` names its single parameter."),
+                        text("当 lambda 是最后一个参数时，可以把它写在圆括号外面；`it` 用来表示它的唯一参数。"),
                     ),
                 ),
                 LearnStepDef.Interactive(
-                    "kt-lambdas-i", "Pass a doubling lambda",
-                    listOf(text("`applyOp` is provided. Call it on `5` with a lambda that doubles its input, and print the result (`10`).")),
+                    "kt-lambdas-i", "传入一个翻倍 lambda",
+                    listOf(text("`applyOp` 已经提供。在 `5` 上调用它，传入一个使输入翻倍的 lambda，并打印结果（`10`）。")),
                     starterCode = """
                         fun applyOp(x: Int, op: (Int) -> Int): Int = op(x)
 
                         fun main() {
-                            // Print applyOp(5) with a lambda that doubles x
+                            // 打印 applyOp(5)，传入一个让 x 翻倍的 lambda
                         }
                     """,
                     language = "kotlin",
-                    hints = listOf("Trailing lambda: applyOp(5) { it * 2 }", "Wrap it in println(...)"),
+                    hints = listOf("尾随 lambda：applyOp(5) { it * 2 }", "把它包裹在 println(...) 中"),
                     solution = """
                         fun applyOp(x: Int, op: (Int) -> Int): Int = op(x)
 
@@ -872,13 +872,13 @@ private fun kotlinNextSteps() = LearnTrackDef(
             ),
         ),
         LearnLessonDef(
-            id = "kt-ext", title = "Extension functions", summary = "Add methods to existing types.",
+            id = "kt-ext", title = "扩展函数", summary = "给已有的类型添加方法。",
             iconId = "kotlin", estMinutes = 6,
             steps = listOf(
                 LearnStepDef.Concept(
-                    "kt-ext-c", "Extending a type",
+                    "kt-ext-c", "扩展一个类型",
                     listOf(
-                        text("An **extension function** adds a method to a type you don't own. Inside it, `this` is the receiver:"),
+                        text("**扩展函数（extension function）** 可以给一个并非你拥有的类型添加方法。在函数内部，`this` 就是接收者（receiver）："),
                         code(
                             """
                             fun String.shout(): String = this.uppercase() + "!"
@@ -889,17 +889,17 @@ private fun kotlinNextSteps() = LearnTrackDef(
                     ),
                 ),
                 LearnStepDef.Interactive(
-                    "kt-ext-i", "Double an Int",
-                    listOf(text("Write an extension `fun Int.double(): Int` returning the value times two, then print `21.double()` (`42`).")),
+                    "kt-ext-i", "让 Int 翻倍",
+                    listOf(text("编写一个扩展函数 `fun Int.double(): Int`，让它返回值乘以二，然后打印 `21.double()`（`42`）。")),
                     starterCode = """
-                        // Add an extension function Int.double() returning the value times 2
+                        // 添加一个扩展函数 Int.double()，返回值乘以 2
 
                         fun main() {
-                            // Print 21.double()
+                            // 打印 21.double()
                         }
                     """,
                     language = "kotlin",
-                    hints = listOf("fun Int.double(): Int = this * 2", "Then call it: println(21.double())"),
+                    hints = listOf("fun Int.double(): Int = this * 2", "然后调用它：println(21.double())"),
                     solution = """
                         fun Int.double(): Int = this * 2
 
@@ -910,27 +910,27 @@ private fun kotlinNextSteps() = LearnTrackDef(
                     check = ExerciseCheck(expectedOutput = "42", requireSource = listOf("fun Int.double", "21.double()")),
                 ),
                 LearnStepDef.Quiz(
-                    "kt-ext-q", "Quick check",
-                    prompt = "What does an extension function let you do?",
+                    "kt-ext-q", "快速检查",
+                    prompt = "扩展函数能让你做什么？",
                     options = listOf(
-                        "Rename a class",
-                        "Add a new method to an existing type without editing it",
-                        "Make a function run faster",
-                        "Delete a method",
+                        "重命名一个类",
+                        "在不修改某个类型的情况下，给它添加新方法",
+                        "让函数运行得更快",
+                        "删除一个方法",
                     ),
                     correctIndex = 1,
-                    explanation = "Extensions add functions to a type (even one you can't modify); they're resolved statically.",
+                    explanation = "扩展函数可以给一个类型（即使你无法修改它）添加函数；它们在编译期静态解析。",
                 ),
             ),
         ),
         LearnLessonDef(
-            id = "kt-when", title = "The when expression", summary = "Branch cleanly on a value.",
+            id = "kt-when", title = "when 表达式", summary = "根据一个值干净地进行分支。",
             iconId = "kotlin", estMinutes = 5,
             steps = listOf(
                 LearnStepDef.Concept(
                     "kt-when-c", "when",
                     listOf(
-                        text("`when` is Kotlin's powerful switch. As an **expression** it returns a value, and each branch can be a range, a set, or a condition:"),
+                        text("`when` 是 Kotlin 强大的分支结构。作为**表达式**它可以返回一个值，每个分支都可以是区间、一组值或一个条件："),
                         code(
                             """
                             val x = 2
@@ -941,20 +941,20 @@ private fun kotlinNextSteps() = LearnTrackDef(
                             }
                             """
                         ),
-                        note("Paired with a **sealed class** (a closed set of subtypes), `when` can be checked for exhaustiveness — the compiler makes sure you covered every case."),
+                        note("与 **密封类（sealed class）**（一串封闭的子类型）搭配时，`when` 可以被检查是否穷尽 —— 编译器会确保你覆盖了每一种情况。"),
                     ),
                 ),
                 LearnStepDef.Interactive(
-                    "kt-when-i", "Name the number",
-                    listOf(text("`x` is `2`. Use a `when` expression to print `two` for `2`, and `other` for anything else.")),
+                    "kt-when-i", "给数字命名",
+                    listOf(text("`x` 是 `2`。使用 `when` 表达式，当 `x` 为 `2` 时打印 `two`，其它情况打印 `other`。")),
                     starterCode = """
                         fun main() {
                             val x = 2
-                            // Use a when expression to print "two" when x is 2, else "other"
+                            // 使用 when 表达式：当 x 为 2 时打印 "two"，否则打印 "other"
                         }
                     """,
                     language = "kotlin",
-                    hints = listOf("val label = when (x) { 2 -> \"two\"; else -> \"other\" }", "Then println(label)"),
+                    hints = listOf("val label = when (x) { 2 -> \"two\"; else -> \"other\" }", "然后 println(label)"),
                     solution = """
                         fun main() {
                             val x = 2
@@ -973,27 +973,27 @@ private fun kotlinNextSteps() = LearnTrackDef(
 )
 
 // ===========================================================================
-// Kotlin: Coroutines (advanced — interactive; the scratch resolves kotlinx-coroutines)
+// Kotlin：协程（advanced —— 可交互；scratch 会解析 kotlinx-coroutines）
 // ===========================================================================
 
 private fun kotlinCoroutines() = LearnTrackDef(
     id = "kotlin-coroutines",
-    title = "Kotlin: Coroutines",
-    subtitle = "Asynchronous, non-blocking code the easy way",
+    title = "Kotlin 协程",
+    subtitle = "轻松编写异步、非阻塞的代码",
     iconId = "kotlin",
     accentColor = ACCENT_COROUTINES,
     language = "kotlin",
     category = "Kotlin",
     lessons = listOf(
         LearnLessonDef(
-            id = "co-intro", title = "Suspend and delay", summary = "Run non-blocking work with delay().",
+            id = "co-intro", title = "挂起与 delay", summary = "用 delay() 运行非阻塞的任务。",
             iconId = "kotlin", estMinutes = 8,
             steps = listOf(
                 LearnStepDef.Concept(
-                    "co-intro-c", "What is a coroutine?",
+                    "co-intro-c", "什么是协程？",
                     listOf(
-                        text("A **coroutine** is a lightweight thread you can suspend and resume without blocking a real thread. You can run thousands of them."),
-                        text("`runBlocking { }` bridges normal code into the coroutine world; `delay(ms)` **suspends** the coroutine (unlike `Thread.sleep`, it doesn't block the thread):"),
+                        text("**协程（coroutine）** 是一种轻量级线程，你可以在不阻塞真实线程的情况下挂起它并恢复它。你可以同时运行成千上万个协程。"),
+                        text("`runBlocking { }` 把普通代码接入协程世界；`delay(ms)` 会**挂起**协程（与 `Thread.sleep` 不同，它不会阻塞线程）："),
                         code(
                             """
                             import kotlinx.coroutines.*
@@ -1007,24 +1007,24 @@ private fun kotlinCoroutines() = LearnTrackDef(
                             }
                             """
                         ),
-                        tip("The first time you open a coroutine lesson, the workspace downloads the coroutines library — that's what the \"Preparing\" step is doing."),
+                        tip("第一次打开协程课时，工作区会下载协程库 —— 就相当于 \"Preparing（准备中）\" 这一步骤在做的事情。"),
                     ),
                 ),
                 LearnStepDef.Interactive(
-                    "co-intro-i", "Your first coroutine",
-                    listOf(text("Inside `runBlocking`, print `Start`, wait 100ms with `delay`, then print `Done`.")),
+                    "co-intro-i", "你的第一个协程",
+                    listOf(text("在 `runBlocking` 内部，打印 `Start`，用 `delay` 等待 100 毫秒，然后打印 `Done`。")),
                     starterCode = """
                         import kotlinx.coroutines.*
 
                         fun main() {
                             runBlocking {
                                 println("Start")
-                                // wait 100 milliseconds (without blocking), then print Done
+                                // 等待 100 毫秒（不阻塞），然后打印 Done
                             }
                         }
                     """,
                     language = "kotlin-coroutines",
-                    hints = listOf("Suspend with delay(100)", "Then println(\"Done\")"),
+                    hints = listOf("用 delay(100) 挂起", "然后 println(\"Done\")"),
                     solution = """
                         import kotlinx.coroutines.*
 
@@ -1039,27 +1039,27 @@ private fun kotlinCoroutines() = LearnTrackDef(
                     check = ExerciseCheck(expectedOutput = "Start\nDone", requireSource = listOf("runBlocking", "delay(")),
                 ),
                 LearnStepDef.Quiz(
-                    "co-intro-q", "Quick check",
-                    prompt = "How is delay() different from Thread.sleep()?",
+                    "co-intro-q", "快速检查",
+                    prompt = "delay() 与 Thread.sleep() 有什么不同？",
                     options = listOf(
-                        "It's exactly the same",
-                        "delay() suspends the coroutine without blocking the underlying thread",
-                        "delay() is slower",
-                        "delay() blocks every thread",
+                        "完全一样",
+                        "delay() 会挂起协程，但不阻塞底层线程",
+                        "delay() 更慢",
+                        "delay() 会阻塞所有线程",
                     ),
                     correctIndex = 1,
-                    explanation = "delay() suspends only the coroutine, freeing the thread to do other work.",
+                    explanation = "delay() 只挂起协程本身，把线程释放出来去做其它工作。",
                 ),
             ),
         ),
         LearnLessonDef(
-            id = "co-async", title = "Concurrency with async", summary = "Run work in parallel and combine results.",
+            id = "co-async", title = "用 async 并发", summary = "并行运行任务并合并结果。",
             iconId = "kotlin", estMinutes = 8,
             steps = listOf(
                 LearnStepDef.Concept(
                     "co-async-c", "async / await",
                     listOf(
-                        text("`async { }` starts a coroutine that computes a result, returning a `Deferred`. Call `await()` to get the value — the two `async` blocks run concurrently:"),
+                        text("`async { }` 会启动一个计算结果的协程，并返回一个 `Deferred`。调用 `await()` 来获取这个值 —— 两个 `async` 代码块会并发运行："),
                         code(
                             """
                             runBlocking {
@@ -1072,8 +1072,8 @@ private fun kotlinCoroutines() = LearnTrackDef(
                     ),
                 ),
                 LearnStepDef.Interactive(
-                    "co-async-i", "Add two results",
-                    listOf(text("`a` and `b` are computed with `async`. Print their sum using `await` (should be `5`).")),
+                    "co-async-i", "把两个结果相加",
+                    listOf(text("`a` 和 `b` 是用 `async` 计算出来的。用 `await` 打印它们的和（应该是 `5`）。")),
                     starterCode = """
                         import kotlinx.coroutines.*
 
@@ -1081,12 +1081,12 @@ private fun kotlinCoroutines() = LearnTrackDef(
                             runBlocking {
                                 val a = async { 2 }
                                 val b = async { 3 }
-                                // Print the sum of a and b (await each)
+                                // 打印 a 和 b 的和（分别 await）
                             }
                         }
                     """,
                     language = "kotlin-coroutines",
-                    hints = listOf("Get each value with .await()", "println(a.await() + b.await())"),
+                    hints = listOf("用 .await() 获取每个值", "println(a.await() + b.await())"),
                     solution = """
                         import kotlinx.coroutines.*
 
@@ -1103,13 +1103,13 @@ private fun kotlinCoroutines() = LearnTrackDef(
             ),
         ),
         LearnLessonDef(
-            id = "co-launch", title = "launch: fire-and-forget", summary = "Start background work that returns nothing.",
+            id = "co-launch", title = "launch：即发即忘", summary = "启动不返回结果的后台任务。",
             iconId = "kotlin", estMinutes = 7,
             steps = listOf(
                 LearnStepDef.Concept(
                     "co-launch-c", "launch",
                     listOf(
-                        text("`launch { }` starts a coroutine that doesn't return a result — great for background work. `runBlocking` waits for its children to finish before returning."),
+                        text("`launch { }` 会启动一个不返回结果的协程 —— 非常适合后台任务。`runBlocking` 会等待它的子协程完成后再返回。"),
                         code(
                             """
                             runBlocking {
@@ -1121,12 +1121,12 @@ private fun kotlinCoroutines() = LearnTrackDef(
                             }
                             """
                         ),
-                        text("The launched coroutine is queued, so `print(\"Hello, \")` runs first; then the coroutine resumes after its delay."),
+                        text("启动的协程会被排队，所以 `print(\"Hello, \")` 会先运行；随后协程在它的 delay 结束后恢复执行。"),
                     ),
                 ),
                 LearnStepDef.Interactive(
-                    "co-launch-i", "Hello, World in order",
-                    listOf(text("Inside the `launch` (already started), it prints `World` after a delay. Before it, `print` `Hello, ` (no newline) so the output reads `Hello, World`.")),
+                    "co-launch-i", "按顺序输出 Hello, World",
+                    listOf(text("在 `launch` 内部（已经启动），它会在一段时间后打印 `World`。在此之前，用 `print` 打印 `Hello, `（不要换行），这样输出就是 `Hello, World`。")),
                     starterCode = """
                         import kotlinx.coroutines.*
 
@@ -1136,12 +1136,12 @@ private fun kotlinCoroutines() = LearnTrackDef(
                                     delay(50)
                                     println("World")
                                 }
-                                // print "Hello, " here (no newline)
+                                // 在这里打印 "Hello, "（不换行）
                             }
                         }
                     """,
                     language = "kotlin-coroutines",
-                    hints = listOf("Use print (not println) so there's no line break", "print(\"Hello, \")"),
+                    hints = listOf("使用 print（而不是 println），这样不会换行", "print(\"Hello, \")"),
                     solution = """
                         import kotlinx.coroutines.*
 
@@ -1160,13 +1160,13 @@ private fun kotlinCoroutines() = LearnTrackDef(
             ),
         ),
         LearnLessonDef(
-            id = "co-flow", title = "Flows", summary = "A stream of values over time.",
+            id = "co-flow", title = "Flow 流", summary = "随时间产生的值流。",
             iconId = "kotlin", estMinutes = 7,
             steps = listOf(
                 LearnStepDef.Concept(
                     "co-flow-c", "Flow",
                     listOf(
-                        text("A **Flow** emits a sequence of values over time; you `collect` them. Think of it as a suspendable, asynchronous list:"),
+                        text("**Flow** 会随时间发射一串值；你用 `collect` 来收集它们。可以把 Flow 理解成一个可挂起的、异步的列表："),
                         code(
                             """
                             import kotlinx.coroutines.*
@@ -1182,20 +1182,20 @@ private fun kotlinCoroutines() = LearnTrackDef(
                     ),
                 ),
                 LearnStepDef.Interactive(
-                    "co-flow-i", "Collect a flow",
-                    listOf(text("Emit `1, 2, 3` from a flow and print each value, one per line.")),
+                    "co-flow-i", "收集一个 flow",
+                    listOf(text("从一个 flow 中发射 `1, 2, 3`，并逐行打印每个值。")),
                     starterCode = """
                         import kotlinx.coroutines.*
                         import kotlinx.coroutines.flow.*
 
                         fun main() {
                             runBlocking {
-                                // Build a flow of 1, 2, 3 and collect it, printing each value
+                                // 构建一个 1, 2, 3 的 flow 并收集它，逐个打印每个值
                             }
                         }
                     """,
                     language = "kotlin-coroutines",
-                    hints = listOf("flowOf(1, 2, 3) builds the flow", "Collect it: .collect { println(it) }"),
+                    hints = listOf("flowOf(1, 2, 3) 可以构建 flow", "收集它：.collect { println(it) }"),
                     solution = """
                         import kotlinx.coroutines.*
                         import kotlinx.coroutines.flow.*
@@ -1209,11 +1209,11 @@ private fun kotlinCoroutines() = LearnTrackDef(
                     check = ExerciseCheck(expectedOutput = "1\n2\n3", requireSource = listOf("flowOf", "collect")),
                 ),
                 LearnStepDef.Quiz(
-                    "co-flow-q", "Quick check",
-                    prompt = "What does a Flow represent?",
-                    options = listOf("A single value", "A stream of values produced over time", "A thread", "A file"),
+                    "co-flow-q", "快速检查",
+                    prompt = "Flow 表示什么？",
+                    options = listOf("一个单一的值", "随时间异步产生的一串值", "一个线程", "一个文件"),
                     correctIndex = 1,
-                    explanation = "A Flow emits multiple values asynchronously; you receive them by collecting.",
+                    explanation = "Flow 会异步地发射多个值；你通过收集来接收它们。",
                 ),
             ),
         ),
@@ -1221,26 +1221,26 @@ private fun kotlinCoroutines() = LearnTrackDef(
 )
 
 // ===========================================================================
-// Kotlin: Object-Oriented (stdlib — classes, inheritance, interfaces)
+// Kotlin：面向对象（stdlib —— 类、继承、接口）
 // ===========================================================================
 
 private fun kotlinOo() = LearnTrackDef(
     id = "kotlin-oo",
-    title = "Kotlin: Object-Oriented",
-    subtitle = "Classes, inheritance, interfaces, and enums",
+    title = "Kotlin 面向对象",
+    subtitle = "类、继承、接口与枚举",
     iconId = "kotlin",
     accentColor = ACCENT_KOTLIN_OO,
     language = "kotlin",
     category = "Kotlin",
     lessons = listOf(
         LearnLessonDef(
-            id = "kt-oo-class", title = "Classes & constructors", summary = "Bundle data with behavior.",
+            id = "kt-oo-class", title = "类与构造函数", summary = "把数据和行为打包在一起。",
             iconId = "kotlin", estMinutes = 6,
             steps = listOf(
                 LearnStepDef.Concept(
-                    "kt-oo-class-c", "A class with a method",
+                    "kt-oo-class-c", "带方法的类",
                     listOf(
-                        text("A **primary constructor** declares properties right in the header. Methods use those properties:"),
+                        text("**主构造函数** 就在头部声明属性。方法会使用这些属性："),
                         code(
                             """
                             class Point(val x: Int, val y: Int) {
@@ -1253,15 +1253,15 @@ private fun kotlinOo() = LearnTrackDef(
                     ),
                 ),
                 LearnStepDef.Interactive(
-                    "kt-oo-class-i", "Give Point a sum()",
-                    listOf(text("Add a `sum()` method to `Point` returning `x + y`, then print `Point(2, 3).sum()` (`5`).")),
+                    "kt-oo-class-i", "给 Point 添加 sum()",
+                    listOf(text("给 `Point` 添加一个返回 `x + y` 的 `sum()` 方法，然后打印 `Point(2, 3).sum()`（`5`）。")),
                     starterCode = """
                         class Point(val x: Int, val y: Int) {
-                            // add a sum() method returning x + y
+                            // 添加一个返回 x + y 的 sum() 方法
                         }
 
                         fun main() {
-                            // Print Point(2, 3).sum()
+                            // 打印 Point(2, 3).sum()
                         }
                     """,
                     language = "kotlin",
@@ -1280,13 +1280,13 @@ private fun kotlinOo() = LearnTrackDef(
             ),
         ),
         LearnLessonDef(
-            id = "kt-oo-inherit", title = "Inheritance", summary = "Override behavior in a subclass.",
+            id = "kt-oo-inherit", title = "继承", summary = "在子类中重写行为。",
             iconId = "kotlin", estMinutes = 6,
             steps = listOf(
                 LearnStepDef.Concept(
-                    "kt-oo-inherit-c", "open & override",
+                    "kt-oo-inherit-c", "open 与 override",
                     listOf(
-                        text("Kotlin classes are final by default. Mark a class and its members `open` to allow subclassing, then `override` them:"),
+                        text("Kotlin 的类默认是 final 的。把类和它的成员标记为 `open` 才能允许继承，然后再用 `override` 重写它们："),
                         code(
                             """
                             open class Animal {
@@ -1301,17 +1301,17 @@ private fun kotlinOo() = LearnTrackDef(
                     ),
                 ),
                 LearnStepDef.Interactive(
-                    "kt-oo-inherit-i", "Make a Cat",
-                    listOf(text("Create `class Cat : Animal()` that overrides `sound()` to return `\"Meow\"`, then print `Cat().sound()`.")),
+                    "kt-oo-inherit-i", "创建一个 Cat",
+                    listOf(text("创建 `class Cat : Animal()`，让它重写 `sound()` 并返回 `\"Meow\"`，然后打印 `Cat().sound()`。")),
                     starterCode = """
                         open class Animal {
                             open fun sound(): String = "..."
                         }
 
-                        // Make a Cat that overrides sound() to return "Meow"
+                        // 创建一个 Cat，重写 sound() 使其返回 "Meow"
 
                         fun main() {
-                            // Print Cat().sound()
+                            // 打印 Cat().sound()
                         }
                     """,
                     language = "kotlin",
@@ -1332,27 +1332,27 @@ private fun kotlinOo() = LearnTrackDef(
                     check = ExerciseCheck(expectedOutput = "Meow", requireSource = listOf(": Animal()", "override", "Cat()")),
                 ),
                 LearnStepDef.Quiz(
-                    "kt-oo-inherit-q", "Quick check",
-                    prompt = "Why does a Kotlin class need the open keyword?",
+                    "kt-oo-inherit-q", "快速检查",
+                    prompt = "为什么 Kotlin 的类需要 open 关键字？",
                     options = listOf(
-                        "To make it public",
-                        "Classes are final by default; open allows subclassing",
-                        "To add a constructor",
-                        "To import it",
+                        "让它变成 public",
+                        "类默认是 final 的；open 允许被继承",
+                        "为了添加构造函数",
+                        "为了导入它",
                     ),
                     correctIndex = 1,
-                    explanation = "Kotlin classes/members are final unless marked open (or abstract).",
+                    explanation = "Kotlin 的类/成员除非标记为 open（或 abstract），否则是 final 的。",
                 ),
             ),
         ),
         LearnLessonDef(
-            id = "kt-oo-interface", title = "Interfaces", summary = "Define a contract to implement.",
+            id = "kt-oo-interface", title = "接口", summary = "定义一个需要实现的契约。",
             iconId = "kotlin", estMinutes = 6,
             steps = listOf(
                 LearnStepDef.Concept(
                     "kt-oo-interface-c", "interface",
                     listOf(
-                        text("An **interface** is a contract of methods a class promises to provide:"),
+                        text("**接口（interface）** 是类承诺提供的方法契约："),
                         code(
                             """
                             interface Greeter {
@@ -1367,17 +1367,17 @@ private fun kotlinOo() = LearnTrackDef(
                     ),
                 ),
                 LearnStepDef.Interactive(
-                    "kt-oo-interface-i", "Implement Greeter",
-                    listOf(text("Make `class English : Greeter` whose `greet()` returns `\"Hello\"`, then print `English().greet()`.")),
+                    "kt-oo-interface-i", "实现 Greeter",
+                    listOf(text("创建 `class English : Greeter`，让它的 `greet()` 返回 `\"Hello\"`，然后打印 `English().greet()`。")),
                     starterCode = """
                         interface Greeter {
                             fun greet(): String
                         }
 
-                        // Implement Greeter in a class English whose greet() returns "Hello"
+                        // 在类 English 中实现 Greeter，其 greet() 返回 "Hello"
 
                         fun main() {
-                            // Print English().greet()
+                            // 打印 English().greet()
                         }
                     """,
                     language = "kotlin",
@@ -1400,13 +1400,13 @@ private fun kotlinOo() = LearnTrackDef(
             ),
         ),
         LearnLessonDef(
-            id = "kt-oo-enum", title = "Enum classes", summary = "A fixed set of named values.",
+            id = "kt-oo-enum", title = "枚举类", summary = "一组固定的命名值。",
             iconId = "kotlin", estMinutes = 5,
             steps = listOf(
                 LearnStepDef.Concept(
                     "kt-oo-enum-c", "enum class",
                     listOf(
-                        text("An **enum** defines a fixed set of constants. Each has a `name` and prints as that name:"),
+                        text("**枚举（enum）** 定义一组固定的常量。每个枚举值都有一个 `name`，并会以该名字打印："),
                         code(
                             """
                             enum class Color { RED, GREEN, BLUE }
@@ -1417,13 +1417,13 @@ private fun kotlinOo() = LearnTrackDef(
                     ),
                 ),
                 LearnStepDef.Interactive(
-                    "kt-oo-enum-i", "Print a color",
-                    listOf(text("Define `enum class Color { RED, GREEN, BLUE }` and print `Color.GREEN` (prints `GREEN`).")),
+                    "kt-oo-enum-i", "打印一个颜色",
+                    listOf(text("定义 `enum class Color { RED, GREEN, BLUE }` 并打印 `Color.GREEN`（打印结果会是 `GREEN`）。")),
                     starterCode = """
-                        // Define an enum class Color with RED, GREEN, BLUE
+                        // 定义一个包含 RED、GREEN、BLUE 的 enum class Color
 
                         fun main() {
-                            // Print Color.GREEN
+                            // 打印 Color.GREEN
                         }
                     """,
                     language = "kotlin",
@@ -1440,13 +1440,13 @@ private fun kotlinOo() = LearnTrackDef(
             ),
         ),
         LearnLessonDef(
-            id = "kt-oo-object", title = "Objects & companions", summary = "Singletons and factory methods.",
+            id = "kt-oo-object", title = "对象与伴生对象", summary = "单例与工厂方法。",
             iconId = "kotlin", estMinutes = 6,
             steps = listOf(
                 LearnStepDef.Concept(
-                    "kt-oo-object-c", "object & companion object",
+                    "kt-oo-object-c", "object 与 companion object",
                     listOf(
-                        text("`object` declares a **singleton**. A **companion object** holds members you call on the class itself (like a static factory):"),
+                        text("`object` 用来声明**单例（singleton）**。**伴生对象（companion object）** 保存你直接在类上调用的成员（就像一个静态工厂）："),
                         code(
                             """
                             class Box {
@@ -1461,15 +1461,15 @@ private fun kotlinOo() = LearnTrackDef(
                     ),
                 ),
                 LearnStepDef.Interactive(
-                    "kt-oo-object-i", "A factory method",
-                    listOf(text("Give `Box` a `companion object` with `create()` returning `\"box\"`, then print `Box.create()`.")),
+                    "kt-oo-object-i", "一个工厂方法",
+                    listOf(text("给 `Box` 添加一个 `companion object`，其中包含返回 `\"box\"` 的 `create()`，然后打印 `Box.create()`。")),
                     starterCode = """
                         class Box {
-                            // add a companion object with create() returning "box"
+                            // 添加一个 companion object，其中 create() 返回 "box"
                         }
 
                         fun main() {
-                            // Print Box.create()
+                            // 打印 Box.create()
                         }
                     """,
                     language = "kotlin",
@@ -1493,41 +1493,41 @@ private fun kotlinOo() = LearnTrackDef(
 )
 
 // ===========================================================================
-// Kotlin: Practice (stdlib — small coding challenges)
+// Kotlin：练习（stdlib —— 小型编码挑战）
 // ===========================================================================
 
 private fun kotlinPractice() = LearnTrackDef(
     id = "kotlin-practice",
-    title = "Kotlin: Practice",
-    subtitle = "Small coding challenges to sharpen your skills",
+    title = "Kotlin 练习",
+    subtitle = "用小型编码挑战磨砺你的技能",
     iconId = "sparkle",
     accentColor = ACCENT_PRACTICE,
     language = "kotlin",
     category = "Kotlin",
     lessons = listOf(
         LearnLessonDef(
-            id = "pr-fizzbuzz", title = "FizzBuzz", summary = "The classic warm-up.",
+            id = "pr-fizzbuzz", title = "FizzBuzz", summary = "经典的入门练习。",
             iconId = "sparkle", estMinutes = 7,
             steps = listOf(
                 LearnStepDef.Concept(
-                    "pr-fizzbuzz-c", "The rules",
+                    "pr-fizzbuzz-c", "规则",
                     listOf(
-                        text("For each number `1..5`, print `Fizz` if it's divisible by 3, `Buzz` if divisible by 5, otherwise the number itself. Combine a `for` loop with `when`."),
-                        text("Divisibility is the remainder operator: `i % 3 == 0` means \"i is a multiple of 3\"."),
+                        text("对每个数字 `1..5`：如果是 3 的倍数就打印 `Fizz`，如果是 5 的倍数就打印 `Buzz`，否则打印数字本身。把 `for` 循环和 `when` 结合起来。"),
+                        text("整除用取余运算符来判断：`i % 3 == 0` 表示 \"i 是 3 的倍数\"。"),
                     ),
                 ),
                 LearnStepDef.Interactive(
-                    "pr-fizzbuzz-i", "Play FizzBuzz to 5",
-                    listOf(text("Print `1`, `2`, `Fizz`, `4`, `Buzz` — one per line — by looping `1..5` and testing divisibility by 3 and 5.")),
+                    "pr-fizzbuzz-i", "把 FizzBuzz 玩到 5",
+                    listOf(text("通过循环 `1..5` 并判断是否能被 3 和 5 整除，逐行打印 `1`、`2`、`Fizz`、`4`、`Buzz`。")),
                     starterCode = """
                         fun main() {
                             for (i in 1..5) {
-                                // print Fizz for multiples of 3, Buzz for 5, else the number
+                                // 3 的倍数打印 Fizz，5 的倍数打印 Buzz，否则打印数字
                             }
                         }
                     """,
                     language = "kotlin",
-                    hints = listOf("Use when { i % 3 == 0 -> ...; i % 5 == 0 -> ...; else -> ... }", "println(\"Fizz\") / println(\"Buzz\") / println(i)"),
+                    hints = listOf("使用 when { i % 3 == 0 -> ...; i % 5 == 0 -> ...; else -> ... }", "println(\"Fizz\") / println(\"Buzz\") / println(i)"),
                     solution = """
                         fun main() {
                             for (i in 1..5) {
@@ -1544,24 +1544,24 @@ private fun kotlinPractice() = LearnTrackDef(
             ),
         ),
         LearnLessonDef(
-            id = "pr-reverse", title = "Reverse a string", summary = "Flip it around.",
+            id = "pr-reverse", title = "反转字符串", summary = "把它倒过来。",
             iconId = "sparkle", estMinutes = 4,
             steps = listOf(
                 LearnStepDef.Concept(
                     "pr-reverse-c", "reversed()",
-                    listOf(text("Kotlin's standard library has a `reversed()` for strings — `\"abc\".reversed()` is `\"cba\"`.")),
+                    listOf(text("Kotlin 标准库为字符串提供了 `reversed()` —— `\"abc\".reversed()` 的结果是 `\"cba\"`。")),
                 ),
                 LearnStepDef.Interactive(
-                    "pr-reverse-i", "Reverse \"hello\"",
-                    listOf(text("Print `\"hello\"` reversed (should be `olleh`).")),
+                    "pr-reverse-i", "反转 \"hello\"",
+                    listOf(text("打印反转后的 `\"hello\"`（应该是 `olleh`）。")),
                     starterCode = """
                         fun main() {
                             val word = "hello"
-                            // Print word reversed
+                            // 打印反转后的 word
                         }
                     """,
                     language = "kotlin",
-                    hints = listOf("word.reversed() gives the reversed string"),
+                    hints = listOf("word.reversed() 会返回反转后的字符串"),
                     solution = """
                         fun main() {
                             val word = "hello"
@@ -1573,21 +1573,21 @@ private fun kotlinPractice() = LearnTrackDef(
             ),
         ),
         LearnLessonDef(
-            id = "pr-factorial", title = "Factorial", summary = "Multiply your way up.",
+            id = "pr-factorial", title = "阶乘", summary = "一路累乘上去。",
             iconId = "sparkle", estMinutes = 6,
             steps = listOf(
                 LearnStepDef.Concept(
                     "pr-factorial-c", "n!",
-                    listOf(text("The factorial of `n` is `1 * 2 * ... * n`. So `5! = 120`. A loop that multiplies a running total does it.")),
+                    listOf(text("`n` 的阶乘是 `1 * 2 * ... * n`。所以 `5! = 120`。用一个循环累乘一个不断变化的累计值即可。")),
                 ),
                 LearnStepDef.Interactive(
-                    "pr-factorial-i", "Compute 5!",
-                    listOf(text("Write a `factorial(n)` function and print `factorial(5)` (`120`).")),
+                    "pr-factorial-i", "计算 5!",
+                    listOf(text("编写一个 `factorial(n)` 函数并打印 `factorial(5)`（`120`）。")),
                     starterCode = """
-                        // Write a factorial(n: Int): Int function
+                        // 编写一个 factorial(n: Int): Int 函数
 
                         fun main() {
-                            // Print factorial(5)
+                            // 打印 factorial(5)
                         }
                     """,
                     language = "kotlin",
@@ -1608,24 +1608,24 @@ private fun kotlinPractice() = LearnTrackDef(
             ),
         ),
         LearnLessonDef(
-            id = "pr-vowels", title = "Count vowels", summary = "Filter and count characters.",
+            id = "pr-vowels", title = "统计元音", summary = "过滤并统计字符。",
             iconId = "sparkle", estMinutes = 5,
             steps = listOf(
                 LearnStepDef.Concept(
                     "pr-vowels-c", "count { }",
-                    listOf(text("`count { }` returns how many elements match a condition. A `Char` is in a string if that string contains it: `it in \"aeiou\"`.")),
+                    listOf(text("`count { }` 会返回满足某个条件的元素有多少个。如果字符串包含某个 `Char`，就说明它 within 该字符串：`it in \"aeiou\"`。")),
                 ),
                 LearnStepDef.Interactive(
-                    "pr-vowels-i", "Vowels in \"education\"",
-                    listOf(text("Print how many vowels are in `\"education\"` (should be `5`). Use `count { }`.")),
+                    "pr-vowels-i", "\"education\" 中的元音",
+                    listOf(text("打印 `\"education\"` 中有多少个元音（应该是 `5`）。使用 `count { }`。")),
                     starterCode = """
                         fun main() {
                             val text = "education"
-                            // Print how many vowels (a, e, i, o, u) text contains
+                            // 打印 text 中有多少个元音（a、e、i、o、u）
                         }
                     """,
                     language = "kotlin",
-                    hints = listOf("text.count { ... }", "A char is a vowel when it in \"aeiou\""),
+                    hints = listOf("text.count { ... }", "当某个字符 in \"aeiou\" 时它就是元音"),
                     solution = """
                         fun main() {
                             val text = "education"
@@ -1637,26 +1637,26 @@ private fun kotlinPractice() = LearnTrackDef(
             ),
         ),
         LearnLessonDef(
-            id = "pr-fib", title = "Fibonacci", summary = "Each number is the sum of the previous two.",
+            id = "pr-fib", title = "斐波那契", summary = "每个数都是前两个数之和。",
             iconId = "sparkle", estMinutes = 6,
             steps = listOf(
                 LearnStepDef.Concept(
-                    "pr-fib-c", "The sequence",
-                    listOf(text("Fibonacci: `0, 1, 1, 2, 3, 5, 8, ...` — each value is the sum of the two before it. Keep two running values and slide them forward.")),
+                    "pr-fib-c", "这个数列",
+                    listOf(text("斐波那契数列：`0, 1, 1, 2, 3, 5, 8, ...` —— 每个值都是它前面两个值的和。保存两个不断变化的值并把它们向前滑动。")),
                 ),
                 LearnStepDef.Interactive(
-                    "pr-fib-i", "The 6th step",
-                    listOf(text("Starting from `0, 1`, advance the sequence 6 times and print the result (`8`). Keep two variables and update them with `a + b`.")),
+                    "pr-fib-i", "第 6 步",
+                    listOf(text("从 `0, 1` 开始，推进这个数列 6 次并打印结果（`8`）。保存两个变量，并用 `a + b` 更新它们。")),
                     starterCode = """
                         fun main() {
                             var a = 0
                             var b = 1
-                            // Advance 6 times: next = a + b, then a = b, b = next
-                            // Then print a
+                            // 推进 6 次：next = a + b，然后 a = b，b = next
+                            // 然后打印 a
                         }
                     """,
                     language = "kotlin",
-                    hints = listOf("repeat(6) { val next = a + b; a = b; b = next }", "Then println(a)"),
+                    hints = listOf("repeat(6) { val next = a + b; a = b; b = next }", "然后 println(a)"),
                     solution = """
                         fun main() {
                             var a = 0
@@ -1677,27 +1677,27 @@ private fun kotlinPractice() = LearnTrackDef(
 )
 
 // ===========================================================================
-// Compose: Introduction (live @Preview rendering via the Compose interpreter)
+// Compose：入门（借助 Compose 解释器实时渲染 @Preview）
 // ===========================================================================
 
 private fun composeIntro() = LearnTrackDef(
     id = "compose-intro",
-    title = "Compose: Introduction",
-    subtitle = "Build UI with composable functions, rendered live",
+    title = "Compose 入门",
+    subtitle = "用可组合函数构建 UI，并可实时渲染",
     iconId = "layers",
     accentColor = ACCENT_COMPOSE,
     language = "kotlin-compose",
     category = "Compose",
     lessons = listOf(
         LearnLessonDef(
-            id = "ci-first", title = "Your first composable", summary = "Describe UI with @Composable, see it render.",
+            id = "ci-first", title = "你的第一个可组合函数", summary = "用 @Composable 描述 UI，并看到它渲染出来。",
             iconId = "layers", estMinutes = 6,
             steps = listOf(
                 LearnStepDef.Concept(
-                    "ci-first-c", "@Composable and @Preview",
+                    "ci-first-c", "@Composable 与 @Preview",
                     listOf(
-                        text("Jetpack Compose builds UI from **composable functions** — regular Kotlin functions marked `@Composable` that *describe* what to show. `Text(...)` is a built-in composable that draws a line of text."),
-                        text("A function also marked `@Preview` can be rendered on its own — no app launch needed. That's exactly what you see below, rendered live:"),
+                        text("Jetpack Compose 使用**可组合函数（composable function）** 来构建 UI —— 也就是标记了 `@Composable` 且用来*描述*要显示什么的普通 Kotlin 函数。`Text(...)` 是一个内置的可组合函数，用来绘制一行文本。"),
+                        text("同样标记了 `@Preview` 的函数可以单独渲染 —— 无需启动应用。这正是你在下方实时看到的效果："),
                         composePreview(
                             """
                             import androidx.compose.material3.Text
@@ -1715,15 +1715,15 @@ private fun composeIntro() = LearnTrackDef(
                                 Greeting()
                             }
                             """,
-                            caption = "A @Composable rendered by @Preview",
+                            caption = "由 @Preview 渲染出的 @Composable",
                         ),
-                        tip("A `@Composable` function emits UI instead of returning a value — you call other composables inside it."),
+                        tip("`@Composable` 函数并不是返回一个值，而是发射（emits）UI —— 你可以在它内部调用其它可组合函数。"),
                     ),
                 ),
                 LearnStepDef.Concept(
-                    "ci-first-play", "Try it yourself",
+                    "ci-first-play", "自己动手试试",
                     listOf(
-                        text("**Edit the code** and watch the preview update. Try changing the text, or add a second `Text(...)` line inside `Greeting`."),
+                        text("**编辑代码**并观察预览更新。尝试修改文本，或者在 `Greeting` 内部再添加一行 `Text(...)`。"),
                         composePreview(
                             """
                             import androidx.compose.material3.Text
@@ -1746,27 +1746,27 @@ private fun composeIntro() = LearnTrackDef(
                     ),
                 ),
                 LearnStepDef.Quiz(
-                    "ci-first-q", "Quick check",
-                    prompt = "What does the @Composable annotation mark?",
+                    "ci-first-q", "快速检查",
+                    prompt = "@Composable 注解标记的是什么？",
                     options = listOf(
-                        "A function that returns a String",
-                        "A function that describes (emits) UI",
-                        "The app's entry point",
-                        "A background thread",
+                        "一个返回 String 的函数",
+                        "一个描述（发射）UI 的函数",
+                        "应用的入口点",
+                        "一个后台线程",
                     ),
                     correctIndex = 1,
-                    explanation = "A @Composable function emits UI by calling other composables; it doesn't return a value.",
+                    explanation = "`@Composable` 函数通过调用其它可组合函数来发射 UI；它并不返回一个值。",
                 ),
             ),
         ),
         LearnLessonDef(
-            id = "ci-layout", title = "Column, Row & Box", summary = "Arrange composables in space.",
+            id = "ci-layout", title = "Column、Row 与 Box", summary = "在空间中排列可组合函数。",
             iconId = "layers", estMinutes = 7,
             steps = listOf(
                 LearnStepDef.Concept(
-                    "ci-layout-c", "Stacking and aligning",
+                    "ci-layout-c", "堆叠与对齐",
                     listOf(
-                        text("Layout composables arrange their children. A **Column** stacks them vertically, a **Row** places them side by side, and a **Box** overlaps them."),
+                        text("布局可组合函数用来排列它们的子元素。**Column** 把子元素竖直堆叠，**Row** 把它们并排放置，**Box** 则让它们重叠。"),
                         composePreview(
                             """
                             import androidx.compose.foundation.layout.Column
@@ -1792,14 +1792,14 @@ private fun composeIntro() = LearnTrackDef(
                                 Stacked()
                             }
                             """,
-                            caption = "A Column stacks its children vertically",
+                            caption = "一个 Column 把它的子元素垂直堆叠",
                         ),
                     ),
                 ),
                 LearnStepDef.Concept(
-                    "ci-layout-play", "Rows sit side by side",
+                    "ci-layout-play", "Row 让元素并排排列",
                     listOf(
-                        text("Swap the `Column` for a `Row` and the items line up horizontally. **Edit the code** — try switching between `Column` and `Row`, or add another `Text`."),
+                        text("把 `Column` 换成 `Row`，元素就会水平排成一排。**编辑代码** —— 试着在 `Column` 和 `Row` 之间切换，或者再添加一个 `Text`。"),
                         composePreview(
                             """
                             import androidx.compose.foundation.layout.Row
@@ -1829,22 +1829,22 @@ private fun composeIntro() = LearnTrackDef(
                     ),
                 ),
                 LearnStepDef.Quiz(
-                    "ci-layout-q", "Quick check",
-                    prompt = "Which layout places its children side by side, horizontally?",
+                    "ci-layout-q", "快速检查",
+                    prompt = "哪种布局会把它的子元素水平并排放置？",
                     options = listOf("Column", "Row", "Box", "Text"),
                     correctIndex = 1,
-                    explanation = "Row lays children out horizontally; Column stacks them vertically; Box overlaps them.",
+                    explanation = "Row 让子元素水平排列；Column 把它们垂直堆叠；Box 让它们重叠。",
                 ),
             ),
         ),
         LearnLessonDef(
-            id = "ci-modifiers", title = "Modifiers", summary = "Size, pad, and decorate composables.",
+            id = "ci-modifiers", title = "修饰符", summary = "调整可组合函数的大小、内边距与外观。",
             iconId = "layers", estMinutes = 7,
             steps = listOf(
                 LearnStepDef.Concept(
-                    "ci-modifiers-c", "The Modifier chain",
+                    "ci-modifiers-c", "Modifier 链",
                     listOf(
-                        text("A **Modifier** adjusts how a composable looks and is laid out — padding, size, background, and more. You chain calls, and **order matters**: `padding` then `background` differs from `background` then `padding`."),
+                        text("**Modifier（修饰符）** 用来调整可组合函数的外观与布局方式 —— 内边距、大小、背景等。你链式调用它们，而且**顺序很重要**：先 `padding` 再 `background` 与先 `background` 再 `padding` 效果不同。"),
                         composePreview(
                             """
                             import androidx.compose.foundation.background
@@ -1879,9 +1879,9 @@ private fun composeIntro() = LearnTrackDef(
                     ),
                 ),
                 LearnStepDef.Concept(
-                    "ci-modifiers-play", "Experiment",
+                    "ci-modifiers-play", "做实验",
                     listOf(
-                        text("**Edit the modifiers** — change the padding value, swap the `background` colour, or reorder `.background(...)` and `.padding(...)` to see how it changes."),
+                        text("**编辑这些修饰符** —— 修改内边距的值，换一种 `background` 颜色，或者给 `.background(...)` 和 `.padding(...)` 调换顺序，看看会发生什么。"),
                         composePreview(
                             """
                             import androidx.compose.foundation.background
@@ -1914,28 +1914,28 @@ private fun composeIntro() = LearnTrackDef(
                     ),
                 ),
                 LearnStepDef.Quiz(
-                    "ci-modifiers-q", "Quick check",
-                    prompt = "Why does the order of modifiers in the chain matter?",
+                    "ci-modifiers-q", "快速检查",
+                    prompt = "为什么修饰符在链中的顺序很重要？",
                     options = listOf(
-                        "It doesn't — order is ignored",
-                        "Each modifier wraps the result of the previous one, so padding-then-background differs from background-then-padding",
-                        "Only the first modifier is applied",
-                        "Modifiers must be alphabetical",
+                        "不重要 —— 顺序会被忽略",
+                        "每个修饰符会包裹前一个的结果，所以先内边距再背景，与先背景再内边距效果不同",
+                        "只会应用第一个修饰符",
+                        "修饰符必须按字母顺序排列",
                     ),
                     correctIndex = 1,
-                    explanation = "Modifiers apply outside-in in the order written; each wraps the previous, so ordering changes the result.",
+                    explanation = "修饰符按照书写顺序由外到内应用；每一个都会包裹前一个，所以顺序会改变结果。",
                 ),
             ),
         ),
         LearnLessonDef(
-            id = "ci-state", title = "State & remember", summary = "Make the UI react to changes.",
+            id = "ci-state", title = "状态与 remember", summary = "让 UI 对变化做出反应。",
             iconId = "layers", estMinutes = 8,
             steps = listOf(
                 LearnStepDef.Concept(
-                    "ci-state-c", "State drives recomposition",
+                    "ci-state-c", "状态驱动重组",
                     listOf(
-                        text("When **state** changes, Compose re-runs the composables that read it — this is **recomposition**. `remember { mutableStateOf(...) }` holds a value across recompositions; `by` lets you read and write it like a normal variable."),
-                        text("Tap the button in the live preview — the count updates because the `Text` reads the state:"),
+                        text("当**状态**发生变化时，Compose 会重新运行读取该状态的组合函数 —— 这就是**重组（recomposition）**。`remember { mutableStateOf(...) }` 用来在重组之间保存一个值；`by` 让你像普通变量一样读写它。"),
+                        text("点击实时预览中的按钮 —— 计数会更新，因为 `Text` 读取了这个状态："),
                         composePreview(
                             """
                             import androidx.compose.foundation.layout.Column
@@ -1969,33 +1969,33 @@ private fun composeIntro() = LearnTrackDef(
                             }
                             """,
                             interactive = true,
-                            caption = "Tap Increment — the count is state",
+                            caption = "点击 Increment —— 计数就是状态",
                         ),
-                        note("Without `remember`, the value would reset to its initial value on every recomposition."),
+                        note("如果没有 `remember`，这个值会在每次重组时被重置为初始值。"),
                     ),
                 ),
                 LearnStepDef.Quiz(
-                    "ci-state-q", "Quick check",
-                    prompt = "What does remember { mutableStateOf(0) } do?",
+                    "ci-state-q", "快速检查",
+                    prompt = "remember { mutableStateOf(0) } 做了什么？",
                     options = listOf(
-                        "Runs the code on a background thread",
-                        "Holds a value that survives recomposition and triggers UI updates when it changes",
-                        "Creates a constant that never changes",
-                        "Logs the value to the console",
+                        "在一个后台线程上运行代码",
+                        "保存一个能在重组后存活的值，并在它变化时触发 UI 更新",
+                        "创建一个永不变化的常量",
+                        "把值记录到控制台",
                     ),
                     correctIndex = 1,
-                    explanation = "mutableStateOf makes an observable value; remember keeps it across recompositions so reads recompose when it changes.",
+                    explanation = "mutableStateOf 创建一个可观察的值；remember 让它跨重组保存下来，因此当它变化时，读取它的部分会重组。",
                 ),
             ),
         ),
         LearnLessonDef(
-            id = "ci-input", title = "Buttons & text input", summary = "Handle taps and typing.",
+            id = "ci-input", title = "按钮与文本输入", summary = "处理点击与输入。",
             iconId = "layers", estMinutes = 8,
             steps = listOf(
                 LearnStepDef.Concept(
-                    "ci-input-c", "Reacting to the user",
+                    "ci-input-c", "响应用户操作",
                     listOf(
-                        text("A **Button** takes an `onClick` lambda; an **OutlinedTextField** shows an input whose `value` you keep in state and update in `onValueChange`. Together they make an interactive form."),
+                        text("**Button** 接收一个 `onClick` lambda；**OutlinedTextField** 显示一个输入框，其 `value` 保存在状态中，并在 `onValueChange` 里更新。它们组合起来就构成了一个可交互的表单。"),
                         composePreview(
                             """
                             import androidx.compose.foundation.layout.Column
@@ -2031,32 +2031,32 @@ private fun composeIntro() = LearnTrackDef(
                             }
                             """,
                             interactive = true,
-                            caption = "Type in the field — the greeting follows",
+                            caption = "在输入框里输入 —— 问候语会跟随变化",
                         ),
                     ),
                 ),
                 LearnStepDef.Quiz(
-                    "ci-input-q", "Quick check",
-                    prompt = "How does an OutlinedTextField report what the user typed?",
+                    "ci-input-q", "快速检查",
+                    prompt = "OutlinedTextField 如何上报用户输入的内容？",
                     options = listOf(
-                        "It returns the text from the function",
-                        "Through its onValueChange lambda, which you use to update state",
-                        "It writes directly to a file",
-                        "You read it from a global variable",
+                        "它从函数中返回这段文本",
+                        "通过它的 onValueChange lambda，你用它来更新状态",
+                        "它直接把内容写入一个文件",
+                        "你从一个全局变量中读取它",
                     ),
                     correctIndex = 1,
-                    explanation = "The field is stateless: you pass its value in and receive edits via onValueChange, updating your state.",
+                    explanation = "这个输入框是无状态的：你把它的值传进去，并通过 onValueChange 接收编辑内容，从而更新你自己的状态。",
                 ),
             ),
         ),
         LearnLessonDef(
-            id = "ci-lists", title = "Showing a list", summary = "Render many items from data.",
+            id = "ci-lists", title = "显示一个列表", summary = "根据数据渲染多个条目。",
             iconId = "layers", estMinutes = 6,
             steps = listOf(
                 LearnStepDef.Concept(
-                    "ci-lists-c", "Looping in a composable",
+                    "ci-lists-c", "在可组合函数中循环",
                     listOf(
-                        text("Because composables are just Kotlin, you can **loop** to emit one child per data item. A `for` loop inside a `Column` renders a row per element:"),
+                        text("因为可组合函数只是普通 Kotlin 代码，所以你可以**循环**来为每个数据条目发射一个子元素。一个 `Column` 里的 `for` 循环会为每个元素渲染一行："),
                         composePreview(
                             """
                             import androidx.compose.foundation.layout.Column
@@ -2084,22 +2084,22 @@ private fun composeIntro() = LearnTrackDef(
                             }
                             """,
                             interactive = true,
-                            caption = "One Text per list item",
+                            caption = "每个列表条目对应一个 Text",
                         ),
-                        tip("For long, scrolling lists you'll reach for `LazyColumn` — that's in the Advanced track."),
+                        tip("对于很长的、需要滚动的列表，你会想用 `LazyColumn` —— 那在进阶课程里。"),
                     ),
                 ),
                 LearnStepDef.Quiz(
-                    "ci-lists-q", "Quick check",
-                    prompt = "How do you render one composable per item in a small list?",
+                    "ci-lists-q", "快速检查",
+                    prompt = "如何为一个小列表中的每个条目各渲染一个可组合函数？",
                     options = listOf(
-                        "You can't — Compose has no loops",
-                        "Loop with a for-loop inside a layout, emitting a child each pass",
-                        "Call the composable once and it repeats automatically",
-                        "Use a while(true) loop",
+                        "不行 —— Compose 里没有循环",
+                        "在一个布局内部使用 for 循环，每轮循环发射一个子元素",
+                        "调用一次可组合函数，它会自动重复",
+                        "使用一个 while(true) 循环",
                     ),
                     correctIndex = 1,
-                    explanation = "Composables are Kotlin, so a for-loop inside a Column emits one child per element.",
+                    explanation = "可组合函数就是 Kotlin 代码，所以 `Column` 里的 for 循环会为每个元素发射一个子元素。",
                 ),
             ),
         ),
@@ -2107,27 +2107,27 @@ private fun composeIntro() = LearnTrackDef(
 )
 
 // ===========================================================================
-// Compose: Advanced (state hoisting, lazy lists, theming, effects, animation)
+// Compose：进阶（状态提升、懒加载列表、主题、副作用、动画）
 // ===========================================================================
 
 private fun composeAdvanced() = LearnTrackDef(
     id = "compose-advanced",
-    title = "Compose: Advanced",
-    subtitle = "State hoisting, lazy lists, theming, and animation",
+    title = "Compose 进阶",
+    subtitle = "状态提升、懒加载列表、主题与动画",
     iconId = "layers",
     accentColor = ACCENT_COMPOSE2,
     language = "kotlin-compose",
     category = "Compose",
     lessons = listOf(
         LearnLessonDef(
-            id = "ca-hoist", title = "State hoisting", summary = "Make composables reusable and testable.",
+            id = "ca-hoist", title = "状态提升", summary = "让可组合函数可复用、可测试。",
             iconId = "layers", estMinutes = 8,
             steps = listOf(
                 LearnStepDef.Concept(
-                    "ca-hoist-c", "Lift state up",
+                    "ca-hoist-c", "把状态提升到上层",
                     listOf(
-                        text("A **stateless** composable takes its data as parameters and reports events with callbacks; a **stateful** caller owns the state. This is **state hoisting** — it makes the display reusable and easy to preview."),
-                        text("`CounterDisplay` holds no state; `CounterScreen` owns it and passes it down. Tap the button:"),
+                        text("**无状态（stateless）** 的可组合函数把数据作为参数接收，并用回调上报事件；**有状态（stateful）** 的调用方持有状态。这就是**状态提升（state hoisting）** —— 它让显示内容变得可复用、也便于预览。"),
+                        text("`CounterDisplay` 不持有任何状态；`CounterScreen` 拥有状态并向下传递。点击按钮："),
                         composePreview(
                             """
                             import androidx.compose.foundation.layout.Column
@@ -2166,32 +2166,32 @@ private fun composeAdvanced() = LearnTrackDef(
                             }
                             """,
                             interactive = true,
-                            caption = "Stateless display + stateful caller",
+                            caption = "无状态的显示 + 有状态的调用方",
                         ),
                     ),
                 ),
                 LearnStepDef.Quiz(
-                    "ca-hoist-q", "Quick check",
-                    prompt = "What does 'hoisting state' mean?",
+                    "ca-hoist-q", "快速检查",
+                    prompt = "“提升状态”是什么意思？",
                     options = listOf(
-                        "Storing state in a global variable",
-                        "Moving state up to a caller and passing values down + events up, so the composable is stateless",
-                        "Deleting all state",
-                        "Running state on another thread",
+                        "把状态存储在一个全局变量里",
+                        "把状态上移到调用方，向下传值、向上回传事件，从而让可组合函数保持无状态",
+                        "删除所有状态",
+                        "在另一个线程上运行状态",
                     ),
                     correctIndex = 1,
-                    explanation = "A hoisted composable receives its value as a parameter and reports changes via a callback — reusable and previewable.",
+                    explanation = "被提升的可组合函数把它的值作为参数接收，并通过回调上报变化 —— 这样既可复用也可预览。",
                 ),
             ),
         ),
         LearnLessonDef(
-            id = "ca-lazy", title = "LazyColumn", summary = "Efficient, scrolling lists.",
+            id = "ca-lazy", title = "LazyColumn", summary = "高效、可滚动的列表。",
             iconId = "layers", estMinutes = 7,
             steps = listOf(
                 LearnStepDef.Concept(
-                    "ca-lazy-c", "Only compose what's visible",
+                    "ca-lazy-c", "只组合可见的内容",
                     listOf(
-                        text("A plain `Column` composes every child at once. A **LazyColumn** composes only the items on screen and reuses them as you scroll — the right tool for long lists. You describe items inside its `items(...)` block:"),
+                        text("一个普通的 `Column` 会一次性组合所有子元素。**LazyColumn** 只组合当前屏幕上的条目，并在你滚动时复用它们 —— 它是长列表的正确选择。你可以在它的 `items(...)` 代码块里描述这些条目："),
                         composePreview(
                             """
                             import androidx.compose.foundation.layout.padding
@@ -2219,33 +2219,33 @@ private fun composeAdvanced() = LearnTrackDef(
                                 ItemList()
                             }
                             """,
-                            caption = "LazyColumn renders items on demand",
+                            caption = "LazyColumn 按需渲染条目",
                         ),
-                        note("Use `items(list) { }` for a list of data, or `items(count) { index -> }` for a count."),
+                        note("对于列表数据，用 `items(list) { }`；如果需要设置数量，用 `items(count) { index -> }`。"),
                     ),
                 ),
                 LearnStepDef.Quiz(
-                    "ca-lazy-q", "Quick check",
-                    prompt = "Why prefer LazyColumn over Column for a long list?",
+                    "ca-lazy-q", "快速检查",
+                    prompt = "对于长列表，为什么更推荐 LazyColumn 而不是 Column？",
                     options = listOf(
-                        "It looks different",
-                        "It only composes the items currently visible, so it scales to large lists",
-                        "It sorts the list automatically",
-                        "It runs on a background thread",
+                        "它看起来不一样",
+                        "它只组合当前可见的条目，所以能扩展到很大的列表",
+                        "它会自动给列表排序",
+                        "它运行在后台线程上",
                     ),
                     correctIndex = 1,
-                    explanation = "LazyColumn composes and recycles only visible items instead of all of them up front.",
+                    explanation = "LazyColumn 只会组合并复用当前可见的条目，而不是一次性组合全部条目。",
                 ),
             ),
         ),
         LearnLessonDef(
-            id = "ca-theme", title = "Material 3 theming", summary = "Colors and type from the theme.",
+            id = "ca-theme", title = "Material 3 主题", summary = "从主题中获取颜色和字体。",
             iconId = "layers", estMinutes = 7,
             steps = listOf(
                 LearnStepDef.Concept(
-                    "ca-theme-c", "MaterialTheme, Card & typography",
+                    "ca-theme-c", "MaterialTheme、Card 与排版",
                     listOf(
-                        text("Material 3 composables read colours and text styles from **MaterialTheme**, so your UI stays consistent. A **Card** groups content on a raised surface; `MaterialTheme.typography` provides named text styles:"),
+                        text("Material 3 的可组合函数会从 **MaterialTheme** 中读取颜色和文本样式，让 UI 保持一致。**Card** 在隆起的表面上对内容进行分组；`MaterialTheme.typography` 提供命名好的文本样式："),
                         composePreview(
                             """
                             import androidx.compose.foundation.layout.Column
@@ -2279,46 +2279,46 @@ private fun composeAdvanced() = LearnTrackDef(
                             }
                             """,
                             interactive = true,
-                            caption = "A Card using theme typography",
+                            caption = "一个使用主题排版的 Card",
                         ),
                     ),
                 ),
                 LearnStepDef.Quiz(
-                    "ca-theme-q", "Quick check",
-                    prompt = "Where do Material 3 composables get their colors and text styles?",
+                    "ca-theme-q", "快速检查",
+                    prompt = "Material 3 的可组合函数从哪里获取颜色和文本样式？",
                     options = listOf(
-                        "Hardcoded in each composable",
-                        "From MaterialTheme (colorScheme and typography)",
-                        "From the AndroidManifest",
-                        "From a network request",
+                        "在每个可组合函数里硬编码",
+                        "从 MaterialTheme（colorScheme 和 typography）",
+                        "从 AndroidManifest",
+                        "从一个网络请求",
                     ),
                     correctIndex = 1,
-                    explanation = "MaterialTheme provides colorScheme, typography, and shapes so components stay consistent.",
+                    explanation = "MaterialTheme 提供 colorScheme、typography 和 shapes，让组件保持一致。",
                 ),
             ),
         ),
         LearnLessonDef(
-            id = "ca-effects", title = "Side effects", summary = "Run non-UI work at the right time.",
+            id = "ca-effects", title = "副作用", summary = "在正确的时机运行非 UI 的工作。",
             iconId = "layers", estMinutes = 7,
             steps = listOf(
                 LearnStepDef.Concept(
-                    "ca-effects-c", "Effects belong outside composition",
+                    "ca-effects-c", "副作用属于组合之外",
                     listOf(
-                        text("A composable can run many times, so you must not start work (network calls, timers) directly in its body. **Side-effect APIs** run that work at controlled moments."),
-                        text("**LaunchedEffect** runs a suspend block when it enters composition (and restarts if its key changes) — ideal for one-off loads:"),
+                        text("可组合函数可能被调用很多次，所以你绝不能直接在函数体内启动会带来影响的工作（网络请求、定时器等）。**副作用 API** 让这类工作在受控的时机运行。"),
+                        text("**LaunchedEffect** 会在它进入组合时运行一个可挂起的代码块（如果它的键变了会重新运行）—— 非常适合一次性的加载："),
                         code(
                             """
                             @Composable
                             fun Screen(userId: String) {
                                 var name by remember { mutableStateOf("Loading…") }
                                 LaunchedEffect(userId) {
-                                    name = fetchName(userId)   // runs once per userId
+                                    name = fetchName(userId)   // 每个 userId 只运行一次
                                 }
                                 Text(name)
                             }
                             """
                         ),
-                        text("Below, a plain piece of state drives the UI — the same idea a `LaunchedEffect` would set. Tap to flip it:"),
+                        text("下面是一段驱动 UI 的普通状态 —— 和 `LaunchedEffect` 要设置的内容是同一个思路。点击切换它："),
                         composePreview(
                             """
                             import androidx.compose.foundation.layout.Column
@@ -2353,32 +2353,32 @@ private fun composeAdvanced() = LearnTrackDef(
                             """,
                             interactive = true,
                         ),
-                        note("Other effects: `rememberCoroutineScope` (launch work from a callback) and `DisposableEffect` (clean up when leaving composition)."),
+                        note("其它的副作用：`rememberCoroutineScope`（从回调中启动工作）和 `DisposableEffect`（离开组合时做清理）。"),
                     ),
                 ),
                 LearnStepDef.Quiz(
-                    "ca-effects-q", "Quick check",
-                    prompt = "Why not start a network call directly in a composable's body?",
+                    "ca-effects-q", "快速检查",
+                    prompt = "为什么不能直接在一个可组合函数的函数体内启动网络请求？",
                     options = listOf(
-                        "Network calls are not allowed in Kotlin",
-                        "A composable can recompose many times, so the call would fire repeatedly; LaunchedEffect scopes it",
-                        "It would make the app faster",
-                        "The body only runs once, so it's fine",
+                        "Kotlin 中禁止网络请求",
+                        "可组合函数可能会重组很多次，所以请求会反复触发；LaunchedEffect 会对它做作用域限定",
+                        "这样会让应用更快",
+                        "函数体只运行一次，所以没问题",
                     ),
                     correctIndex = 1,
-                    explanation = "Composition can repeat; LaunchedEffect runs the work once per key instead of every recomposition.",
+                    explanation = "组合可能会重复发生；LaunchedEffect 不是每次重组都运行，而是按照键值运行一次。",
                 ),
             ),
         ),
         LearnLessonDef(
-            id = "ca-anim", title = "Animation basics", summary = "Animate state changes smoothly.",
+            id = "ca-anim", title = "动画基础", summary = "让状态变化平滑过渡。",
             iconId = "layers", estMinutes = 7,
             steps = listOf(
                 LearnStepDef.Concept(
                     "ca-anim-c", "animate*AsState",
                     listOf(
-                        text("The simplest animations come from `animate*AsState` functions: give them a **target** value that depends on state, and Compose animates from the old value to the new one whenever it changes."),
-                        text("Here the box colour animates between two values as you toggle. **Edit** the colours or the size:"),
+                        text("最简单的动画来自 `animate*AsState` 这些函数：给它们一个依赖状态的**目标（target）** 值，当目标值变化时，Compose 就会从旧值动画过渡到新值。"),
+                        text("这里，当你切换开关时，方块颜色会在两个值之间动画过渡。**编辑**颜色或大小："),
                         composePreview(
                             """
                             import androidx.compose.animation.animateColorAsState
@@ -2427,21 +2427,21 @@ private fun composeAdvanced() = LearnTrackDef(
                             }
                             """,
                             interactive = true,
-                            caption = "Tap Toggle — the color animates",
+                            caption = "点击 Toggle —— 颜色会动画过渡",
                         ),
                     ),
                 ),
                 LearnStepDef.Quiz(
-                    "ca-anim-q", "Quick check",
-                    prompt = "What do animate*AsState functions do?",
+                    "ca-anim-q", "快速检查",
+                    prompt = "animate*AsState 这些函数做了什么？",
                     options = listOf(
-                        "Run an animation on a background thread",
-                        "Animate a value toward a new target whenever the target changes",
-                        "Play a video",
-                        "Delay the whole composable",
+                        "在后台线程上运行一段动画",
+                        "每当目标值变化时，把一个值动画过渡到新的目标值",
+                        "播放一段视频",
+                        "延迟整个可组合函数",
                     ),
                     correctIndex = 1,
-                    explanation = "You give a target value derived from state; the animated value eases from the old value to the new one.",
+                    explanation = "你给出一个由状态推导出的目标值；动画值会从容地从旧值过渡到新值。",
                 ),
             ),
         ),
@@ -2449,26 +2449,26 @@ private fun composeAdvanced() = LearnTrackDef(
 )
 
 // ===========================================================================
-// Java: More (JDK, Java-8 safe — interfaces, maps, generics)
+// Java：更多（JDK，兼容 Java 8 —— 接口、映射、泛型）
 // ===========================================================================
 
 private fun javaMore() = LearnTrackDef(
     id = "java-more",
-    title = "Java: More",
-    subtitle = "Interfaces, maps, and generics",
+    title = "Java 更多",
+    subtitle = "接口、映射与泛型",
     iconId = "java",
     accentColor = ACCENT_JAVA3,
     language = "java",
     category = "Java",
     lessons = listOf(
         LearnLessonDef(
-            id = "jm-interface", title = "Interfaces", summary = "Program to a contract.",
+            id = "jm-interface", title = "接口", summary = "面向契约编程。",
             iconId = "java", estMinutes = 7,
             steps = listOf(
                 LearnStepDef.Concept(
                     "jm-interface-c", "implements",
                     listOf(
-                        text("An **interface** declares methods; a class `implements` it and provides the bodies:"),
+                        text("**接口（interface）** 声明方法；类用 `implements` 实现它并提供方法体："),
                         code(
                             """
                             interface Greeter {
@@ -2486,18 +2486,18 @@ private fun javaMore() = LearnTrackDef(
                     ),
                 ),
                 LearnStepDef.Interactive(
-                    "jm-interface-i", "Implement Greeter",
-                    listOf(text("Make `class English implements Greeter` whose `greet()` returns `\"Hi\"`, then print `new English().greet()`.")),
+                    "jm-interface-i", "实现 Greeter",
+                    listOf(text("创建 `class English implements Greeter`，让它的 `greet()` 返回 `\"Hi\"`，然后打印 `new English().greet()`。")),
                     starterCode = """
                         interface Greeter {
                             String greet();
                         }
 
-                        // Make class English implement Greeter, returning "Hi" from greet()
+                        // 创建 class English 实现 Greeter，greet() 返回 "Hi"
 
                         public class Main {
                             public static void main(String[] args) {
-                                // Print new English().greet()
+                                // 打印 new English().greet()
                             }
                         }
                     """,
@@ -2525,13 +2525,13 @@ private fun javaMore() = LearnTrackDef(
             ),
         ),
         LearnLessonDef(
-            id = "jm-map", title = "Maps", summary = "Look values up by key.",
+            id = "jm-map", title = "映射", summary = "按键查找值。",
             iconId = "java", estMinutes = 6,
             steps = listOf(
                 LearnStepDef.Concept(
                     "jm-map-c", "HashMap",
                     listOf(
-                        text("A `HashMap` stores key → value pairs. `put` adds one; `get` looks it up:"),
+                        text("`HashMap` 存储键 → 值的映射。`put` 添加一个；`get` 查找它："),
                         code(
                             """
                             import java.util.HashMap;
@@ -2545,15 +2545,15 @@ private fun javaMore() = LearnTrackDef(
                     ),
                 ),
                 LearnStepDef.Interactive(
-                    "jm-map-i", "Add the values",
-                    listOf(text("Put `\"a\" -> 1` and `\"b\" -> 2` in a `HashMap`, then print `get(\"a\") + get(\"b\")` (`3`).")),
+                    "jm-map-i", "把值加起来",
+                    listOf(text("在 `HashMap` 中放入 `\"a\" -> 1` 和 `\"b\" -> 2`，然后打印 `get(\"a\") + get(\"b\")`（`3`）。")),
                     starterCode = """
                         import java.util.HashMap;
 
                         public class Main {
                             public static void main(String[] args) {
                                 HashMap<String, Integer> map = new HashMap<>();
-                                // Put "a"->1 and "b"->2, then print the sum of the two values
+                                // 放入 "a"->1 和 "b"->2，然后打印两个值的和
                             }
                         }
                     """,
@@ -2576,13 +2576,13 @@ private fun javaMore() = LearnTrackDef(
             ),
         ),
         LearnLessonDef(
-            id = "jm-generics", title = "Generics", summary = "Write code that works for any type.",
+            id = "jm-generics", title = "泛型", summary = "编写适用于任何类型的代码。",
             iconId = "java", estMinutes = 7,
             steps = listOf(
                 LearnStepDef.Concept(
-                    "jm-generics-c", "Type parameters",
+                    "jm-generics-c", "类型参数",
                     listOf(
-                        text("A **generic** method uses a type parameter `<T>` so it works for any type without casting:"),
+                        text("**泛型（generic）** 方法使用类型参数 `<T>`，这样无需强制转换就能适用于任何类型："),
                         code(
                             """
                             static <T> T firstOf(T[] items) {
@@ -2597,15 +2597,15 @@ private fun javaMore() = LearnTrackDef(
                     ),
                 ),
                 LearnStepDef.Interactive(
-                    "jm-generics-i", "Return the first element",
-                    listOf(text("Write a generic `static <T> T firstOf(T[] items)` that returns the first element, then print `firstOf` of `{\"Sam\", \"Alex\"}` (`Sam`).")),
+                    "jm-generics-i", "返回第一个元素",
+                    listOf(text("编写一个泛型方法 `static <T> T firstOf(T[] items)`，返回数组的第一个元素，然后打印 `{\"Sam\", \"Alex\"}` 的 `firstOf` 结果（`Sam`）。")),
                     starterCode = """
                         public class Main {
-                            // Add a generic static <T> T firstOf(T[] items) returning items[0]
+                            // 添加一个泛型方法 static <T> T firstOf(T[] items)，返回 items[0]
 
                             public static void main(String[] args) {
                                 String[] names = {"Sam", "Alex"};
-                                // Print firstOf(names)
+                                // 打印 firstOf(names)
                             }
                         }
                     """,
@@ -2631,26 +2631,26 @@ private fun javaMore() = LearnTrackDef(
 )
 
 // ===========================================================================
-// Java: Beyond Basics (intermediate — JDK only, fully interactive)
+// Java：超越基础（intermediate —— 仅 JDK，全程可交互）
 // ===========================================================================
 
 private fun javaBeyond() = LearnTrackDef(
     id = "java-beyond",
-    title = "Java: Beyond Basics",
-    subtitle = "Classes, collections, and exceptions",
+    title = "Java 超越基础",
+    subtitle = "类、集合与异常",
     iconId = "java",
     accentColor = ACCENT_JAVA2,
     language = "java",
     category = "Java",
     lessons = listOf(
         LearnLessonDef(
-            id = "jb-classes", title = "Classes & objects", summary = "Model things with your own types.",
+            id = "jb-classes", title = "类与对象", summary = "用自己的类型来建模事物。",
             iconId = "java", estMinutes = 7,
             steps = listOf(
                 LearnStepDef.Concept(
-                    "jb-classes-c", "Defining a class",
+                    "jb-classes-c", "定义类",
                     listOf(
-                        text("A **class** is a blueprint; an **object** is an instance created with `new`. Methods are the things it can do:"),
+                        text("**类（class）** 是一份蓝图；**对象（object）** 是用 `new` 创建的实例。方法是它能做的事情："),
                         code(
                             """
                             class Dog {
@@ -2667,16 +2667,16 @@ private fun javaBeyond() = LearnTrackDef(
                     ),
                 ),
                 LearnStepDef.Interactive(
-                    "jb-classes-i", "A barking Dog",
-                    listOf(text("Give `Dog` a `bark()` method that returns `\"Woof\"`, then print `new Dog().bark()`.")),
+                    "jb-classes-i", "一只会叫的 Dog",
+                    listOf(text("给 `Dog` 添加一个返回 `\"Woof\"` 的 `bark()` 方法，然后打印 `new Dog().bark()`。")),
                     starterCode = """
                         class Dog {
-                            // add a bark() method that returns "Woof"
+                            // 添加一个返回 "Woof" 的 bark() 方法
                         }
 
                         public class Main {
                             public static void main(String[] args) {
-                                // Print new Dog().bark()
+                                // 打印 new Dog().bark()
                             }
                         }
                     """,
@@ -2700,13 +2700,13 @@ private fun javaBeyond() = LearnTrackDef(
             ),
         ),
         LearnLessonDef(
-            id = "jb-list", title = "Lists", summary = "Grow a collection with ArrayList.",
+            id = "jb-list", title = "列表", summary = "用 ArrayList 构建一个集合。",
             iconId = "java", estMinutes = 6,
             steps = listOf(
                 LearnStepDef.Concept(
                     "jb-list-c", "ArrayList",
                     listOf(
-                        text("An `ArrayList` is a resizable list. Add with `add`, count with `size`:"),
+                        text("`ArrayList` 是一个可调整大小的列表。用 `add` 添加元素，用 `size` 统计数量："),
                         code(
                             """
                             import java.util.ArrayList;
@@ -2721,19 +2721,19 @@ private fun javaBeyond() = LearnTrackDef(
                     ),
                 ),
                 LearnStepDef.Interactive(
-                    "jb-list-i", "Count the items",
-                    listOf(text("Create an `ArrayList<String>`, add `\"a\"` and `\"b\"`, then print its `size()` (`2`).")),
+                    "jb-list-i", "统计条目数量",
+                    listOf(text("创建一个 `ArrayList<String>`，添加 `\"a\"` 和 `\"b\"`，然后打印它的 `size()`（`2`）。")),
                     starterCode = """
                         import java.util.ArrayList;
 
                         public class Main {
                             public static void main(String[] args) {
-                                // Create an ArrayList<String>, add "a" and "b", print its size
+                                // 创建一个 ArrayList<String>，添加 "a" 和 "b"，打印它的 size
                             }
                         }
                     """,
                     language = "java",
-                    hints = listOf("ArrayList<String> list = new ArrayList<>();", "list.add(\"a\"); then print list.size()"),
+                    hints = listOf("ArrayList<String> list = new ArrayList<>();", "list.add(\"a\"); 然后打印 list.size()"),
                     solution = """
                         import java.util.ArrayList;
 
@@ -2751,13 +2751,13 @@ private fun javaBeyond() = LearnTrackDef(
             ),
         ),
         LearnLessonDef(
-            id = "jb-exceptions", title = "Exceptions", summary = "Recover from errors with try / catch.",
+            id = "jb-exceptions", title = "异常", summary = "用 try / catch 从错误中恢复。",
             iconId = "java", estMinutes = 6,
             steps = listOf(
                 LearnStepDef.Concept(
                     "jb-exceptions-c", "try / catch",
                     listOf(
-                        text("Code that might fail goes in `try`; you handle the failure in `catch`:"),
+                        text("可能出错的代码放在 `try` 中；你在 `catch` 里处理这个失败："),
                         code(
                             """
                             try {
@@ -2769,21 +2769,21 @@ private fun javaBeyond() = LearnTrackDef(
                             """,
                             "java",
                         ),
-                        text("Dividing by zero throws an `ArithmeticException`, which the `catch` block handles instead of crashing the program."),
+                        text("除以零会抛出 `ArithmeticException`，`catch` 代码块会处理它，而不是让程序崩溃。"),
                     ),
                 ),
                 LearnStepDef.Interactive(
-                    "jb-exceptions-i", "Catch the error",
-                    listOf(text("Divide `10` by a variable holding `0` inside a `try`, and print `caught` from the `catch`.")),
+                    "jb-exceptions-i", "捕获错误",
+                    listOf(text("在 `try` 内部用保存了 `0` 的变量去除以 `10`，并在 `catch` 中打印 `caught`。")),
                     starterCode = """
                         public class Main {
                             public static void main(String[] args) {
-                                // Try 10 / zero, catch the exception, and print "caught"
+                                // 尝试计算 10 / zero，捕获异常，并打印 "caught"
                             }
                         }
                     """,
                     language = "java",
-                    hints = listOf("Wrap the division in try { ... }", "catch (ArithmeticException e) { System.out.println(\"caught\"); }"),
+                    hints = listOf("把除法包裹在 try { ... } 中", "catch (ArithmeticException e) { System.out.println(\"caught\"); }"),
                     solution = """
                         public class Main {
                             public static void main(String[] args) {
@@ -2799,16 +2799,16 @@ private fun javaBeyond() = LearnTrackDef(
                     check = ExerciseCheck(expectedOutput = "caught", requireSource = listOf("try", "catch")),
                 ),
                 LearnStepDef.Quiz(
-                    "jb-exceptions-q", "Quick check",
-                    prompt = "What happens to code after the failing line inside a try block?",
+                    "jb-exceptions-q", "快速检查",
+                    prompt = "try 代码块内出错的那一行之后的代码会怎样？",
                     options = listOf(
-                        "It runs anyway",
-                        "It's skipped; control jumps to the matching catch",
-                        "The program always crashes",
-                        "It runs twice",
+                        "它仍然会运行",
+                        "它会被跳过；控制流跳到匹配的 catch",
+                        "程序总是会崩溃",
+                        "它会运行两次",
                     ),
                     correctIndex = 1,
-                    explanation = "When an exception is thrown, the rest of the try is skipped and the matching catch runs.",
+                    explanation = "当抛出异常时，try 中剩余的代码会被跳过，并运行匹配的 catch。",
                 ),
             ),
         ),
@@ -2816,26 +2816,26 @@ private fun javaBeyond() = LearnTrackDef(
 )
 
 // ===========================================================================
-// Android Basics (concept-only orientation — building blocks of an Android app)
+// Android 基础知识（仅概念入门的引导 —— 构建一个 Android 应用的组成部分）
 // ===========================================================================
 
 private fun androidBasics() = LearnTrackDef(
     id = "android-basics",
-    title = "Android Basics",
-    subtitle = "Activities, layouts, and the app lifecycle",
+    title = "Android 基础知识",
+    subtitle = "Activity、布局与应用生命周期",
     iconId = "module.android",
     accentColor = ACCENT_ANDROID,
     language = "none",
     category = "Android",
     lessons = listOf(
         LearnLessonDef(
-            id = "and-activity", title = "Activities", summary = "The screens of your app.",
+            id = "and-activity", title = "Activity", summary = "你应用中的各个屏幕。",
             iconId = "module.android", estMinutes = 5,
             steps = listOf(
                 LearnStepDef.Concept(
-                    "and-activity-c", "What is an Activity?",
+                    "and-activity-c", "什么是 Activity？",
                     listOf(
-                        text("An **Activity** is a single screen in an Android app. It starts in `onCreate`, where you set the screen's layout with `setContentView`:"),
+                        text("**Activity** 是 Android 应用中的一个屏幕。它在 `onCreate` 中开始，你在这里用 `setContentView` 设置屏幕的布局："),
                         code(
                             """
                             class MainActivity : AppCompatActivity() {
@@ -2846,8 +2846,8 @@ private fun androidBasics() = LearnTrackDef(
                             }
                             """
                         ),
-                        text("`R.layout.activity_main` refers to the XML layout in `res/layout/activity_main.xml` — Android generates the `R` class from your resources."),
-                        text("Here's what a simple screen defined by that layout looks like — rendered live, right here:"),
+                        text("`R.layout.activity_main` 引用的是 `res/layout/activity_main.xml` 中的 XML 布局 —— Android 会从你的资源文件中生成 `R` 类。"),
+                        text("下面是由该布局定义的一个简单屏幕 —— 就在这里实时渲染："),
                         preview(
                             """
                             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -2875,21 +2875,21 @@ private fun androidBasics() = LearnTrackDef(
                                     android:textColor="#FF6B6B70" />
                             </LinearLayout>
                             """,
-                            caption = "The layout setContentView() would show",
+                            caption = "setContentView() 会显示的布局",
                         ),
-                        tip("Spin up a full Android project from the Explore tab's templates to see this wired end to end."),
+                        tip("从 Explore 标签页的模板中新建一个完整的 Android 项目，看看它前后是如何串联起来的。"),
                     ),
                 ),
             ),
         ),
         LearnLessonDef(
-            id = "and-layouts", title = "Layouts & views", summary = "Describe the UI in XML.",
+            id = "and-layouts", title = "布局与视图", summary = "用 XML 描述 UI。",
             iconId = "module.android", estMinutes = 7,
             steps = listOf(
                 LearnStepDef.Concept(
-                    "and-layouts-c", "Views and view groups",
+                    "and-layouts-c", "视图与视图组",
                     listOf(
-                        text("A layout is a tree of **views** (a `TextView`, `Button`, …) held by **view groups** (`LinearLayout`, `ConstraintLayout`, …). You write it in XML:"),
+                        text("布局是一棵由**视图（view）**（`TextView`、`Button` 等）构成的树，由**视图组（view group）**（`LinearLayout`、`ConstraintLayout` 等）承载。你用 XML 来编写它："),
                         code(
                             """
                             <LinearLayout
@@ -2905,14 +2905,14 @@ private fun androidBasics() = LearnTrackDef(
                             """,
                             "xml",
                         ),
-                        text("`layout_width`/`layout_height` are required on every view — `match_parent` fills the parent, `wrap_content` is just big enough for the content."),
-                        note("The editor gives you completion for Android widgets and attributes right inside layout XML."),
+                        text("每个视图都必须有 `layout_width`/`layout_height` —— `match_parent` 填满父视图，`wrap_content` 正好大到足以容纳内容。"),
+                        note("编辑器会在布局 XML 中为 Android 控件和属性提供自动补全。"),
                     ),
                 ),
                 LearnStepDef.Concept(
-                    "and-layouts-play", "Try it yourself",
+                    "and-layouts-play", "自己动手试试",
                     listOf(
-                        text("Below is a live layout. **Edit the XML** and watch the preview update instantly — try changing the `android:text`, the `orientation` to `horizontal`, or the button's `android:backgroundTint` colour."),
+                        text("下面是一个实时布局。**编辑 XML** 并观察预览立刻更新 —— 试试修改 `android:text`、把 `orientation` 改成 `horizontal`，或者改变按钮的 `android:backgroundTint` 颜色。"),
                         preview(
                             """
                             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -2951,29 +2951,29 @@ private fun androidBasics() = LearnTrackDef(
                     ),
                 ),
                 LearnStepDef.Quiz(
-                    "and-layouts-q", "Quick check",
-                    prompt = "What does android:layout_width=\"match_parent\" do?",
+                    "and-layouts-q", "快速检查",
+                    prompt = "android:layout_width=\"match_parent\" 会做什么？",
                     options = listOf(
-                        "Makes the view as small as its content",
-                        "Makes the view fill the width of its parent",
-                        "Hides the view",
-                        "Sets the width to exactly 100dp",
+                        "让视图和它的内容一样小",
+                        "让视图填满它父视图的宽度",
+                        "隐藏视图",
+                        "把宽度精确设置为 100dp",
                     ),
                     correctIndex = 1,
-                    explanation = "match_parent stretches the view to fill its parent; wrap_content shrinks it to fit its content.",
+                    explanation = "match_parent 会把视图拉伸到填满父视图；wrap_content 会让它缩小到刚好容纳内容。",
                 ),
             ),
         ),
         LearnLessonDef(
-            id = "and-widgets", title = "Common widgets", summary = "The building blocks of a screen.",
+            id = "and-widgets", title = "常用控件", summary = "构成一个屏幕的积木。",
             iconId = "module.android", estMinutes = 6,
             steps = listOf(
                 LearnStepDef.Concept(
-                    "and-widgets-c", "A toolkit of views",
+                    "and-widgets-c", "一组现成的视图",
                     listOf(
-                        text("Android ships a rich set of ready-made widgets. A few you'll use constantly:"),
-                        text("• **TextView** — shows text\n• **EditText** — a text input field\n• **Button** — a tappable action\n• **ImageView** — shows an image"),
-                        text("Stack a few together and you have a screen. Here they are, rendered live:"),
+                        text("Android 内置了丰富的现成控件。其中几个你会经常用到："),
+                        text("• **TextView** —— 显示文本\n• **EditText** —— 文本输入框\n• **Button** —— 可点击的操作\n• **ImageView** —— 显示图片"),
+                        text("把几个组合在一起，你就拥有了一个屏幕。下面的这些控件都是实时渲染的："),
                         preview(
                             """
                             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -3022,53 +3022,53 @@ private fun androidBasics() = LearnTrackDef(
                                     android:textColor="#FFFFFFFF" />
                             </LinearLayout>
                             """,
-                            caption = "TextView, EditText and Button working together",
+                            caption = "TextView、EditText 与 Button 协同工作",
                         ),
-                        tip("Every widget accepts the shared `layout_*`, `padding`, and `background` attributes on top of its own."),
+                        tip("每个控件除了自身的属性外，都接受共享的 `layout_*`、`padding` 和 `background` 属性。"),
                     ),
                 ),
                 LearnStepDef.Quiz(
-                    "and-widgets-q", "Quick check",
-                    prompt = "Which widget would you use for a single-line text input?",
+                    "and-widgets-q", "快速检查",
+                    prompt = "对于单行文本输入，你会使用哪个控件？",
                     options = listOf("TextView", "Button", "EditText", "ImageView"),
                     correctIndex = 2,
-                    explanation = "EditText is the editable text field; TextView only displays text.",
+                    explanation = "EditText 是可编辑的文本字段；TextView 只显示文本。",
                 ),
             ),
         ),
         LearnLessonDef(
-            id = "and-lifecycle", title = "The lifecycle", summary = "How the system drives your screen.",
+            id = "and-lifecycle", title = "生命周期", summary = "系统如何驱动你的屏幕。",
             iconId = "module.android", estMinutes = 6,
             steps = listOf(
                 LearnStepDef.Concept(
-                    "and-lifecycle-c", "Lifecycle callbacks",
+                    "and-lifecycle-c", "生命周期回调",
                     listOf(
-                        text("Android drives an Activity through **lifecycle callbacks** as it comes and goes:"),
+                        text("随着 Activity 的出现与消失，Android 会通过**生命周期回调**来驱动它："),
                         code(
                             """
-                            onCreate()   // screen created — set up UI
-                            onStart()    // becoming visible
-                            onResume()   // in the foreground, interactive
-                            onPause()    // losing focus — save quick state
-                            onStop()     // no longer visible
-                            onDestroy()  // screen going away
+                            onCreate()   // 屏幕已创建 —— 设置 UI
+                            onStart()    // 开始变得可见
+                            onResume()   // 位于前台，可交互
+                            onPause()    // 正在失去焦点 —— 保存快速状态
+                            onStop()     // 不再可见
+                            onDestroy()  // 屏幕正在销毁
                             """,
                             "plain",
                         ),
-                        text("Override the ones you need. For example, pause a game in `onPause` and resume it in `onResume`, so it behaves when the user switches apps."),
-                        tip("Every callback pairs up: onStart/onStop, onResume/onPause, onCreate/onDestroy."),
+                        text("重写你需要的那几个即可。例如，在 `onPause` 中暂停游戏，在 `onResume` 中恢复它，这样当用户切换应用时它能保持正常表现。"),
+                        tip("每个回调都是成对出现的：onStart/onStop、onResume/onPause、onCreate/onDestroy。"),
                     ),
                 ),
             ),
         ),
         LearnLessonDef(
-            id = "and-manifest", title = "The manifest", summary = "Declare what your app is and needs.",
+            id = "and-manifest", title = "清单文件", summary = "声明你的应用是什么以及需要什么。",
             iconId = "manifest", estMinutes = 5,
             steps = listOf(
                 LearnStepDef.Concept(
                     "and-manifest-c", "AndroidManifest.xml",
                     listOf(
-                        text("`AndroidManifest.xml` tells the system about your app: its components (activities), the launcher screen, and the permissions it needs:"),
+                        text("`AndroidManifest.xml` 向系统说明你的应用：它的组件（Activity）、启动屏幕，以及它需要的权限："),
                         code(
                             """
                             <manifest xmlns:android="http://schemas.android.com/apk/res/android">
@@ -3086,7 +3086,7 @@ private fun androidBasics() = LearnTrackDef(
                             """,
                             "xml",
                         ),
-                        text("The `<intent-filter>` with `MAIN` + `LAUNCHER` marks the Activity that opens when you tap the app icon."),
+                        text("带 `MAIN` + `LAUNCHER` 的 `<intent-filter>` 标识出当你点击应用图标时要打开的那个 Activity。"),
                     ),
                 ),
             ),
@@ -3095,65 +3095,65 @@ private fun androidBasics() = LearnTrackDef(
 )
 
 // ===========================================================================
-// Getting Started (concept-only orientation)
+// 快速上手（仅概念上的引导）
 // ===========================================================================
 
 private fun gettingStarted() = LearnTrackDef(
     id = "getting-started",
-    title = "Getting Started",
-    subtitle = "How projects, modules, and builds fit together",
+    title = "快速上手",
+    subtitle = "项目、模块与构建是如何组合在一起的",
     iconId = "sparkle",
     accentColor = ACCENT_START,
     language = "none",
     category = "Get started",
     lessons = listOf(
         LearnLessonDef(
-            id = "gs-welcome", title = "Welcome to CodeAssist", summary = "What you can build here.",
+            id = "gs-welcome", title = "欢迎使用 CodeAssist", summary = "你可以在这里构建什么。",
             iconId = "sparkle", estMinutes = 3,
             steps = listOf(
                 LearnStepDef.Concept(
-                    "gs-welcome-c", "A full IDE on your device",
+                    "gs-welcome-c", "一台完整的 IDE 就在你的设备上",
                     listOf(
-                        text("CodeAssist is a complete IDE that **edits, builds, and runs** Java and Kotlin projects right on your device — no desktop required."),
-                        text("You get smart code completion, live error checking, a real build system, and for Android projects a full **compile → dex → package → sign** pipeline that produces an installable APK."),
-                        tip("Head to the **Store** tab to start a new project from a ready-made template."),
+                        text("CodeAssist 是一套完整的 IDE，可以直接在你的设备上**编辑、构建并运行** Java 和 Kotlin 项目 —— 无需桌面电脑。"),
+                        text("你会获得智能代码补全、实时的错误检查、真正的构建系统，以及对 Android 项目而言完整的 **编译 → dex → 打包 → 签名** 流水线，产出可安装的 APK。"),
+                        tip("前往 **Store（商店）** 标签页，从一个现成的模板开始新建项目。"),
                     ),
                 ),
             ),
         ),
         LearnLessonDef(
-            id = "gs-modules", title = "Projects and modules", summary = "How your code is organized.",
+            id = "gs-modules", title = "项目与模块", summary = "你的代码是如何组织的。",
             iconId = "pkg", estMinutes = 4,
             steps = listOf(
                 LearnStepDef.Concept(
-                    "gs-modules-c", "The building blocks",
+                    "gs-modules-c", "组成部分",
                     listOf(
-                        text("A **project** is your whole app. It contains one or more **modules** — independently buildable units of code."),
-                        text("Each module has **source sets** (like `main`) that hold your source roots, for example:"),
+                        text("**项目（project）** 是你整个的应用。它包含一个或多个**模块（module）** —— 可独立构建的代码单元。"),
+                        text("每个模块都有**源码集（source set）**（比如 `main`）来存放你的源码根目录，例如："),
                         code(
                             """
                             app/
-                              src/main/java/     ← your Java code
-                              src/main/kotlin/   ← your Kotlin code
-                              src/main/res/      ← Android resources
+                              src/main/java/     ← 你的 Java 代码
+                              src/main/kotlin/   ← 你的 Kotlin 代码
+                              src/main/res/      ← Android 资源
                             """,
                             "plain",
                         ),
-                        note("Modules can depend on each other. An `app` module often depends on a `library` module for shared code."),
+                        note("模块之间可以互相依赖。`app` 模块经常依赖 `library` 模块来共享代码。"),
                     ),
                 ),
             ),
         ),
         LearnLessonDef(
-            id = "gs-build", title = "Building and running", summary = "From source to a running app.",
+            id = "gs-build", title = "构建与运行", summary = "从源码到正在运行的应用。",
             iconId = "hammer", estMinutes = 4,
             steps = listOf(
                 LearnStepDef.Concept(
-                    "gs-build-c", "The Run button",
+                    "gs-build-c", "运行按钮",
                     listOf(
-                        text("Tap **Run** to build and launch. Under the hood the build compiles your sources, resolves dependencies, and — for Android — dexes and packages an APK."),
-                        text("Builds are **incremental**: after the first build, only what you changed is recompiled, so later runs are fast."),
-                        tip("The build console shows each step, streamed logs, and any errors as you go."),
+                        text("点击 **运行（Run）** 来构建并启动应用。构建过程会自动编译源码、解析依赖，并且对于 Android 项目，还会进行 dex 处理并打包成 APK。"),
+                        text("构建是**增量式**的：首次构建之后，只会重新编译你改动的部分，所以后续的运行会更快。"),
+                        tip("构建控制台会展示每个步骤、实时的日志，以及过程中出现的任何错误。"),
                     ),
                 ),
             ),

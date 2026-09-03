@@ -4,7 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 
-/** One card on the board: its stable [id], the [emoji] on its face, and whether it is turned up / matched. */
+/** 棋盘上的一张卡片：稳定的 [id]、正面的 [emoji]，以及它是否已翻起 / 已配对。 */
 data class MemoryCard(
     val id: Int,
     val emoji: String,
@@ -13,10 +13,10 @@ data class MemoryCard(
 )
 
 /**
- * State and rules for the Memory (concentration) game. [newGame] deals [PAIRS] pairs of emoji face-down in a
- * random order. Turning up two cards counts a move; a match stays up, a mismatch is briefly shown then flipped
- * back down. While a mismatch is on screen the board is [locked] and [pendingMismatch] holds the two cards for
- * the UI to hide after a short delay. Compose observes the [mutableStateOf]-backed properties and recomposes.
+ * 记忆（配对）游戏的状态与规则。[newGame] 会以随机顺序发放 [PAIRS] 对、背面朝上的 emoji。
+ * 翻起两张卡片算一次移动；配对成功则保持翻开，不匹配则短暂显示后翻回背面。
+ * 当不匹配的卡片显示在屏幕上时，棋盘处于 [locked] 状态，且 [pendingMismatch] 保存那两张卡片，
+ * 供 UI 在短暂延迟后隐藏。Compose 会观察这些由 [mutableStateOf] 支撑的属性并重组。
  */
 class MemoryGameState {
     var cards by mutableStateOf(emptyList<MemoryCard>())
@@ -30,7 +30,7 @@ class MemoryGameState {
     var pendingMismatch by mutableStateOf<Pair<Int, Int>?>(null)
         private set
 
-    // The indices of the currently face-up, unmatched cards (0, 1, or 2).
+    // 当前正面朝上且未配对的卡片的索引（0、1 或 2 张）。
     private val flipped = mutableListOf<Int>()
 
     val totalPairs: Int get() = cards.size / 2
@@ -40,7 +40,7 @@ class MemoryGameState {
         newGame()
     }
 
-    /** Deal a fresh, shuffled board. */
+    /** 发一副洗好的新棋盘。 */
     fun newGame() {
         val chosen = EMOJIS.shuffled().take(PAIRS)
         cards = (chosen + chosen).shuffled().mapIndexed { index, emoji -> MemoryCard(id = index, emoji = emoji) }
@@ -51,7 +51,7 @@ class MemoryGameState {
         pendingMismatch = null
     }
 
-    /** Turn the card at [index] face-up. On the second card of a turn, resolve a match or arm a mismatch. */
+    /** 将 [index] 处的卡片翻到正面朝上。翻起本回合的第二张卡时，判定配对成功或触发不匹配。 */
     fun flip(index: Int) {
         if (locked) return
         val card = cards[index]
@@ -75,7 +75,7 @@ class MemoryGameState {
         }
     }
 
-    /** Flip the mismatched pair back down and unlock the board. Called by the UI after the reveal delay. */
+    /** 把不匹配的那对卡片翻回背面并解锁棋盘。由 UI 在显示延迟结束后调用。 */
     fun hideMismatch() {
         val pair = pendingMismatch ?: return
         setFaceUp(pair.first, false)
@@ -94,7 +94,7 @@ class MemoryGameState {
     }
 
     companion object {
-        /** How many matching pairs a board holds (PAIRS * 2 = 16 cards, a 4x4 grid). */
+        /** 每副棋盘包含多少对（PAIRS * 2 = 16 张卡，即 4x4 网格）。 */
         const val PAIRS = 8
 
         val EMOJIS = listOf(

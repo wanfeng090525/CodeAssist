@@ -75,9 +75,8 @@ class MainActivity : ComponentActivity() {
 fun SnakeScreen() {
     val game = remember { SnakeGameState() }
 
-    // The game loop: while running, advance one cell per tick. The delay shrinks as the score grows, so the
-    // snake speeds up. Keyed on `isRunning`, the effect stops cleanly when the game is paused or ends and
-    // restarts when play resumes.
+    // 游戏循环：运行时每个 tick 前进一格。随着分数增长间隔缩小，因此蛇会越来越快。
+    // 以 `isRunning` 为 key，游戏暂停或结束时该效果会干净地停止，恢复游玩时重新启动。
     LaunchedEffect(game.isRunning) {
         while (game.isRunning) {
             val speed = (170L - game.score / 10 * 6L).coerceAtLeast(70L)
@@ -138,7 +137,7 @@ private fun Board(game: SnakeGameState, modifier: Modifier = Modifier) {
                             } else {
                                 game.turn(if (dy > 0) Direction.DOWN else Direction.UP)
                             }
-                            // A swipe also starts the game if it is idle (but not while it is over).
+                            // 滑动也会在游戏处于空闲状态时启动它（但游戏已结束时不会）。
                             if (!game.isRunning && !game.isGameOver) game.start()
                         },
                     ) { change, dragAmount ->

@@ -5,13 +5,13 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 
-/** The two players, each carrying the mark it draws. */
+/** 两个玩家，各自携带其绘制的符号。 */
 enum class Player(val symbol: String) { X("X"), O("O") }
 
 /**
- * Board state and rules for 3x3 Tic-Tac-Toe. The nine [cells] (row-major, `null` = empty) are a snapshot
- * state list so a single cell write recomposes the board; the running per-player win totals persist across
- * rounds until [resetScores]. Compose observes the [mutableStateOf]-backed properties and recomposes.
+ * 3x3 井字棋的棋盘状态与规则。九个 [cells]（按行优先，`null` = 空）是一个快照状态列表，
+ * 因此写入单个格子即可重组棋盘；各玩家累计的获胜次数在 [resetScores] 之前会跨轮保持。
+ * Compose 会观察这些由 [mutableStateOf] 支撑的属性并重组。
  */
 class TicTacToeState {
     val cells = mutableStateListOf<Player?>(null, null, null, null, null, null, null, null, null)
@@ -30,7 +30,7 @@ class TicTacToeState {
     val isDraw: Boolean get() = winner == null && cells.all { it != null }
     val isOver: Boolean get() = winner != null || isDraw
 
-    /** Play the current player's mark at [index]; ignored if the cell is taken or the round is over. */
+    /** 在当前玩家 [index] 处落子；如果该格已被占用或本轮已结束则忽略。 */
     fun play(index: Int) {
         if (isOver || cells[index] != null) return
         cells[index] = current
@@ -44,7 +44,7 @@ class TicTacToeState {
         }
     }
 
-    /** Clear the board for another round, keeping the scores. X always starts. */
+    /** 清空棋盘开始新一轮，同时保留比分。始终由 X 先手。 */
     fun newRound() {
         for (i in cells.indices) cells[i] = null
         winner = null
@@ -52,7 +52,7 @@ class TicTacToeState {
         current = Player.X
     }
 
-    /** Reset the scoreboard and start a fresh round. */
+    /** 重置计分板并开始崭新的一轮。 */
     fun resetScores() {
         xWins = 0
         oWins = 0
@@ -63,7 +63,7 @@ class TicTacToeState {
         LINES.firstOrNull { line -> line.all { cells[it] == player } }
 
     companion object {
-        /** The eight winning lines: three rows, three columns, two diagonals. */
+        /** 八条获胜连线：三行、三列、两条对角线。 */
         val LINES = listOf(
             listOf(0, 1, 2), listOf(3, 4, 5), listOf(6, 7, 8),
             listOf(0, 3, 6), listOf(1, 4, 7), listOf(2, 5, 8),
