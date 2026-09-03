@@ -30,8 +30,8 @@ enum class AdPlacement {
 }
 
 /**
- * Platform advertising bridge the reusable UI can't express itself. Ads are a host concern (AdMob on
- * Android, none on desktop): the shared screens only ever ask the host to paint a native ad into a slot via
+ * Platform advertising bridge the reusable UI can't express itself. Ads are a host concern (Android now wires a
+ * no-ad host, desktop none): the shared screens only ever ask the host to paint a native ad into a slot via
  * [NativeAd] and never link an ad SDK. The host supplies a concrete implementation to
  * [dev.ide.ui.CodeAssistApp]; [None] (the default) means "this platform has no ads".
  *

@@ -25,12 +25,15 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -70,6 +73,7 @@ import dev.ide.ui.backend.UiAgentMessage
 import dev.ide.ui.backend.UiAgentModel
 import dev.ide.ui.backend.UiAgentPermissionMode
 import dev.ide.ui.backend.UiAgentRole
+import dev.ide.ui.backend.UiAgentSession
 import dev.ide.ui.backend.UiAgentToolCall
 import dev.ide.ui.backend.UiAgentToolStatus
 import dev.ide.agent.ui.generated.resources.Res
@@ -106,9 +110,11 @@ import org.jetbrains.compose.resources.stringResource
 fun ChatDrawer(backend: IdeBackend, onClose: (() -> Unit)? = null, modifier: Modifier = Modifier) {
     val chat by backend.agent.chatState.collectAsState()
     val models by backend.agent.models.collectAsState()
+    val sessions by backend.agent.sessions.collectAsState()
     var cfg by remember { mutableStateOf(backend.agent.config()) }
     var input by remember { mutableStateOf("") }
     var showProviders by remember { mutableStateOf(false) }
+    var showHistory by remember { mutableStateOf(false) }
 
     // Fetch the provider's live model list when the drawer opens or the provider changes.
     LaunchedEffect(cfg.selectedProvider) { backend.agent.refreshModels() }
@@ -120,6 +126,7 @@ fun ChatDrawer(backend: IdeBackend, onClose: (() -> Unit)? = null, modifier: Mod
                 models = models.ifEmpty { cfg.providers.firstOrNull { it.id == cfg.selectedProvider }?.models ?: emptyList() },
                 onPickModel = { backend.agent.setModel(it); cfg = backend.agent.config() },
                 onManage = { showProviders = true },
+                onHistory = { showHistory = true },
                 onCycleMode = {
                     backend.agent.setPermissionMode(nextMode(cfg.mode))
                     cfg = backend.agent.config()
@@ -156,6 +163,12 @@ fun ChatDrawer(backend: IdeBackend, onClose: (() -> Unit)? = null, modifier: Mod
                 cfg = backend.agent.config()
             }
         }
+        if (showHistory) {
+            SessionHistorySheet(sessions = sessions, activeId = chat.sessionId, onOpen = { id ->
+                backend.agent.openSession(id)
+                showHistory = false
+            }, onDelete = { backend.agent.deleteSession(it) }, onClose = { showHistory = false })
+        }
     }
 }
 
@@ -165,6 +178,7 @@ private fun ChatHeader(
     models: List<UiAgentModel>,
     onPickModel: (String) -> Unit,
     onManage: () -> Unit,
+    onHistory: () -> Unit,
     onCycleMode: () -> Unit,
     onNew: () -> Unit,
     onClose: (() -> Unit)?,
@@ -190,6 +204,7 @@ private fun ChatHeader(
             fill = Ca.colors.accentSoft,
             textColor = Ca.colors.accent,
         )
+        IconButtonCa(CaIcons.clock, "历史会话", onHistory, iconSize = 16, boxSize = 30)
         IconButtonCa(CaIcons.key, stringResource(Res.string.chat_manage_keys), onManage, iconSize = 16, boxSize = 30)
         IconButtonCa(CaIcons.refresh, stringResource(Res.string.chat_new), onNew, iconSize = 16, boxSize = 30)
         if (onClose != null) {
@@ -647,5 +662,100 @@ private fun nextMode(mode: UiAgentPermissionMode): UiAgentPermissionMode = when 
     UiAgentPermissionMode.ASK_EACH -> UiAgentPermissionMode.AUTO_ACCEPT
     UiAgentPermissionMode.AUTO_ACCEPT -> UiAgentPermissionMode.PLAN_ONLY
     UiAgentPermissionMode.PLAN_ONLY -> UiAgentPermissionMode.ASK_EACH
+}
+
+/** The session-history panel: every saved conversation, most recent first. Tap a row to restore it (the
+ *  agent loop is re-seeded with its history); the trailing button deletes it. */
+@Composable
+internal fun SessionHistorySheet(
+    sessions: List<UiAgentSession>,
+    activeId: String?,
+    onOpen: (String) -> Unit,
+    onDelete: (String) -> Unit,
+    onClose: () -> Unit,
+) {
+    CenteredDialog(visible = true, onDismiss = onClose) {
+        Column(
+            Modifier.widthIn(max = 420.dp)
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+                .clip(RoundedCornerShape(Ca.radius.xl))
+                .background(Ca.colors.glassThick)
+                .border(1.dp, Ca.colors.glassEdge, RoundedCornerShape(Ca.radius.xl))
+                .padding(vertical = 14.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+        ) {
+            Row(
+                Modifier.fillMaxWidth().padding(horizontal = 14.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                Icon(CaIcons.clock, null, Modifier.size(18.dp), tint = Ca.colors.accent)
+                Text(
+                    "历史会话",
+                    color = Ca.colors.textPrimary, style = Ca.type.title3, fontWeight = FontWeight.SemiBold,
+                    modifier = Modifier.weight(1f),
+                )
+                IconButtonCa(CaIcons.close, stringResource(Res.string.chat_close), onClose, iconSize = 16, boxSize = 30)
+            }
+            if (sessions.isEmpty()) {
+                Text(
+                    "还没有保存的会话。发送一条消息后，它会自动出现在这里。",
+                    style = Ca.type.caption, color = Ca.colors.textTertiary,
+                    modifier = Modifier.padding(horizontal = 14.dp, vertical = 18.dp),
+                )
+            } else {
+                Column(
+                    Modifier.heightIn(max = 400.dp)
+                        .verticalScroll(rememberScrollState())
+                        .padding(horizontal = 10.dp),
+                    verticalArrangement = Arrangement.spacedBy(6.dp),
+                ) {
+                    sessions.forEach { s ->
+                        SessionRow(
+                            session = s,
+                            active = s.id == activeId,
+                            onOpen = { onOpen(s.id) },
+                            onDelete = { onDelete(s.id) },
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun SessionRow(
+    session: UiAgentSession,
+    active: Boolean,
+    onOpen: () -> Unit,
+    onDelete: () -> Unit,
+) {
+    val interaction = remember { MutableInteractionSource() }
+    Row(
+        Modifier.fillMaxWidth()
+            .background(if (active) Ca.colors.accentSoft else Ca.colors.surface2, RoundedCornerShape(12.dp))
+            .clickable(interactionSource = interaction, indication = null, onClick = onOpen)
+            .padding(start = 12.dp, top = 9.dp, bottom = 9.dp, end = 4.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+            Text(
+                session.title,
+                style = Ca.type.footnote, color = Ca.colors.textPrimary,
+                fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis,
+            )
+            Text(
+                session.preview,
+                style = Ca.type.caption2, color = Ca.colors.textTertiary,
+                maxLines = 1, overflow = TextOverflow.Ellipsis,
+            )
+        }
+        IconButtonCa(
+            CaIcons.close, "删除会话", onDelete,
+            iconSize = 14, boxSize = 26, tint = Ca.colors.textTertiary,
+        )
+    }
 }
 

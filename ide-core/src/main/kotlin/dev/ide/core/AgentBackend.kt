@@ -5,6 +5,8 @@ import dev.ide.agent.AgentEventSink
 import dev.ide.agent.AgentPermissionGate
 import dev.ide.agent.AgentTool
 import dev.ide.agent.AllowAllGate
+import dev.ide.agent.ContentPart
+import dev.ide.agent.LlmMessage
 import dev.ide.agent.PermissionMode
 import dev.ide.agent.ProviderConfig
 import dev.ide.agent.SimpleToolRegistry
@@ -32,6 +34,7 @@ import dev.ide.ui.backend.UiAgentPermissionMode
 import dev.ide.ui.backend.UiAgentPermissionRequest
 import dev.ide.ui.backend.UiAgentProvider
 import dev.ide.ui.backend.UiAgentRole
+import dev.ide.ui.backend.UiAgentSession
 import dev.ide.ui.backend.UiAgentToolCall
 import dev.ide.ui.backend.UiAgentToolStatus
 import kotlinx.coroutines.CancellationException
@@ -45,10 +48,21 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.add
+import kotlinx.serialization.json.buildJsonArray
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.contentOrNull
+import kotlinx.serialization.json.put
 import java.nio.file.Files
+import java.nio.file.Path
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.atomic.AtomicLong
 import kotlin.io.path.readText
+import kotlin.io.path.Path
 
 /**
  * [AgentService] over the agent engine (agent-impl). Owns the chat transcript state, the per-session agent
@@ -111,6 +125,9 @@ internal class AgentBackend(private val ctx: BackendContext) : AgentService {
     @Volatile
     private var ftpServer: FtpServer? = null
 
+    private val _sessions = MutableStateFlow<List<UiAgentSession>>(emptyList())
+    override val sessions: StateFlow<List<UiAgentSession>> = _sessions.asStateFlow()
+
     init {
         if (prefBool("mcpServer", default = false)) {
             mcpServer = startMcpServer()
@@ -118,6 +135,7 @@ internal class AgentBackend(private val ctx: BackendContext) : AgentService {
         if (prefBool(FTP_PREF, default = false)) {
             ftpServer = startFtpServer()
         }
+        _sessions.value = loadSavedSessions()
     }
 
     private val _chatState = MutableStateFlow(UiAgentChatState())
@@ -233,6 +251,7 @@ internal class AgentBackend(private val ctx: BackendContext) : AgentService {
         "openai" -> "openaiKey"
         "gemini" -> "geminiKey"
         "openrouter" -> "openrouterKey"
+        "deepseek" -> "deepseekKey"
         GATEWAY -> "gatewayKey"
         else -> "anthropicKey"
     }
@@ -351,6 +370,10 @@ internal class AgentBackend(private val ctx: BackendContext) : AgentService {
 
     // --- session lifecycle ---
 
+    /** A fresh, unique session id (alphanumeric/underscore only, so it is a safe file name). */
+    private fun newSessionId(): String =
+        "s${System.currentTimeMillis()}_${java.util.concurrent.ThreadLocalRandom.current().nextInt(0, 100000)}"
+
     override fun newSession() {
         job?.cancel()
         loop?.reset()
@@ -358,7 +381,11 @@ internal class AgentBackend(private val ctx: BackendContext) : AgentService {
         loopSignature = null
         sessionAllowAll = false
         _permissionRequest.value = null
-        _chatState.value = UiAgentChatState()
+        // Save the outgoing conversation (if it has real content) before clearing the transcript.
+        if (_chatState.value.messages.any { !it.isError && (it.role == UiAgentRole.USER || it.text.isNotBlank()) }) {
+            persistCurrentSession()
+        }
+        _chatState.value = UiAgentChatState(sessionId = newSessionId(), sessionTitle = "Chat")
     }
 
     override fun stop() {
@@ -380,34 +407,18 @@ internal class AgentBackend(private val ctx: BackendContext) : AgentService {
             return
         }
 
-        val model = cfg.model.ifBlank { provider.defaultModel }
-        val maxIterations = prefInt("maxIterations") ?: DEFAULT_MAX_ITERATIONS
-        val maxTokens = prefInt("maxTokens") ?: DEFAULT_MAX_TOKENS
-        val thinkingBudget = prefInt("thinkingBudget")
-        val webSearch = prefBool("webSearch", default = true)
-        // "default" (or unset) leaves the field off the request so non-reasoning models and non-OpenAI
-        // providers are unaffected; any other value is forwarded as reasoning_effort by the OpenAI dialect.
-        val reasoningEffort = pref("reasoningEffort")?.takeIf { it != REASONING_EFFORT_DEFAULT }
-        val signature =
-            "${cfg.selectedId}|$model|${cfg.baseUrl}|${cfg.apiKey.hashCode()}|${cfg.caCertificatePem.hashCode()}|$maxIterations|$maxTokens|$thinkingBudget|$webSearch|$reasoningEffort"
-        if (loop == null || loopSignature != signature) {
-            val client = provider.client(ProviderConfig(cfg.apiKey, cfg.baseUrl, cfg.caCertificatePem))
-            loop = AgentLoop(
-                client, model, tools, gate, ::systemPrompt,
-                maxTokens = maxTokens,
-                maxIterations = maxIterations,
-                thinkingBudget = thinkingBudget,
-                webSearch = webSearch,
-                reasoningEffort = reasoningEffort,
-            )
-            loopSignature = signature
-        }
-        val activeLoop = loop ?: return
+        val activeLoop = ensureLoop(cfg) ?: return
 
+        val cur = _chatState.value
+        val sessionId = cur.sessionId ?: newSessionId()
+        val sessionTitle = if (cur.messages.isEmpty()) autoTitle(text) else cur.sessionTitle
         val userId = msgIds.incrementAndGet()
         val assistantId = msgIds.incrementAndGet()
         _chatState.update {
             it.copy(
+                sessionId = sessionId,
+                // Only a fresh conversation picks the title up from its first user message.
+                sessionTitle = if (it.messages.isEmpty()) sessionTitle else it.sessionTitle,
                 messages = it.messages +
                     UiAgentMessage(userId, UiAgentRole.USER, text) +
                     UiAgentMessage(assistantId, UiAgentRole.ASSISTANT, streaming = true),
@@ -416,6 +427,40 @@ internal class AgentBackend(private val ctx: BackendContext) : AgentService {
         }
 
         runLoop(assistantId) { sink -> activeLoop.send(text, sink) }
+    }
+
+    /** The first user message, snapped to a short single-line title for the session list. */
+    private fun autoTitle(text: String): String =
+        text.lineSequence().firstOrNull()?.trim()?.take(40)?.ifEmpty { "Chat" } ?: "Chat"
+
+    /** Build (or reuse) the agent loop for [cfg]. A restored session re-seeds a freshly-created loop via
+     *  [seed] so follow-up turns keep the prior conversation in context. Building is cheap and offline — the
+     *  loop's client only opens a connection when a turn is actually sent. */
+    private fun ensureLoop(cfg: ResolvedConfig, seed: List<LlmMessage> = emptyList()): AgentLoop? {
+        val model = cfg.model.ifBlank { registry.provider(cfg.clientProviderId)?.defaultModel.orEmpty() }
+        val maxIterations = prefInt("maxIterations") ?: DEFAULT_MAX_ITERATIONS
+        val maxTokens = prefInt("maxTokens") ?: DEFAULT_MAX_TOKENS
+        val thinkingBudget = prefInt("thinkingBudget")
+        val webSearch = prefBool("webSearch", default = true)
+        val reasoningEffort = pref("reasoningEffort")?.takeIf { it != REASONING_EFFORT_DEFAULT }
+        val signature =
+            "${cfg.selectedId}|$model|${cfg.baseUrl}|${cfg.apiKey.hashCode()}|${cfg.caCertificatePem.hashCode()}|$maxIterations|$maxTokens|$thinkingBudget|$webSearch|$reasoningEffort"
+        if (loop == null || loopSignature != signature) {
+            val provider = registry.provider(cfg.clientProviderId) ?: return loop
+            val client = provider.client(ProviderConfig(cfg.apiKey.orEmpty(), cfg.baseUrl, cfg.caCertificatePem))
+            val fresh = AgentLoop(
+                client, model, tools, gate, ::systemPrompt,
+                maxTokens = maxTokens,
+                maxIterations = maxIterations,
+                thinkingBudget = thinkingBudget,
+                webSearch = webSearch,
+                reasoningEffort = reasoningEffort,
+            )
+            if (seed.isNotEmpty()) fresh.restore(seed)
+            loop = fresh
+            loopSignature = signature
+        }
+        return loop
     }
 
     override fun retry() {
@@ -495,6 +540,8 @@ internal class AgentBackend(private val ctx: BackendContext) : AgentService {
                 busy = false,
             )
         }
+        // Auto-persist the finished (or cancelled) turn so the conversation is always recoverable.
+        persistCurrentSession()
     }
 
     private fun appendError(message: String, canRetry: Boolean = false) {
@@ -506,6 +553,180 @@ internal class AgentBackend(private val ctx: BackendContext) : AgentService {
                 ),
                 busy = false,
             )
+        }
+    }
+
+    // --- session persistence (one JSON file per saved conversation under <sharedRoot>/agent-sessions) ---
+
+    private val sessionJson = Json { ignoreUnknownKeys = true; isLenient = true; encodeDefaults = false }
+
+    private val sessionsDir: Path? by lazy {
+        ctx.manager?.sharedRoot?.resolve("agent-sessions")?.also {
+            runCatching { Files.createDirectories(it) }
+        }
+    }
+
+    private fun readUtf8(file: Path): String? =
+        runCatching { String(Files.readAllBytes(file), Charsets.UTF_8) }.getOrNull()
+
+    private fun writeUtf8(file: Path, text: String) {
+        runCatching { Files.write(file, text.toByteArray(Charsets.UTF_8)) }
+    }
+
+    private fun readObj(text: String?): JsonObject? =
+        text?.let { runCatching { sessionJson.parseToJsonElement(it) as? JsonObject }.getOrNull() }
+
+    private fun str(o: JsonObject?, key: String): String? = (o?.get(key) as? JsonPrimitive)?.contentOrNull
+
+    /** Persist the current transcript (when it has real content) as the active session and refresh the list. */
+    private fun persistCurrentSession() {
+        val s = _chatState.value
+        val id = s.sessionId ?: return
+        val dir = sessionsDir ?: return
+        if (s.messages.none { it.role == UiAgentRole.USER }) return
+        val now = System.currentTimeMillis()
+        val title = s.sessionTitle.ifBlank { "Chat" }
+        val preview = s.messages.lastOrNull()?.let { m ->
+            m.text.lineSequence().firstOrNull()?.trim()?.take(80)?.ifBlank { null }
+        } ?: s.messages.lastOrNull { it.role == UiAgentRole.USER }?.text?.lineSequence()?.firstOrNull()?.trim()?.take(40)
+            ?: "Chat"
+        writeUtf8(
+            dir.resolve("$id.json"),
+            buildJsonObject {
+                put("id", id)
+                put("title", title)
+                put("updatedAt", now)
+                put("messages", messagesToJson(s.messages))
+            }.toString(),
+        )
+        _sessions.value = (listOf(UiAgentSession(id, title, preview, now)) + _sessions.value.filter { it.id != id })
+            .sortedByDescending { it.updatedAt }
+    }
+
+    private fun messagesToJson(messages: List<UiAgentMessage>): JsonArray = buildJsonArray {
+        messages.forEach { m ->
+            add(buildJsonObject {
+                put("id", m.id)
+                put("role", m.role.name)
+                if (m.text.isNotEmpty()) put("text", m.text)
+                if (m.thinking.isNotEmpty()) put("thinking", m.thinking)
+                if (m.toolCalls.isNotEmpty()) put("tools", buildJsonArray {
+                    m.toolCalls.forEach { tc ->
+                        add(buildJsonObject {
+                            put("id", tc.id)
+                            put("title", tc.title)
+                            put("status", tc.status.name)
+                            if (tc.detail.isNotEmpty()) put("detail", tc.detail)
+                        })
+                    }
+                })
+                if (m.isError) put("isError", true)
+                if (m.canRetry) put("canRetry", true)
+            })
+        }
+    }
+
+    private fun parseMessages(arr: JsonArray?): List<UiAgentMessage> {
+        if (arr == null) return emptyList()
+        val out = ArrayList<UiAgentMessage>(arr.size)
+        for (el in arr) {
+            val o = el as? JsonObject ?: continue
+            val id = str(o, "id")?.toLongOrNull() ?: continue
+            val role = runCatching { UiAgentRole.valueOf(str(o, "role") ?: "USER") }.getOrDefault(UiAgentRole.USER)
+            val tools = (o["tools"] as? JsonArray)?.mapNotNull { t ->
+                val to = t as? JsonObject ?: return@mapNotNull null
+                val tid = str(to, "id") ?: return@mapNotNull null
+                val status = runCatching { UiAgentToolStatus.valueOf(str(to, "status") ?: "OK") }
+                    .getOrDefault(UiAgentToolStatus.OK)
+                UiAgentToolCall(tid, str(to, "title").orEmpty(), status, str(to, "detail").orEmpty())
+            } ?: emptyList()
+            out += UiAgentMessage(
+                id = id,
+                role = role,
+                text = str(o, "text").orEmpty(),
+                thinking = str(o, "thinking").orEmpty(),
+                toolCalls = tools,
+                streaming = false,
+                isError = (o["isError"] as? JsonPrimitive)?.contentOrNull?.toBooleanStrictOrNull() ?: false,
+                canRetry = (o["canRetry"] as? JsonPrimitive)?.contentOrNull?.toBooleanStrictOrNull() ?: false,
+            )
+        }
+        return out
+    }
+
+    /** Enumerate the saved sessions, most recent first. Corrupt/absent files are pruned. */
+    private fun loadSavedSessions(): List<UiAgentSession> {
+        val dir = sessionsDir ?: return emptyList()
+        val out = ArrayList<UiAgentSession>()
+        runCatching {
+            Files.newDirectoryStream(dir, "*.json").use { stream ->
+                stream.forEach { file ->
+                    val obj = readObj(readUtf8(file))
+                    if (obj == null) {
+                        runCatching { Files.deleteIfExists(file) }
+                        return@forEach
+                    }
+                    val id = str(obj, "id").orEmpty()
+                    if (id.isBlank()) {
+                        runCatching { Files.deleteIfExists(file) }
+                        return@forEach
+                    }
+                    val title = str(obj, "title")?.ifBlank { "Chat" } ?: "Chat"
+                    val messages = parseMessages(obj["messages"] as? JsonArray)
+                    val preview = messages.lastOrNull()?.text?.lineSequence()?.firstOrNull()?.trim()?.take(80)
+                        ?.ifBlank { null }
+                        ?: messages.lastOrNull { it.role == UiAgentRole.USER }
+                            ?.text?.lineSequence()?.firstOrNull()?.trim()?.take(40)
+                        ?: "Chat"
+                    val updatedAt = str(obj, "updatedAt")?.toLongOrNull() ?: 0L
+                    out += UiAgentSession(id, title, preview, updatedAt)
+                }
+            }
+        }
+        return out.sortedByDescending { it.updatedAt }
+    }
+
+    /** Collapse a restored transcript into user/assistant text turns the agent loop can continue from. Tool
+     *  internals and per-call status are intentionally dropped — the model re-reads files as needed. */
+    private fun restoredLlmMessages(messages: List<UiAgentMessage>): List<LlmMessage> {
+        val out = ArrayList<LlmMessage>(messages.size)
+        for (m in messages) {
+            when {
+                m.isError -> Unit
+                m.role == UiAgentRole.USER && m.text.isNotBlank() -> out += LlmMessage.user(m.text)
+                m.role == UiAgentRole.ASSISTANT && m.text.isNotBlank() ->
+                    out += LlmMessage.assistant(listOf(ContentPart.Text(m.text)))
+            }
+        }
+        return out
+    }
+
+    override fun openSession(id: String) {
+        val dir = sessionsDir ?: return
+        val meta = _sessions.value.firstOrNull { it.id == id } ?: return
+        val file = dir.resolve("$id.json")
+        if (!Files.exists(file)) return
+        val obj = readObj(readUtf8(file)) ?: return
+        val messages = parseMessages(obj["messages"] as? JsonArray)
+        if (messages.isEmpty()) return
+        job?.cancel()
+        loop?.reset()
+        loop = null
+        loopSignature = null
+        sessionAllowAll = false
+        _permissionRequest.value = null
+        msgIds.set((messages.maxOfOrNull { it.id } ?: 0L) + 1)
+        _chatState.value = UiAgentChatState(messages = messages, sessionId = id, sessionTitle = meta.title)
+        // Re-seed the loop so a follow-up prompt continues the restored conversation.
+        runCatching { ensureLoop(resolveConfig(), restoredLlmMessages(messages)) }
+    }
+
+    override fun deleteSession(id: String) {
+        val dir = sessionsDir
+        if (dir != null) runCatching { Files.deleteIfExists(dir.resolve("$id.json")) }
+        _sessions.value = _sessions.value.filter { it.id != id }
+        if (_chatState.value.sessionId == id) {
+            _chatState.update { it.copy(sessionId = null) }
         }
     }
 

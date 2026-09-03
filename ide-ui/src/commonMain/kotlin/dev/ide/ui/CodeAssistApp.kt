@@ -52,7 +52,7 @@ fun CodeAssistApp(
     uiFont: FontFamily = FontFamily.SansSerif,
     codeFont: FontFamily = rememberJetBrainsMono(),
     fileActions: FileActions = FileActions.None,
-    /** Platform advertising bridge (AdMob on Android, [AdHost.None] on desktop). Ads render only through this. */
+    /** Platform advertising bridge (the Android host wires a no-ad implementation; [AdHost.None] on desktop). Ads render only through this. */
     adHost: AdHost = AdHost.None,
     composePreviewHost: ComposePreviewHost? = null,
     /** A `.caproj` path handed in from outside the app (Android "Open with"). When it changes to a

@@ -51,6 +51,12 @@ class AgentLoop(
         history.clear()
     }
 
+    /** Seeds the conversation from a restored transcript (when the user opens a saved session) so follow-up
+     *  turns keep the prior conversation in context. No-op for an empty list. */
+    fun restore(messages: List<LlmMessage>) {
+        if (messages.isNotEmpty()) history += messages
+    }
+
     suspend fun send(userText: String, sink: AgentEventSink) {
         history += LlmMessage.user(userText)
         sink.emit(AgentEvent.UserMessage(userText))

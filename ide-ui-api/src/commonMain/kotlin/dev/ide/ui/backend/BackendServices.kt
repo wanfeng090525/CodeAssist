@@ -1452,8 +1452,19 @@ interface AgentService {
     /** Cancel the in-flight response. */
     fun stop()
 
-    /** Clear the transcript and start a fresh conversation. */
+    /** Clear the transcript and start a fresh conversation. The current one (if it has real content) is
+     *  saved first, so it stays available in [sessions]. */
     fun newSession()
+
+    /** Saved conversation summaries, most recent first (the session-history list). */
+    val sessions: StateFlow<List<UiAgentSession>>
+
+    /** Replace the transcript with a previously saved [UiAgentSession] so work can resume; the agent loop is
+     *  re-seeded with its history. No-op when [id] is not a saved session. */
+    fun openSession(id: String)
+
+    /** Delete a saved conversation; no-op when [id] is not a saved session. */
+    fun deleteSession(id: String)
 
     /** Set the write-permission mode (persisted). */
     fun setPermissionMode(mode: UiAgentPermissionMode)
@@ -1487,6 +1498,10 @@ interface AgentService {
         override fun retry() {}
         override fun stop() {}
         override fun newSession() {}
+        override val sessions: StateFlow<List<UiAgentSession>> =
+            kotlinx.coroutines.flow.MutableStateFlow(emptyList())
+        override fun openSession(id: String) {}
+        override fun deleteSession(id: String) {}
         override fun setPermissionMode(mode: UiAgentPermissionMode) {}
         override fun answerPermission(id: Int, decision: UiAgentPermissionDecision) {}
     }

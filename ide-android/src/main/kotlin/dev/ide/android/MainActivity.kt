@@ -44,9 +44,6 @@ class MainActivity : ComponentActivity() {
     /** Android file/SAF/FileProvider plumbing (byte-level import / share / export / install / reveal). */
     private val fileOps by lazy { AndroidFileOps(this) }
 
-    /** UMP consent flow (gathers ad consent before AdMob init; drives the "Manage ad consent" Settings entry). */
-    private val adConsent by lazy { AdConsentManager(this) }
-
     /**
      * A store sign-in redirect that arrived before the engine finished booting.
      *
@@ -65,9 +62,6 @@ class MainActivity : ComponentActivity() {
         // Before extractStream: a sign-in redirect is an ACTION_VIEW with a URI, which would otherwise be
         // taken for a file to import.
         if (!takeAuthRedirect(intent)) inbound.value = extractStream(intent)
-        // Gather UMP consent BEFORE initializing the Ads SDK (mediation + EEA/UK requirement); only initialize
-        // once consent allows ad requests. Failure resolves too, so a consent hiccup never blocks the IDE.
-        adConsent.gather(this) { if (adConsent.canRequestAds) initAds(applicationContext) }
 
         setContent {
             var backend by remember { mutableStateOf<IdeBackend?>(null) }
@@ -189,15 +183,11 @@ class MainActivity : ComponentActivity() {
                 }
             }
 
-            // Android advertising bridge (native ads via AdMob + mediation). The consent hooks drive the
-            // Settings "Manage ad consent" entry (UMP privacy options) and reopen the form on request.
+            // Android advertising bridge. Advertising is removed from the app, so this is a no-ad host
+            // ([AndroidAdHost.available] is false and the shared UI gates every slot off).
             val adHost = remember {
                 AndroidAdHost(
                     openUrl = { url -> fileOps.openInBrowser(url) },
-                    privacyOptionsRequiredProvider = { adConsent.privacyOptionsRequired },
-                    onShowPrivacyOptions = { adConsent.showPrivacyOptions(this@MainActivity) },
-                    // The full-screen build interstitial needs the foreground Activity to show().
-                    activityProvider = { this@MainActivity },
                     // `lastUpdateTime` changes on a fresh install and on every update, and is identical across
                     // launches in between — the shared AdController turns ads back on once per new value.
                     installStamp = runCatching {

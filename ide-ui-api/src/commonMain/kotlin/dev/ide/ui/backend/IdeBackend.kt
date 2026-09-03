@@ -730,10 +730,22 @@ data class UiAgentMessage(
     val canRetry: Boolean = false,
 )
 
-/** The observable chat transcript. */
+/** The observable chat transcript. [sessionId] identifies the persisted conversation backing these messages;
+ *  null/blank until the first message is added. */
 data class UiAgentChatState(
     val messages: List<UiAgentMessage> = emptyList(),
     val busy: Boolean = false,
+    val sessionId: String? = null,
+    val sessionTitle: String = "Chat",
+)
+
+/** A saved conversation surfaced in the chat history list. */
+data class UiAgentSession(
+    val id: String,
+    val title: String,
+    val preview: String,
+    /** Last activity, epoch millis (used to sort, most recent first). */
+    val updatedAt: Long,
 )
 
 data class UiAgentModel(val id: String, val displayName: String)

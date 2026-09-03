@@ -1,24 +1,12 @@
 package dev.ide.agent.impl
 
-import dev.ide.agent.ContentPart
 import dev.ide.agent.LlmClient
-import dev.ide.agent.LlmMessage
 import dev.ide.agent.LlmModelInfo
 import dev.ide.agent.LlmProvider
-import dev.ide.agent.LlmRequest
-import dev.ide.agent.LlmRole
 import dev.ide.agent.LlmStreamEvent
 import dev.ide.agent.ProviderConfig
 import dev.ide.agent.StopReason
 import dev.ide.agent.TokenUsage
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flow
-import kotlinx.serialization.json.JsonArray
-import kotlinx.serialization.json.add
-import kotlinx.serialization.json.buildJsonArray
-import kotlinx.serialization.json.buildJsonObject
-import kotlinx.serialization.json.put
 
 /**
  * The OpenAI Chat Completions provider. A configurable base URL makes the same adapter serve
@@ -37,106 +25,14 @@ class OpenAiProvider(private val transport: LlmTransport) : LlmProvider {
     )
     override val defaultModel: String = "gpt-5"
 
-    override fun client(config: ProviderConfig): LlmClient = LlmClient { request ->
-        val official = config.baseUrl.isNullOrBlank()
-        val base = config.baseUrl?.trimEnd('/') ?: DEFAULT_BASE
-        val sse = SseRequest(
-            url = "$base/v1/chat/completions",
-            headers = mapOf(
-                "Authorization" to "Bearer ${config.apiKey}",
-                "content-type" to "application/json",
-            ),
-            jsonBody = buildBody(request, official),
-            caCertificatePem = config.caCertificatePem,
-        )
-        stream(sse)
-    }
+    override fun client(config: ProviderConfig): LlmClient =
+        openAiChatCompletionsClient(transport, DEFAULT_BASE, config)
 
-    override suspend fun listModels(config: ProviderConfig): List<LlmModelInfo> = runCatching {
-        val base = config.baseUrl?.trimEnd('/') ?: DEFAULT_BASE
-        val body = transport.get("$base/v1/models", mapOf("Authorization" to "Bearer ${config.apiKey}"), config.caCertificatePem)
-        val data = AgentJson.parseToJsonElement(body).asObj()?.get("data").asArr() ?: return@runCatching models
-        data.mapNotNull { it.asObj()?.get("id").asStr() }
-            .filter { it.startsWith("gpt") || it.startsWith("o1") || it.startsWith("o3") || it.startsWith("o4") || it.startsWith("chatgpt") }
-            .sorted()
-            .map { LlmModelInfo(it, it) }
-            .ifEmpty { models }
-    }.getOrDefault(models)
-
-    private fun stream(sse: SseRequest): Flow<LlmStreamEvent> = flow {
-        val decoder = OpenAiStreamDecoder()
-        transport.sse(sse).collect { data -> decoder.decode(data).forEach { emit(it) } }
-        if (!decoder.completed) decoder.finish().forEach { emit(it) }
-    }.catch { e -> emit(LlmStreamEvent.Failed(e.message ?: "OpenAI stream error", e)) }
-
-    private fun buildBody(request: LlmRequest, official: Boolean): String = buildJsonObject {
-        put("model", request.model)
-        put("stream", true)
-        put(if (official) "max_completion_tokens" else "max_tokens", request.maxTokens)
-        // A reasoning model applies a default reasoning effort even when none is sent; on chat completions
-        // that default plus function tools is rejected, so forwarding "none" is how a tool-using agent runs
-        // against such a model. Non-reasoning models ignore the field. Sent only when explicitly requested.
-        request.reasoningEffort?.takeIf { it.isNotBlank() }?.let { put("reasoning_effort", it) }
-        put("stream_options", buildJsonObject { put("include_usage", true) })
-        if (request.tools.isNotEmpty()) {
-            put("tools", buildJsonArray {
-                request.tools.forEach { spec ->
-                    add(buildJsonObject {
-                        put("type", "function")
-                        put("function", buildJsonObject {
-                            put("name", spec.name)
-                            put("description", spec.description)
-                            put("parameters", AgentJson.parseToJsonElement(spec.parameters))
-                        })
-                    })
-                }
-            })
-        }
-        put("messages", messages(request.system, request.messages))
-    }.toString()
-
-    private fun messages(system: String?, messages: List<LlmMessage>): JsonArray = buildJsonArray {
-        system?.takeIf { it.isNotBlank() }?.let { add(buildJsonObject { put("role", "system"); put("content", it) }) }
-        messages.forEach { m ->
-            when (m.role) {
-                LlmRole.SYSTEM -> add(buildJsonObject { put("role", "system"); put("content", plainText(m.content)) })
-                LlmRole.USER -> add(buildJsonObject { put("role", "user"); put("content", plainText(m.content)) })
-                LlmRole.ASSISTANT -> add(assistantMessage(m.content))
-                LlmRole.TOOL -> m.content.forEach { part ->
-                    if (part is ContentPart.ToolResultPart) add(buildJsonObject {
-                        put("role", "tool")
-                        put("tool_call_id", part.toolCallId)
-                        put("content", part.content)
-                    })
-                }
-            }
-        }
-    }
-
-    private fun assistantMessage(parts: List<ContentPart>) = buildJsonObject {
-        put("role", "assistant")
-        val text = parts.filterIsInstance<ContentPart.Text>().joinToString("") { it.text }
-        val toolUses = parts.filterIsInstance<ContentPart.ToolUse>()
-        if (text.isNotEmpty()) put("content", text)
-        if (toolUses.isNotEmpty()) {
-            put("tool_calls", buildJsonArray {
-                toolUses.forEach { tu ->
-                    add(buildJsonObject {
-                        put("id", tu.id)
-                        put("type", "function")
-                        put("function", buildJsonObject {
-                            put("name", tu.name)
-                            put("arguments", tu.arguments.ifBlank { "{}" })
-                        })
-                    })
-                }
-            })
-        }
-        if (text.isEmpty() && toolUses.isEmpty()) put("content", "")
-    }
-
-    private fun plainText(parts: List<ContentPart>): String =
-        parts.filterIsInstance<ContentPart.Text>().joinToString("") { it.text }
+    override suspend fun listModels(config: ProviderConfig): List<LlmModelInfo> = openAiListModels(
+        transport, config, DEFAULT_BASE,
+        keepId = { it.startsWith("gpt") || it.startsWith("o1") || it.startsWith("o3") || it.startsWith("o4") || it.startsWith("chatgpt") },
+        fallback = models,
+    )
 
     companion object {
         const val DEFAULT_BASE = "https://api.openai.com"

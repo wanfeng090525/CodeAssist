@@ -158,7 +158,7 @@ class ManifestMergerTest {
 
     @Test
     fun distinctQueriesIntentsFromAppAndLibraryStaySeparate() {
-        // Repro of "There was a problem while parsing the package": play-billing / play-services-ads contribute
+        // Repro of "There was a problem while parsing the package": library manifests contribute
         // <queries><intent> package-visibility entries. Keyless <intent> elements used to collapse onto one node
         // key and merge into a SINGLE <intent> carrying every <action> — a malformed manifest the on-device
         // installer rejects. Each distinct intent must survive as its own element.
